@@ -51,13 +51,12 @@ public class SecurityConfig {
                         .clearAuthentication(true)
                 )
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/css/**", "/js/**", "/storage/**").permitAll()
-                        .requestMatchers("/admin/**").hasRole("ADMIN")
-                        .requestMatchers("/list/approval", "/slip/approval").hasRole("APPROVER")
-                        .requestMatchers("/","/setting", "/list/application","/list/remand","/list/temporary",
-                                "/slip/application","/slip/new","/slip/remand","/slip/temporary",
-                                "/csv/confirm", "/csv/upload").hasAnyRole("USER", "APPROVER", "ADMIN")
-                        .anyRequest().authenticated()
+                                .requestMatchers("/", "/login", "/user/new", "/user/add", "/search", "/restaurant/**").permitAll()
+                                .requestMatchers("/webjars/**", "/css/**", "/js/**", "/storage/**").permitAll()
+                                .requestMatchers("/mypage/**", "/reservation/**", "/user/edit/**",  "/withdraw/**").hasRole("USER")
+                                .requestMatchers("/admin/**").hasRole("ADMIN")
+//                        .requestMatchers(HttpMethod.POST, "/**").authenticated()
+                                .anyRequest().authenticated()
                 )
 
                 .exceptionHandling(e -> e
