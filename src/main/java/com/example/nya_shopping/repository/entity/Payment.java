@@ -7,10 +7,10 @@ import lombok.Setter;
 import java.sql.Timestamp;
 
 @Entity
-@Table(name = "users")
+@Table(name = "payments")
 @Getter
 @Setter
-public class User {
+public class Payment {
 
     @Id
     @Column
@@ -18,28 +18,25 @@ public class User {
     private Integer id;
 
     @Column
-    private String email;
+    private Integer orderId;
 
     @Column
-    private String password;
+    private String stripeSessionId;
 
     @Column
-    private String name;
+    private String stripePaymentIntent;
 
     @Column
-    private String postalCode;
+    private Integer amount;
 
     @Column
-    private String address;
+    private String currency;
 
     @Column
-    private String phone;
+    private String status;
 
     @Column
-    private String role;
-
-    @Column
-    private Boolean isStopped;
+    private Timestamp paidAt;
 
     @Column
     private Timestamp createdAt;

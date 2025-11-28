@@ -7,10 +7,10 @@ import lombok.Setter;
 import java.sql.Timestamp;
 
 @Entity
-@Table(name = "users")
+@Table(name = "orders")
 @Getter
 @Setter
-public class User {
+public class Order {
 
     @Id
     @Column
@@ -18,28 +18,25 @@ public class User {
     private Integer id;
 
     @Column
-    private String email;
+    private Integer userId;
 
     @Column
-    private String password;
+    private Integer totalAmount;
 
     @Column
-    private String name;
+    private String customerName;
 
     @Column
-    private String postalCode;
+    private String customerPostalCode;
 
     @Column
-    private String address;
+    private String customerAddress;
 
     @Column
-    private String phone;
+    private String customerPhone;
 
     @Column
-    private String role;
-
-    @Column
-    private Boolean isStopped;
+    private String status;
 
     @Column
     private Timestamp createdAt;
