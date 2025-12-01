@@ -1,3 +1,6 @@
+/settings.gradle
+/.gradle
+/.idea
 /gradle
 /.gitattributes
 /build.gradle
@@ -5,7 +8,5 @@
 /gradlew.bat
 /HELP.md
 /README.md
-/settings.gradle
-/.gradle
-/.idea
+/src/main/resources/application.yml
 /src/main/resources/application.properties
