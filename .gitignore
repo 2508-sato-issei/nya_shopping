@@ -1,0 +1,11 @@
+/gradle
+/.gitattributes
+/build.gradle
+/gradlew
+/gradlew.bat
+/HELP.md
+/README.md
+/settings.gradle
+/.gradle
+/.idea
+/src/main/resources/application.properties
