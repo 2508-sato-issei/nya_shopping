@@ -1,10 +1,19 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ja" xmlns:th="http://www.w3.org/1999/xhtml" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>商品編集画面</title>
+    <link rel="stylesheet" th:href="@{/css/admin.css}">
 </head>
 <body>
 
+
+
+<form th:action="@{'/admin/products/' + ${p.id} + '/delete'}" method="post" class="inline">
+    <button type="submit" class="btn-small btn-danger"
+            onclick="return confirm('本当に削除しますか？');">
+        削除
+    </button>
+</form>
 </body>
 </html>
