@@ -25,4 +25,6 @@ public interface ProductRepository {
             @Param("maxPrice") Integer maxPrice,
             @Param("stock") Integer stock
     );
+
+    Product findById(Integer id);
 }
