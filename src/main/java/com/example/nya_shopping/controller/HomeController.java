@@ -2,9 +2,7 @@ package com.example.nya_shopping.controller;
 
 import com.example.nya_shopping.controller.form.SearchForm;
 import com.example.nya_shopping.model.Category;
-import com.example.nya_shopping.service.ProductService;
 import jakarta.servlet.http.HttpSession;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,9 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class HomeController {
 
-    @Autowired
-    ProductService productService;
-
+    //ホーム画面（検索機能付き）
     @GetMapping("/")
     public String showHome(HttpSession session, Model model){
 
