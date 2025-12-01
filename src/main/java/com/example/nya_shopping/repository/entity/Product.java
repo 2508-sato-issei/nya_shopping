@@ -1,5 +1,6 @@
 package com.example.nya_shopping.repository.entity;
 
+import com.example.nya_shopping.model.Category;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -24,7 +25,7 @@ public class Product {
     private Integer price;
 
     @Column
-    private String category;
+    private Category category;
 
     @Column
     private Integer stock;

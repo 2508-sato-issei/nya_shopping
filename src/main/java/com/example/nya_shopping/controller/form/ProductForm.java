@@ -1,5 +1,6 @@
 package com.example.nya_shopping.controller.form;
 
+import com.example.nya_shopping.model.Category;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,7 +12,7 @@ public class ProductForm {
     private Integer id;
     private String name;
     private Integer price;
-    private String category;
+    private Category category;
     private Integer stock;
     private String imageUrl;
     private String description;
