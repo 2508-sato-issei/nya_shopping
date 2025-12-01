@@ -1,10 +1,89 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ja" xmlns:th="http://www.w3.org/1999/xhtml" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>商品管理一覧画面</title>
+    <link rel="stylesheet" th:href="@{/css/admin.css}">
 </head>
 <body>
+
+<header class="admin-header">
+    <h1>商品管理一覧</h1>
+    <nav>
+        <a th:href="@{/admin}">管理者ページ</a>
+        <a th:href="@{/admin/products}">商品管理一覧</a>
+        <a th:href="@{/admin/products/new}" class="btn-primary">商品登録</a>
+        <a th:href="@{/admin/products/upload-csv}" class="btn-secondary">商品一括出力</a>
+        <a th:href="@{/admin/products/download-csv}" class="btn-secondary">商品一括登録</a>
+    </nav>
+</header>
+
+<main class="container">
+
+    <!-- 検索フォーム -->
+    <form method="get" class="search-form">
+        <input type="text" name="q" placeholder="商品名で検索" th:value="${q}">
+
+        <select name="category">
+            <option value="">すべてのカテゴリ</option>
+            <option th:each="c : ${categories}"
+                    th:value="${c}"
+                    th:text="${c}"
+                    th:selected="${category == c}">
+            </option>
+        </select>
+
+        <select name="sort">
+            <option value="">並び替え</option>
+            <option value="new"        th:selected="${sort == 'new'}">新着順</option>
+            <option value="price_asc"  th:selected="${sort == 'price_asc'}">価格（安い順）</option>
+            <option value="price_desc" th:selected="${sort == 'price_desc'}">価格（高い順）</option>
+        </select>
+
+        <button type="submit" class="btn-search">検索</button>
+    </form>
+
+    <!-- 商品一覧テーブル -->
+    <table class="product-table">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>商品名</th>
+            <th>価格</th>
+            <th>カテゴリ</th>
+            <th>在庫数</th>
+            <th>状態</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr th:each="p : ${products}">
+            <td th:text="${p.id}"></td>
+
+            <td th:text="${p.name}"></td>
+            <td th:text="${p.category}"></td>
+            <td th:text="${#numbers.formatInteger(p.price, 0, 'COMMA')} + '円'"></td>
+
+            <td>
+                <span th:text="${p.stock}"
+                      th:classappend="${p.stock == 0} ? 'stock-zero' : ''"></span>
+            </td>
+
+            <td>
+                <a th:href="@{'/admin/products/' + ${p.id} + '/edit'}" class="btn-small">編集</a>
+                <form th:action="@{'/admin/products/' + ${p.id} + '/delete'}" method="post" class="inline">
+                    <button type="submit" class="btn-small btn-danger"
+                            onclick="return confirm('本当に削除しますか？');">
+                        削除
+                    </button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+
+    </table>
+
+</main>
 
 </body>
 </html>
