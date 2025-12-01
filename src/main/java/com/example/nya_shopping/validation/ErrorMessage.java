@@ -21,8 +21,8 @@ public class ErrorMessage {
     public static final String E0017 = "パスワードとパスワード（確認用）が一致しません";
     public static final String E0018 = "不正なパラメータが入力されました";
     public static final String E0019 = "在庫が不足しています";
-    public static final String E0020 = "CSVファイルを選択してください";
-    public static final String E0021 = "ファイルサイズが0です";
+    public static final String E0020 = "ファイルを選択してください";
+    public static final String E0021 = "CSV形式のファイルを選択してください";
     public static final String E0022 = "ヘッダー項目が指定項目と一致しません";
     public static final String E0023 = "カラム数が不足しているレコードがあります";
     public static final String E0024 = "商品名は必須です";
