@@ -19,6 +19,7 @@ public class SearchController {
     @Autowired
     ProductService productService;
 
+    //検索機能・ソート機能付き
     @GetMapping("/search")
     public String searchProducts(@ModelAttribute SearchForm searchForm, @RequestParam(defaultValue = "0") int page,
                                  Model model){

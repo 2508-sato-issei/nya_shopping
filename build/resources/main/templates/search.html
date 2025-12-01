@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.w3.org/1999/xhtml" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>検索結果画面</title>
+</head>
+<body>
+<div th:replace="fragments/navbar :: navbar"></div>
+<div th:if="${errorMessage != null}" th:text="${errorMessage}"></div>
+<div>
+    <div>
+        <form th:action="@{/search}" method="get">
+
+            <select name="category" th:value="${searchForm.category}">
+                <option value="">カテゴリーを選択</option>
+                <option th:each="cat : ${categories}"
+                        th:value="${cat.name()}"
+                        th:text="${cat.label}"
+                        th:selected="${searchForm.category} == ${cat.name()}">
+                </option>
+            </select>
+
+            <!-- キーワード -->
+            <input type="text" name="keyword" placeholder="キーワード" th:value="${searchForm.keyword}">
+
+            <!-- 価格（下限） -->
+            <input type="number" name="minPrice" placeholder="最小価格" th:value="${searchForm.minPrice}">
+
+            <!-- 価格（上限） -->
+            <input type="number" name="maxPrice" placeholder="最大価格" th:value="${searchForm.maxPrice}">
+
+            <!-- 在庫数 -->
+            <input type="number" name="stock" placeholder="在庫以上" th:value="${searchForm.stock}">
+
+            <!-- ソート条件-->
+            <select name="sort">
+                <option value="">標準（更新日順）</option>
+                <option value="new"  th:selected="${searchForm.sort} == 'new'">登録日が新しい順</option>
+                <option value="low"  th:selected="${searchForm.sort} == 'low'">価格が安い順</option>
+                <option value="high" th:selected="${searchForm.sort} == 'high'">価格が高い順</option>
+            </select>
+            <button type="submit">検索</button>
+        </form>
+    </div>
+
+    <!-- 結果が空のとき -->
+    <div th:if="${#lists.isEmpty(results)}">
+        検索条件に一致する店舗は見つかりませんでした。
+    </div>
+
+    <!-- 商品一覧 -->
+    <div th:if="${not #lists.isEmpty(results)}">
+        <h2>検索結果</h2>
+        <div class="product-list">
+            <div class="product-card" th:each="product : ${results}">
+
+                <div class="product-image">
+                    <img th:src="@{'/storage/' + ${product.imageUrl}}" alt="商品画像" width="150">
+                </div>
+
+                <div class="product-info">
+                    <h3 th:text="${product.name}"></h3>
+
+                    <p>価格：<span th:text="${product.price}"></span>円</p>
+                    <p>カテゴリー：<span th:text="${product.category}"></span></p>
+                    <p>在庫：<span th:text="${product.stock}"></span> 点</p>
+
+                    <a th:href="@{/product/detail/{id}(id=${product.id})}">
+                        商品詳細を見る
+                    </a>
+
+                    <a th:href="@{/cart}">
+                        カートを見る
+                    </a>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- ページネーション -->
+    <div th:if="${page.totalPages > 1}" class="pagination">
+        <a th:if="${showFirst}" th:href="@{/search(page=0)}">最初</a>
+        <a th:if="${page.number > 0}" th:href="@{/search(page=${page.number - 1})}">
+            前へ
+        </a>
+        <span th:each="i : ${#numbers.sequence(startPage, endPage)}">
+            <a th:if="${i != page.number}" th:href="@{/search(page=${i})}" th:text="${i + 1}"></a>
+            <strong th:if="${i == page.number}" th:text="${i + 1}"></strong>
+        </span>
+        <a th:if="${page.number < page.totalPages - 1}" th:href="@{/search(page=${page.number + 1})}">
+            次へ
+        </a>
+        <a th:if="${showLast}" th:href="@{/search(page=${page.totalPages - 1})}">
+            最後
+        </a>
+    </div>
+</div>
+</body>
+</html>

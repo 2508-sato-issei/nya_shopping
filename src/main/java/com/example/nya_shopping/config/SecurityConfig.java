@@ -1,6 +1,5 @@
 package com.example.nya_shopping.config;
 
-
 import com.example.nya_shopping.controller.error.CustomAccessDeniedHandler;
 import com.example.nya_shopping.controller.error.CustomAuthenticationEntryPoint;
 import com.example.nya_shopping.controller.error.CustomAuthenticationFailureHandler;
@@ -51,7 +50,7 @@ public class SecurityConfig {
                         .clearAuthentication(true)
                 )
                 .authorizeHttpRequests(auth -> auth
-                                .requestMatchers("/", "/login", "/user/register", "/user/add", "/search", "/product/**","/cart").permitAll()
+                                .requestMatchers("/", "/login", "/user/register", "/user/add", "/search", "/product/**","/cart","/stripe/**","/stripe/test/**"  ).permitAll()
                                 .requestMatchers("/webjars/**", "/css/**", "/js/**", "/storage/**").permitAll()
                                 .requestMatchers("/user/mypage/**", "/reservation/**", "/user/mypage/edit/**",  "/withdraw/**").hasRole("USER")
                                 .requestMatchers("/admin/**").hasRole("ADMIN")
