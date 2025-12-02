@@ -4,6 +4,9 @@ import com.example.nya_shopping.controller.form.OrderNarrowForm;
 import com.example.nya_shopping.repository.OrderRepository;
 import com.example.nya_shopping.repository.entity.Order;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
@@ -14,7 +17,9 @@ public class OrderService {
     @Autowired
     OrderRepository orderRepository;
 
-    public List<Order> findOrder(OrderNarrowForm form) {
+    public Page<Order> findOrder(OrderNarrowForm form, PageRequest pageRequest) {
+        int offset = (int) pageRequest.getOffset();
+        int limit = pageRequest.getPageSize();
         //開始時刻をtimestampに変換
         if (form.getStartDate() != null) {
             Timestamp startTs = Timestamp.valueOf(form.getStartDate().atStartOfDay());
@@ -25,7 +30,9 @@ public class OrderService {
             Timestamp endTs = Timestamp.valueOf(form.getEndDate().atTime(23, 59, 59));
             form.setEndTimeStamp(endTs);
         }
-        List<Order> orderList = orderRepository.findOrder(form);
-        return orderList;
+        List<Order> orderList = orderRepository.findOrder(form, offset, limit);
+        int total = orderRepository.countOrder(form, offset, limit);
+
+        return new PageImpl<>(orderList, pageRequest, total);
     }
 }
