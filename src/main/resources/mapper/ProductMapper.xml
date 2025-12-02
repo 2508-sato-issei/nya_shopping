@@ -74,7 +74,7 @@
         </if>
     </select>
 
-    <select id="findById" parameterType="int" resultType="com.example.nya_shopping.repository.entity.Product">
+    <select id="findByIdIsActive" parameterType="int" resultType="com.example.nya_shopping.repository.entity.Product">
         SELECT
         id,
         name,
@@ -89,6 +89,93 @@
         FROM products
         WHERE id = #{id}
         AND is_active = 1
+    </select>
+
+    <!-- 商品管理一覧画面表示 -->
+    <select id="search" resultType="com.example.nya_shopping.repository.entity.Product">
+
+        SELECT
+        id,
+        name,
+        price,
+        stock,
+        category,
+        image_url,
+        is_active,
+        created_at
+        FROM products
+        WHERE 1 = 1
+
+        <!-- 商品名（部分一致） -->
+        <if test="condition.name != null and condition.name != ''">
+            AND name LIKE CONCAT('%', #{condition.name}, '%')
+        </if>
+
+        <!-- 価格下限 -->
+        <if test="condition.priceMin != null">
+            AND price &gt;= #{condition.priceMin}
+        </if>
+
+        <!-- 価格上限 -->
+        <if test="condition.priceMax != null">
+            AND price &lt;= #{condition.priceMax}
+        </if>
+
+        <!-- カテゴリ -->
+        <if test="condition.category != null and condition.category != ''">
+            AND category = #{condition.category}
+        </if>
+
+        <!-- 在庫ありのみ -->
+        <if test="condition.stockOnly != null and condition.stockOnly == true">
+            AND stock &gt; 0
+        </if>
+
+        <!-- 公開 / 非公開 -->
+        <if test="condition.isActive != null">
+            AND is_active = #{condition.isActive}
+        </if>
+
+        <!-- 登録日時（開始） -->
+        <if test="condition.dateFrom != null and condition.dateFrom != ''">
+            AND created_at &gt;= #{condition.dateFrom}
+        </if>
+
+        <!-- 登録日時（終了） -->
+        <if test="condition.dateTo != null and condition.dateTo != ''">
+            AND created_at &lt;= #{condition.dateTo}
+        </if>
+
+        <!-- ======== ソート解決 ======== -->
+        <!-- ソートキーが正しく指定されている場合のみ ORDER BY を適用 -->
+        <choose>
+
+            <!-- sortKey: id, name, price, category, stock, created_at -->
+            <when test="condition.sortKey != null
+                        and condition.sortKey != ''
+                        and (
+                            condition.sortKey == 'id' or
+                            condition.sortKey == 'name' or
+                            condition.sortKey == 'price' or
+                            condition.sortKey == 'category' or
+                            condition.sortKey == 'stock' or
+                            condition.sortKey == 'created_at'
+                        )">
+
+                ORDER BY ${condition.sortKey}
+                <choose>
+                    <when test="condition.sortOrder == 'asc'">ASC</when>
+                    <otherwise>DESC</otherwise>
+                </choose>
+
+            </when>
+
+            <!-- sortKey が未指定 → デフォルトソート -->
+            <otherwise>
+                ORDER BY id DESC
+            </otherwise>
+        </choose>
+
     </select>
 
     <!-- 商品登録処理 -->
@@ -108,7 +195,7 @@
     </insert>
 
     <!-- 商品編集画面表示 -->
-    <select id="editFindById" resultType="com.example.nya_shopping.repository.entity.Product">
+    <select id="FindById" resultType="com.example.nya_shopping.repository.entity.Product">
         SELECT *
         FROM products
         WHERE id = #{id}

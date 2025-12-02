@@ -1,10 +1,133 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ja" xmlns:th="http://www.w3.org/1999/xhtml" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>注文管理</title>
 </head>
 <body>
+    <!--ヘッダー-->
+    <div th:replace="fragments/navbar :: navbar"></div>
+    <div th:if="${errorMessage != null}" th:text="${errorMessage}"></div>
 
+    <!--コンテンツ-->
+    <div>
+        <!--検索、ソート-->
+        <form th:action="@{/admin/orders}" method="get" th:object="${form}">
+            <div>
+                <!--検索-->
+                <div>
+                    <!--合計金額-->
+                    <div>
+                        <label>合計金額</label>
+                        <input type="number" th:field="*{minAmount}" min="0">
+                        <input type="number" th:field="*{maxAmount}" min="0">
+                    </div>
+                    <!--購入者氏名-->
+                    <div>
+                        <label>購入者氏名</label>
+                        <input type="text" th:field="*{customerName}">
+                    </div>
+                    <!--購入者住所-->
+                    <div>
+                        <label>購入者住所</label>
+                        <input type="text" th:field="*{customerAddress}">
+                    </div>
+
+                    <!--購入者電話番号-->
+                    <div>
+                        <label>購入者電話番号</label>
+                        <input type="text" th:field="*{customerPhone}">
+                    </div>
+
+                    <!--注文状態-->
+                    <div>
+                        <label>注文状態</label>
+                        <select th:field="*{status}">
+                            <option value="">--選択する--</option>
+                            <option value="CONFIRMED">注文確定</option>
+                            <option value="PREPARING">発送準備中</option>
+                            <option value="SHIPPED">発送済み</option>
+                        </select>
+                    </div>
+
+                    <!--登録日時-->
+                    <div>
+                        <label>登録日時</label>
+                        <input type="date" th:field="*{startDate}">～<input type="date" th:field="*{endDate}">
+                    </div>
+                </div>
+
+                <!--ソート-->
+                <div>
+                    <!-- ソート条件 -->
+                    <select name="sort" th:field="*{sort}">
+                        <option value="id">ID</option>
+                        <option value="userId">ユーザーID</option>
+                        <option value="amount">合計金額</option>
+                        <option value="name">名前</option>
+                        <option value="address">住所</option>
+                        <option value="created">作成日</option>
+                    </select>
+
+                    <!-- 昇順/降順 -->
+                    <select name="order" th:field="*{order}">
+                        <option value="ASC">昇順</option>
+                        <option value="DESC">降順</option>
+                    </select>
+                </div>
+                <input type="submit" value="検索する">
+            </div>
+        </form>
+
+        <!--注文一覧-->
+        <table>
+            <thead>
+                <tr>
+                    <td>購入者ID</td>
+                    <td>合計金額</td>
+                    <td>購入者氏名</td>
+                    <td>購入者郵便番号</td>
+                    <td>購入者住所</td>
+                    <td>購入者電話番号</td>
+                    <td>注文状態</td>
+                    <td>購入日時</td>
+                </tr>
+            </thead>
+            <tbody th:each="o: ${order}">
+                <tr>
+                    <!--注文者のID-->
+                    <td th:text="${o.userId}"></td>
+
+                    <!--合計金額-->
+                    <td th:text="${o.totalAmount}"></td>
+
+                    <!--購入者氏名-->
+                    <td th:text="${o.customerName}"></td>
+
+                    <!--購入者郵便番号-->
+                    <td th:text="${o.customerPostalCode}"></td>
+
+                    <!--購入者住所-->
+                    <td th:text="${o.customerAddress}"></td>
+
+                    <!--購入者電話番号-->
+                    <td th:text="${o.customerPhone}"></td>
+
+                    <!--注文状態-->
+                    <td th:text="${
+                        o.status == 'CONFIRMED' ? '注文確定（支払い成功時）' :
+                        o.status == 'PREPARING'  ? '発送準備中' :
+                        o.status == 'SHIPPED'  ? '発送済み' :
+                        '不明'}">
+                    </td>
+
+                    <!--購入日時（登録日時）-->
+                    <td th:text="${o.createdAt}"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <!--フッター-->
+    <div th:replace="fragments/fragment :: footer"></div>
 </body>
 </html>

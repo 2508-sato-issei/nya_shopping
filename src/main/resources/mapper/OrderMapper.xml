@@ -4,4 +4,68 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.example.nya_shopping.repository.OrderRepository">
+
+    <select id="findOrder" resultType="com.example.nya_shopping.repository.entity.Order"
+            parameterType="com.example.nya_shopping.controller.form.OrderNarrowForm">
+        SELECT *
+        FROM orders
+        WHERE 1 = 1
+
+        <!-- 合計金額（下限） -->
+        <if test="minAmount != null">
+            AND total_amount >= #{minAmount}
+        </if>
+
+        <!-- 合計金額（上限） -->
+        <if test="maxAmount != null">
+            AND total_amount &lt;= #{maxAmount}
+        </if>
+
+        <!-- 購入者氏名（部分一致） -->
+        <if test="customerName != null and customerName != ''">
+            AND customer_name LIKE CONCAT('%', #{customerName}, '%')
+        </if>
+
+        <!-- 購入者住所（部分一致） -->
+        <if test="customerAddress != null and customerAddress != ''">
+            AND customer_address LIKE CONCAT('%', #{customerAddress}, '%')
+        </if>
+
+        <!-- 購入者電話番号（部分一致） -->
+        <if test="customerPhone != null and customerPhone != ''">
+            AND customer_phone LIKE CONCAT('%', #{customerPhone}, '%')
+        </if>
+
+        <!-- 注文状態 -->
+        <if test="status != null and status != ''">
+            AND status = #{status}
+        </if>
+
+        <!-- 登録日時（開始） -->
+        <if test="startTimeStamp != null">
+            AND created_at >= #{startTimeStamp}
+        </if>
+
+        <!-- 登録日時（終了） -->
+        <if test="endTimeStamp != null">
+            <![CDATA[
+                AND created_at < DATE_ADD(#{endTimeStamp}, INTERVAL 1 DAY)
+            ]]>
+        </if>
+
+        ORDER BY
+        <choose>
+            <when test="sort == 'id'">id</when>
+            <when test="sort == 'userId'">user_id</when>
+            <when test="sort == 'amount'">total_amount</when>
+            <when test="sort == 'sortCustomerName'">customer_name</when>
+            <when test="sort == 'address'">customer_address</when>
+            <when test="sort == 'created'">created_at</when>
+            <otherwise>id</otherwise> <!-- デフォルトソート -->
+        </choose>
+        <choose>
+            <when test="order == 'DESC'">DESC</when>
+            <otherwise>ASC</otherwise>
+        </choose>
+    </select>
 </mapper>

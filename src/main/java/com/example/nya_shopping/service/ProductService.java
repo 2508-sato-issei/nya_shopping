@@ -2,7 +2,7 @@ package com.example.nya_shopping.service;
 
 import com.example.nya_shopping.controller.error.RecordNotFoundException;
 import com.example.nya_shopping.controller.form.ProductForm;
-import com.example.nya_shopping.controller.error.RecordNotFoundException;
+import com.example.nya_shopping.controller.form.ProductSearchCondition;
 import com.example.nya_shopping.controller.form.SearchForm;
 import com.example.nya_shopping.repository.ProductRepository;
 import com.example.nya_shopping.repository.entity.Product;
@@ -60,11 +60,16 @@ public class ProductService {
     }
 
     public Product findById(Integer id) {
-        Product product = productRepository.findById(id);
+        Product product = productRepository.findByIdIsActive(id);
         if (product == null) {
             throw new RecordNotFoundException(E0018);
         }
         return product;
+    }
+
+    /* 商品管理一覧画面表示 */
+    public List<Product> searchProducts(ProductSearchCondition condition) {
+        return productRepository.search(condition);
     }
 
     /* 商品登録処理 */
@@ -99,14 +104,14 @@ public class ProductService {
 
     /* 商品編集画面表示 */
     public Product findById(Long id) {
-        return productRepository.editFindById(id)
+        return productRepository.FindById(id)
                 .orElseThrow(() -> new RecordNotFoundException(E0018));
     }
 
     /* 商品編集処理 */
     public void update(Long id, ProductForm form) throws IOException {
 
-        Product product = productRepository.editFindById(id)
+        Product product = productRepository.FindById(id)
                 .orElseThrow(() -> new RecordNotFoundException(E0018));
 
         // 必要な項目だけチェックして上書き
