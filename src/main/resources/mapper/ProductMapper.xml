@@ -74,23 +74,6 @@
         </if>
     </select>
 
-
-    <!-- 商品登録処理 -->
-    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO products (name, price, category, stock, image_url, description, is_active)
-        VALUES (#{name}, #{price}, #{category}, #{stock}, #{imageUrl}, #{description}, #{isActive})
-    </insert>
-
-    <!-- 商品一括登録処理 -->
-    <insert id="insertProducts" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO products
-        (slip_id, billing_date, reason, transportation, round_trip, amount, subtotal, remark, original_file_name ,stored_file_name, created_date, updated_date)
-        VALUES
-        <foreach collection="list" item="d" separator=",">
-            (#{d.slipId}, #{d.billingDate}, #{d.reason}, #{d.transportation}, #{d.roundTrip}, #{d.amount}, #{d.subtotal}, #{d.remark}, #{d.originalFileName}, #{d.storedFileName}, NOW(), NOW())
-        </foreach>
-    </insert>
-
     <select id="findById" parameterType="int" resultType="com.example.nya_shopping.repository.entity.Product">
         SELECT
         id,
@@ -108,8 +91,24 @@
         AND is_active = 1
     </select>
 
+    <!-- 商品登録処理 -->
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO products (name, price, category, stock, image_url, description, is_active)
+        VALUES (#{name}, #{price}, #{category}, #{stock}, #{imageUrl}, #{description}, #{isActive})
+    </insert>
+
+    <!-- 商品一括登録処理 -->
+    <insert id="insertProducts" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO products
+        (slip_id, billing_date, reason, transportation, round_trip, amount, subtotal, remark, original_file_name ,stored_file_name, created_date, updated_date)
+        VALUES
+        <foreach collection="list" item="d" separator=",">
+            (#{d.slipId}, #{d.billingDate}, #{d.reason}, #{d.transportation}, #{d.roundTrip}, #{d.amount}, #{d.subtotal}, #{d.remark}, #{d.originalFileName}, #{d.storedFileName}, NOW(), NOW())
+        </foreach>
+    </insert>
+
     <!-- 商品編集画面表示 -->
-    <select id="findById" resultType="com.example.nya_shopping.repository.entity.Product">
+    <select id="editFindById" resultType="com.example.nya_shopping.repository.entity.Product">
         SELECT *
         FROM products
         WHERE id = #{id}

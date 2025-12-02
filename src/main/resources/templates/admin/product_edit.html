@@ -17,11 +17,11 @@
 <main class="container">
 
     <!-- エラー表示 -->
-    <div th:if="${#fields.hasErrors()}" class="error-box">
-        <ul>
-            <li th:each="err : ${#fields.errors('*')}" th:text="${err}"></li>
-        </ul>
-    </div>
+<!--    <div th:if="${#fields.hasErrors()}" class="error-box">-->
+<!--        <ul>-->
+<!--            <li th:each="err : ${#fields.errors('*')}" th:text="${err}"></li>-->
+<!--        </ul>-->
+<!--    </div>-->
 
     <!-- 編集フォーム -->
     <form th:action="@{'/admin/products/' + ${productForm.id}}"

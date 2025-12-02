@@ -35,7 +35,9 @@ public interface ProductRepository {
     void insert(Product product);
 
     /* 商品編集画面表示 */
-    Optional<Product> findById(Long id);
+    Optional<Product> editFindById(Long id);
 
     /* 商品編集処理 */
     void update(Product product);
+
+}

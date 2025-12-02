@@ -94,14 +94,14 @@ public class ProductService {
 
     /* 商品編集画面表示 */
     public Product findById(Long id) {
-        return productRepository.findById(id)
+        return productRepository.editFindById(id)
                 .orElseThrow(() -> new RecordNotFoundException(E0018));
     }
 
     /* 商品編集処理 */
     public void update(Long id, ProductForm form) throws IOException {
 
-        Product product = productRepository.findById(id)
+        Product product = productRepository.editFindById(id)
                 .orElseThrow(() -> new RecordNotFoundException(E0018));
 
         // 必要な項目だけチェックして上書き
