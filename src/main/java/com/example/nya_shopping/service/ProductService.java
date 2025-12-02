@@ -2,6 +2,7 @@ package com.example.nya_shopping.service;
 
 import com.example.nya_shopping.controller.error.RecordNotFoundException;
 import com.example.nya_shopping.controller.form.ProductForm;
+import com.example.nya_shopping.controller.error.RecordNotFoundException;
 import com.example.nya_shopping.controller.form.SearchForm;
 import com.example.nya_shopping.repository.ProductRepository;
 import com.example.nya_shopping.repository.entity.Product;
@@ -59,7 +60,11 @@ public class ProductService {
     }
 
     public Product findById(Integer id) {
-        return productRepository.findById(id);
+        Product product = productRepository.findById(id);
+        if (product == null) {
+            throw new RecordNotFoundException(E0018);
+        }
+        return product;
     }
 
     /* 商品登録処理 */

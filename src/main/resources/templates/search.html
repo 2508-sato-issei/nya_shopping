@@ -6,6 +6,7 @@
 </head>
 <body>
 <div th:replace="fragments/navbar :: navbar"></div>
+<a th:href="@{/cart}">カートを見る</a>
 <div th:if="${errorMessage != null}" th:text="${errorMessage}"></div>
 <div>
     <div>
@@ -65,7 +66,7 @@
                     <p>カテゴリー：<span th:text="${product.category}"></span></p>
                     <p>在庫：<span th:text="${product.stock}"></span> 点</p>
 
-                    <a th:href="@{/product/detail/{id}(
+                    <a th:href="@{/product/{id}(
                             id=${product.id},
                             category=${searchForm.category},
                             keyword=${searchForm.keyword},
@@ -76,10 +77,6 @@
                             page=${page.number}
                         )}">
                         詳細を見る
-                    </a>
-
-                    <a th:href="@{/cart}">
-                        カートを見る
                     </a>
                 </div>
 

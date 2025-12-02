@@ -34,8 +34,9 @@
     <input type="hidden" name="page" th:value="${page}">
     <button type="submit">戻る</button>
 </form>
-<a th:href="@{/cart}">
-    カートに入れる
-</a>
+<form th:action="@{/cart/add}" method="post">
+    <input type="hidden" name="id" th:value="${product.id}">
+    <button type="submit">カートに入れる</button>
+</form>
 </body>
 </html>
