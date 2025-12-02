@@ -1,5 +1,6 @@
 package com.example.nya_shopping.repository;
 
+import com.example.nya_shopping.controller.form.ProductSearchCondition;
 import com.example.nya_shopping.repository.entity.Product;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.data.repository.query.Param;
@@ -29,13 +30,16 @@ public interface ProductRepository {
             @Param("stock") Integer stock
     );
 
-    Product findById(Integer id);
+    Product findByIdIsActive(Integer id);
+
+    /* 商品管理一覧表示 */
+    List<Product> search(@Param("condition")ProductSearchCondition condition);
 
     /* 商品登録処理 */
     void insert(Product product);
 
     /* 商品編集画面表示 */
-    Optional<Product> editFindById(Long id);
+    Optional<Product> FindById(Long id);
 
     /* 商品編集処理 */
     void update(Product product);
