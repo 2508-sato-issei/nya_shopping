@@ -6,7 +6,7 @@
 </head>
 <body>
 <div th:replace="fragments/navbar :: navbar"></div>
-<div th:if="${errorMessages != null}" th:text="${errorMessages}"></div>
+<div th:if="${errorMessage != null}" th:text="${errorMessage}"></div>
 <div>
     <div>
         <form th:action="@{/search}" method="get">

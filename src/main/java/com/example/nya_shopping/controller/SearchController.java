@@ -4,8 +4,6 @@ import com.example.nya_shopping.controller.form.SearchForm;
 import com.example.nya_shopping.model.Category;
 import com.example.nya_shopping.repository.entity.Product;
 import com.example.nya_shopping.service.ProductService;
-import com.example.nya_shopping.validation.LoginError;
-import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -17,9 +15,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import static com.example.nya_shopping.validation.ErrorMessage.E0018;
 
 @Controller
@@ -27,8 +22,6 @@ public class SearchController {
 
     @Autowired
     ProductService productService;
-    @Autowired
-    LoginError loginError;
 
     //検索機能・ソート機能付き
     @GetMapping("/search")
@@ -68,8 +61,8 @@ public class SearchController {
     }
 
     //商品詳細画面表示
-    @GetMapping("/product/detail/{id}")
-    public String detailProduct(@PathVariable String id,
+    @GetMapping("/product/{id}")
+    public String detailProduct(@PathVariable Integer id,
                                 @RequestParam(required = false) String category,
                                 @RequestParam(required = false) String keyword,
                                 @RequestParam(required = false) Integer maxPrice,
@@ -79,15 +72,7 @@ public class SearchController {
                                 @RequestParam(required = false) Integer page,
                                 Model model, RedirectAttributes redirectAttributes){
 
-        List<String> errors = new ArrayList<>();
-        Integer productId = loginError.validateId(id, errors);
-
-        if (!errors.isEmpty()) {
-            redirectAttributes.addFlashAttribute("errorMessages", E0018);
-            return "redirect:/";
-        }
-
-        Product product = productService.findById(productId);
+        Product product = productService.findById(id);
 
         if (product == null) {
             redirectAttributes.addFlashAttribute("errorMessage", E0018);

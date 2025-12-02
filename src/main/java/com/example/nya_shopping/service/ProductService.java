@@ -1,5 +1,6 @@
 package com.example.nya_shopping.service;
 
+import com.example.nya_shopping.controller.error.RecordNotFoundException;
 import com.example.nya_shopping.controller.form.SearchForm;
 import com.example.nya_shopping.repository.ProductRepository;
 import com.example.nya_shopping.repository.entity.Product;
@@ -19,6 +20,7 @@ import java.nio.file.Paths;
 import java.util.Objects;
 import java.util.UUID;
 
+import static com.example.nya_shopping.validation.ErrorMessage.E0018;
 import static com.example.nya_shopping.validation.ErrorMessage.E0028;
 
 import java.util.List;
@@ -59,7 +61,11 @@ public class ProductService {
     }
 
     public Product findById(Integer id) {
-        return productRepository.findById(id);
+        Product product = productRepository.findById(id);
+        if (product == null) {
+            throw new RecordNotFoundException(E0018);
+        }
+        return product;
     }
 
     public void create(ProductForm form) throws IOException {
