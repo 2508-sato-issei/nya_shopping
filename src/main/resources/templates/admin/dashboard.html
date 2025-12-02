@@ -1,10 +1,50 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ja" xmlns:th="http://www.w3.org/1999/xhtml" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>管理者画面</title>
+    <link rel="stylesheet" th:href="@{/css/admin.css}">
 </head>
 <body>
+
+<header class="admin-header">
+    <h1>管理者画面</h1>
+    <nav>
+        <a th:href="@{/admin}">ホーム</a>
+        <a th:href="@{/admin/products}">商品管理一覧</a>
+        <a th:href="@{/admin/orders}">注文管理一覧</a>
+        <a th:href="@{/admin/users}">会員一覧</a>
+    </nav>
+</header>
+
+<main class="container">
+
+    <!-- ========================
+         注文サマリー
+    ========================= -->
+    <section class="summary-box">
+        <h2>注文件数サマリー</h2>
+
+        <ul>
+            <li>今日の注文件数：<span th:text="${summary.todayOrders}"></span></li>
+            <li>先月の注文件数：<span th:text="${summary.lastMonthOrders}"></span></li>
+            <li>今月の注文件数：<span th:text="${summary.thisMonthOrders}"></span></li>
+        </ul>
+    </section>
+
+    <!-- ========================
+         注文ステータス別
+    ========================= -->
+    <section class="summary-box">
+        <h2>状態別 注文数</h2>
+        <ul>
+            <li>注文確定：<span th:text="${summary.confirmed}"></span></li>
+            <li>発送準備中：<span th:text="${summary.preparing}"></span></li>
+            <li>発送済み：<span th:text="${summary.shipped}"></span></li>
+        </ul>
+    </section>
+
+</main>
 
 </body>
 </html>

@@ -67,7 +67,7 @@ public class ProductService {
         return product;
     }
 
-    /* 商品管理一覧表示 */
+    /* 商品管理一覧画面表示 */
     public List<Product> searchProducts(ProductSearchCondition condition) {
         return productRepository.search(condition);
     }

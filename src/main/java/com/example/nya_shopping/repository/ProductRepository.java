@@ -32,7 +32,7 @@ public interface ProductRepository {
 
     Product findByIdIsActive(Integer id);
 
-    /* 商品管理一覧表示 */
+    /* 商品管理一覧画面表示 */
     List<Product> search(@Param("condition")ProductSearchCondition condition);
 
     /* 商品登録処理 */
