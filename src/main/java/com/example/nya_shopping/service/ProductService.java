@@ -58,6 +58,10 @@ public class ProductService {
         return new PageImpl<>(products, pageRequest, total);
     }
 
+    public Product findById(Integer id) {
+        return productRepository.findById(id);
+    }
+
     /* 商品登録処理 */
     public void create(ProductForm form) throws IOException {
 

@@ -50,9 +50,9 @@ public class SecurityConfig {
                         .clearAuthentication(true)
                 )
                 .authorizeHttpRequests(auth -> auth
-                                .requestMatchers("/", "/login", "/user/register", "/user/add", "/search", "/product/**","/cart","/stripe/**","/stripe/test/**"  ).permitAll()
+                                .requestMatchers("/", "/login", "/user/register", "/user/add", "/search", "/product/**","/cart/**").permitAll()
                                 .requestMatchers("/webjars/**", "/css/**", "/js/**", "/storage/**").permitAll()
-                                .requestMatchers("/user/mypage/**", "/reservation/**", "/user/mypage/edit/**",  "/withdraw/**").hasRole("USER")
+                                .requestMatchers("/user/mypage/**", "/user/mypage/edit/**",  "/withdraw/**").hasRole("USER")
                                 .requestMatchers("/admin/**").hasRole("ADMIN")
                                 .anyRequest().authenticated()
                 )

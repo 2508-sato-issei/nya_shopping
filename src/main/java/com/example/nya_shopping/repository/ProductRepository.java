@@ -29,6 +29,8 @@ public interface ProductRepository {
             @Param("stock") Integer stock
     );
 
+    Product findById(Integer id);
+
     /* 商品登録処理 */
     void insert(Product product);
 
@@ -37,5 +39,3 @@ public interface ProductRepository {
 
     /* 商品編集処理 */
     void update(Product product);
-
-}

@@ -91,6 +91,23 @@
         </foreach>
     </insert>
 
+    <select id="findById" parameterType="int" resultType="com.example.nya_shopping.repository.entity.Product">
+        SELECT
+        id,
+        name,
+        price,
+        category,
+        stock,
+        image_url,
+        description,
+        is_active,
+        created_at,
+        updated_at
+        FROM products
+        WHERE id = #{id}
+        AND is_active = 1
+    </select>
+
     <!-- 商品編集画面表示 -->
     <select id="findById" resultType="com.example.nya_shopping.repository.entity.Product">
         SELECT *

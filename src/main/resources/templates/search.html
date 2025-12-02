@@ -65,8 +65,17 @@
                     <p>カテゴリー：<span th:text="${product.category}"></span></p>
                     <p>在庫：<span th:text="${product.stock}"></span> 点</p>
 
-                    <a th:href="@{/product/detail/{id}(id=${product.id})}">
-                        商品詳細を見る
+                    <a th:href="@{/product/detail/{id}(
+                            id=${product.id},
+                            category=${searchForm.category},
+                            keyword=${searchForm.keyword},
+                            maxPrice=${searchForm.maxPrice},
+                            minPrice=${searchForm.minPrice},
+                            stock=${searchForm.stock},
+                            sort=${searchForm.sort},
+                            page=${page.number}
+                        )}">
+                        詳細を見る
                     </a>
 
                     <a th:href="@{/cart}">
