@@ -1,5 +1,7 @@
 package com.example.nya_shopping.service;
 
+import com.example.nya_shopping.controller.error.RecordNotFoundException;
+import com.example.nya_shopping.controller.form.ProductForm;
 import com.example.nya_shopping.controller.form.SearchForm;
 import com.example.nya_shopping.repository.ProductRepository;
 import com.example.nya_shopping.repository.entity.Product;
@@ -7,8 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
-import com.example.nya_shopping.controller.form.ProductForm;
-
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -16,12 +16,12 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
+import static com.example.nya_shopping.validation.ErrorMessage.E0018;
 import static com.example.nya_shopping.validation.ErrorMessage.E0028;
-
-import java.util.List;
 
 @Service
 public class ProductService {
@@ -58,9 +58,7 @@ public class ProductService {
         return new PageImpl<>(products, pageRequest, total);
     }
 
-    @Autowired
-    ProductRepository productRepository;
-
+    /* 商品登録処理 */
     public void create(ProductForm form) throws IOException {
 
         // 画像チェック（サイズ・拡張子）
@@ -88,6 +86,56 @@ public class ProductService {
         product.setImageUrl("/images/products/" + fileName);
 
         productRepository.insert(product);
+    }
+
+    /* 商品編集画面表示 */
+    public Product findById(Long id) {
+        return productRepository.findById(id)
+                .orElseThrow(() -> new RecordNotFoundException(E0018));
+    }
+
+    /* 商品編集処理 */
+    public void update(Long id, ProductForm form) throws IOException {
+
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new RecordNotFoundException(E0018));
+
+        // 必要な項目だけチェックして上書き
+        if (form.getName() != null) {
+            product.setName(form.getName());
+        }
+        if (form.getName() != null) {
+            product.setName(form.getName());
+        }
+        if (form.getName() != null) {
+            product.setName(form.getName());
+        }
+        if (form.getName() != null) {
+            product.setName(form.getName());
+        }
+        if (form.getName() != null) {
+            product.setName(form.getName());
+        }
+        if (form.getName() != null) {
+            product.setName(form.getName());
+        }
+
+        // --- 画像変更がある場合のみ更新 ---
+        MultipartFile file = form.getImageFile();
+        String imageUrl = product.getImageUrl();
+
+        if (!file.isEmpty()) {
+            String ext = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));
+            String fileName = UUID.randomUUID() + ext;
+
+            Path uploadPath = Paths.get("uploads/products/" + fileName);
+            Files.copy(file.getInputStream(), uploadPath);
+
+            imageUrl = "/images/products/" + fileName;
+        }
+        product.setImageUrl(imageUrl);
+
+        productRepository.update(product);
     }
 
 }

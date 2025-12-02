@@ -18,11 +18,11 @@
 <main class="container">
 
     <!-- エラー表示 -->
-    <div th:if="${#fields.hasErrors()}" class="error-box">
-        <ul>
-            <li th:each="err : ${#fields.errors('*')}" th:text="${err}"></li>
-        </ul>
-    </div>
+<!--    <div th:if="${#fields.hasErrors()}" class="error-box">-->
+<!--        <ul>-->
+<!--            <li th:each="err : ${#fields.errors('*')}" th:text="${err}"></li>-->
+<!--        </ul>-->
+<!--    </div>-->
 
     <!-- 登録フォーム -->
     <form th:action="@{/admin/product/new}" th:object="${productForm}"

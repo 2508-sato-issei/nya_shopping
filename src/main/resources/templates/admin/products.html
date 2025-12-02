@@ -70,8 +70,8 @@
             </td>
 
             <td>
-                <a th:href="@{'/admin/products/' + ${p.id} + '/edit'}" class="btn-small">編集</a>
-                <form th:action="@{'/admin/products/' + ${p.id} + '/delete'}" method="post" class="inline">
+                <a th:href="@{'/admin/products/edit' + ${p.id}'}" class="btn-small">編集</a>
+                <form th:action="@{'/admin/products/delete' + ${p.id}'}" method="post" class="inline">
                     <button type="submit" class="btn-small btn-danger"
                             onclick="return confirm('本当に削除しますか？');">
                         削除

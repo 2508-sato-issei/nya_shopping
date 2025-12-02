@@ -44,4 +44,5 @@ public class Product {
 
     @Column
     private Timestamp updatedAt;
+
 }
