@@ -9,16 +9,20 @@ import com.example.nya_shopping.service.OrderService;
 import com.example.nya_shopping.service.PaymentService;
 import com.example.nya_shopping.service.ProductService;
 import jakarta.servlet.http.HttpSession;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.example.nya_shopping.validation.ErrorMessage.E0019;
 
 @Controller
 public class PurchaseController {
@@ -84,13 +88,65 @@ public class PurchaseController {
 
     //カート個数変更処理
     @PostMapping("/cart/update")
+    @ResponseBody
+    //数量変更フォームから送られてくる商品IDと数量を受け取る
     public String updateProduct(@RequestParam("productId") Integer productId,
                                 @RequestParam("quantity") Integer quantity,
+                                HttpSession session){
+        System.out.println("【DEBUG】updateProduct 呼ばれた productId=" + productId + " quantity=" + quantity);
+
+        //最初にセッションからカート情報を取得
+        List<CartItem> cart = ((List<CartItem>) session.getAttribute("cart"));
+        if(cart == null){
+            return "ERROR:カートが空です";
+        }
+
+        //最新の在庫数を確認するために商品情報を取得
+        Product product = productService.findById(productId);
+        if(product ==  null){
+            return "ERROR:商品が存在しません";
+        }
+
+        //在庫チェック
+        if(product.getStock() < quantity){
+            return "ERROR:" + E0019;
+        }
+
+        //カート数量更新処理（セッション内の情報を更新）
+        for(CartItem item : cart){
+            if(item.getProductId().equals(productId)){
+                item.setQuantity(quantity);
+                break;
+            }
+        }
+
+        session.setAttribute("cart", cart);
+        return "OK";
+    }
+
+    //カートの商品を削除する処理
+    @GetMapping("/cart/delete")
+    public String deleteProduct(@RequestParam("productId") Integer productId,
                                 HttpSession session,
                                 RedirectAttributes redirectAttributes){
 
-        //最初にセッションからカート情報を取得
-        List<CartItem> cart = (List<CartItem>) session.getAttribute("cart"));
+        List<CartItem> cart = (List<CartItem>) session.getAttribute("cart");
 
+        if(cart == null || cart.isEmpty()){
+            redirectAttributes.addFlashAttribute("error", "カートが空です");
+            return "redirect:/cart";
+        }
+
+        //削除処理 removeIf=条件に合う要素を削除
+        boolean removed = cart.removeIf(cartItem -> cartItem.getProductId().equals(productId));
+
+        if(!removed){
+            redirectAttributes.addFlashAttribute("error","商品が存在しません");
+            return "redirect:/cart";
+        }
+
+        session.setAttribute("cart", cart);
+        redirectAttributes.addFlashAttribute("success", "商品を削除しました");
+        return "redirect:/cart";
     }
 }
