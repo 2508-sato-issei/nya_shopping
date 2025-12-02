@@ -5,6 +5,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 @Mapper
 public interface ProductRepository {
@@ -19,6 +20,7 @@ public interface ProductRepository {
             @Param("offset") int offset,
             @Param("limit") int limit
     );
+
     int countProducts(
             @Param("category") String category,
             @Param("keyword") String keyword,
@@ -27,8 +29,15 @@ public interface ProductRepository {
             @Param("stock") Integer stock
     );
 
-    /* 商品登録 */
+    Product findById(Integer id);
+
+    /* 商品登録処理 */
     void insert(Product product);
 
-    Product findById(Integer id);
+    /* 商品編集画面表示 */
+    Optional<Product> editFindById(Long id);
+
+    /* 商品編集処理 */
+    void update(Product product);
+
 }
