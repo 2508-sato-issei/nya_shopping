@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title th:text="${product.name} + 'の商品詳細'">商品詳細画面</title>
+    <link th:href="@{/css/navbar.css}" rel="stylesheet">
 </head>
 <body>
 <div th:replace="fragments/navbar :: navbar"></div>
