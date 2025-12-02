@@ -30,6 +30,5 @@ public interface ProductRepository {
     /* 商品登録 */
     void insert(Product product);
 
-
     Product findById(Integer id);
 }

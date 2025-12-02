@@ -16,4 +16,13 @@ public enum Category {
     public String getLabel() {
         return label;
     }
+
+    public static String getLabel(String name) {
+        for (Category c : values()) {
+            if (c.name().equals(name)) {
+                return c.getLabel();
+            }
+        }
+        return "";
+    }
 }

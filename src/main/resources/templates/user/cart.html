@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>カート画面</title>
+    <link th:href="@{/css/navbar.css}" rel="stylesheet">
 </head>
 <body>
 <div th:replace="fragments/navbar :: navbar"></div>
@@ -17,33 +18,41 @@
             <th>商品名</th>
             <th>価格</th>
             <th>カテゴリー</th>
+            <th>在庫数</th>
             <th>購入数</th>
             <th>小計</th>
             <th></th>
         </tr>
-        <tr th:each="item : ${items}">
+        <tr th:each="item : ${items}" class="cart-row"
+            th:data-product-id="${item.product.id}">
             <td>
                 <img th:src="@{'/storage/' + ${item.imageUrl}}" width="100">
             </td>
-            <td th:text="${item.name}"></td>
+            <td th:text="${item.product.name}"></td>
             <td>
-                <span th:text="${item.price}"></span> 円
+                <span class="price" th:text="${item.product.price}"></span> 円
             </td>
-            <td th:text="${item.category}"></td>
+            <td th:text="${T(com.example.nya_shopping.model.Category).getLabel(item.product.category)}"></td>
+            <td><span th:text="${item.product.stock}"></span> 点</td>
             <td>
-                <button type="button" class="down">-</button>
-                <input type="number" class="count" value="1" min="1">
+                <button type="button" class="down">－</button>
+                <input type="number" class="qty"
+                       th:value="${item.quantity}" min="1">
                 <button type="button" class="up">+</button>
             </td>
-            <td class="subtotal"></td>
+            <td class="subtotal"
+                th:text="${item.product.price * item.quantity + ' 円'}"></td>
             <td>
-                <a th:href="@{/cart/delete(id=${item.id})}">削除</a>
+                <a th:href="@{/cart/delete(productId=${item.product.id})}">削除</a>
             </td>
         </tr>
     </table>
 </div>
 <script>
+    // 数量変更イベント
     document.querySelectorAll(".cart-row").forEach(row => {
+
+        const productId = row.dataset.productId;
         const price = parseInt(row.querySelector(".price").textContent);
         const qtyInput = row.querySelector(".qty");
         const subtotal = row.querySelector(".subtotal");
@@ -51,8 +60,12 @@
         const downBtn = row.querySelector(".down");
         const upBtn = row.querySelector(".up");
 
-        // 初期小計
-        subtotal.textContent = price * qtyInput.value;
+        function updateSubtotal(v) {
+            subtotal.textContent = (price * v) + " 円";
+        }
+
+        // 初期計算
+        updateSubtotal(parseInt(qtyInput.value));
 
         // マイナスボタン
         downBtn.addEventListener("click", () => {
@@ -60,7 +73,8 @@
             if (v > 1) {
                 v--;
                 qtyInput.value = v;
-                subtotal.textContent = price * v;
+                updateSubtotal(v);
+                sendUpdate(productId, v);
             }
         });
 
@@ -69,7 +83,8 @@
             let v = parseInt(qtyInput.value);
             v++;
             qtyInput.value = v;
-            subtotal.textContent = price * v;
+            updateSubtotal(v);
+            sendUpdate(productId, v);
         });
 
         // 直接入力
@@ -77,9 +92,19 @@
             let v = parseInt(qtyInput.value);
             if (v < 1) v = 1;
             qtyInput.value = v;
-            subtotal.textContent = price * v;
+            updateSubtotal(v);
+            sendUpdate(productId, v);
         });
     });
+
+    // サーバーへ数量更新リクエスト送信
+    function sendUpdate(productId, quantity) {
+        fetch("/cart/update", {
+            method: "POST",
+            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+            body: `productId=${productId}&quantity=${quantity}`
+        });
+    }
 </script>
 </body>
 </html>
