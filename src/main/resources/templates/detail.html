@@ -13,7 +13,7 @@
 <div>
     <p><strong>商品ID：</strong> <span th:text="${product.id}"></span></p>
     <p><strong>価格：</strong> <span th:text="${product.price}"></span> 円</p>
-    <p><strong>カテゴリー：</strong> <span th:text="${product.category}"></span></p>
+    <p><strong>カテゴリー：</strong> <span th:text="${product.category.label}"></span></p>
     <p><strong>在庫数：</strong> <span th:text="${product.stock}"></span></p>
 
     <p><strong>説明：</strong></p>

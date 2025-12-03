@@ -64,7 +64,7 @@
                     <h3 th:text="${product.name}"></h3>
 
                     <p>価格：<span th:text="${product.price}"></span>円</p>
-                    <p>カテゴリー：<span th:text="${product.category}"></span></p>
+                    <p>カテゴリー：<span th:text="${product.category.label}"></span></p>
                     <p>在庫：<span th:text="${product.stock}"></span> 点</p>
 
                     <a th:href="@{/product/{id}(
