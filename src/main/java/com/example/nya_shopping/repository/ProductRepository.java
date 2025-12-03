@@ -8,6 +8,8 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 @Mapper
 public interface ProductRepository {
@@ -66,4 +68,7 @@ public interface ProductRepository {
 
     void delete(@Param("id") Long id);
 
+    //在庫を減らす際に必要な処理
+    Product findProductById(Integer id);
+    void updateStock(Product product);
 }

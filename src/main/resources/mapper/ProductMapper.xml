@@ -294,4 +294,16 @@
         DELETE FROM products WHERE id = #{id}
     </delete>
 
+    <!--findByIdと同じ中身ではあるものの、目的が異なるため追加-->
+    <select id="findProductById" parameterType="int" resultType="com.example.nya_shopping.repository.entity.Product">
+        SELECT *
+        FROM products
+        WHERE id = #{id}
+    </select>
+    <update id="updateStock">
+        UPDATE products
+        SET stock = #{stock}
+        WHERE id = #{id}
+    </update>
+
 </mapper>

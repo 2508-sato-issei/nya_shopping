@@ -13,6 +13,13 @@ public class HomeController {
     //ホーム画面（検索機能付き）
     @GetMapping("/")
     public String showHome(HttpSession session, Model model){
+
+        String errorMessage = (String) session.getAttribute("errorMessage");
+        if (errorMessage != null) {
+            model.addAttribute("errorMessage", errorMessage);
+            session.removeAttribute("errorMessage");
+        }
+
         model.addAttribute("categories", Category.values());
         model.addAttribute("searchForm", new SearchForm());
         return "index";

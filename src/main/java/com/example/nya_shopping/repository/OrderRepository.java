@@ -16,4 +16,6 @@ public interface OrderRepository {
     int countOrder(@Param("form") OrderNarrowForm form,
                    @Param("offset") int offset,
                    @Param("limit") int limit);
+
+    int insert(Order order);
 }

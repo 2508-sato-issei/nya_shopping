@@ -4,9 +4,11 @@ import com.example.nya_shopping.controller.error.RecordNotFoundException;
 import com.example.nya_shopping.controller.form.ProductForm;
 import com.example.nya_shopping.controller.form.ProductSearchCondition;
 import com.example.nya_shopping.controller.form.SearchForm;
+import com.example.nya_shopping.dto.CartItem;
 import com.example.nya_shopping.dto.ProductDto;
 import com.example.nya_shopping.repository.ProductRepository;
 import com.example.nya_shopping.repository.entity.Product;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -262,4 +264,22 @@ public class ProductService {
     private String nvl(String value) {
         return value == null ? "" : value;
     }
+    //在庫を減らす処理
+    @Transactional
+    public void decreaseStock(List<CartItem> cart){
+
+        for(CartItem ci : cart){
+            Product product = productRepository.findProductById(ci.getProductId());
+            if(cart == null){
+                throw new RuntimeException("商品が存在しません");
+            }
+            int newStock = product.getStock() - ci.getQuantity();
+            if(newStock < 0){
+                throw new RuntimeException(E0019);
+            }
+            product.setStock(newStock);
+            productRepository.updateStock(product);
+        }
+    }
+
 }

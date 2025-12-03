@@ -22,6 +22,10 @@
     <p th:text="${success}"></p>
 </div>
 
+<div th:if="${errorMessage}" style="color:red; font-weight:bold;">
+    <p th:text="${errorMessage}"></p>
+</div>
+
 <div th:if="${#lists.isEmpty(items)}">カートには商品がありません。</div>
 
 <div th:if="${not #lists.isEmpty(items)}">
@@ -61,6 +65,22 @@
         </tr>
     </table>
 </div>
+<div th:if="${not #lists.isEmpty(items)}">
+    <form th:action="@{/order/purchase}" method="get" id="purchaseForm">
+        <input type="hidden" name="quantityMap" id="quantityMapInput">
+        <button type="submit">購入する</button>
+    </form>
+</div>
+<form th:action="@{/search}" method="get">
+    <input type="hidden" name="category" th:value="${category}">
+    <input type="hidden" name="keyword" th:value="${keyword}">
+    <input type="hidden" name="minPrice" th:value="${minPrice}">
+    <input type="hidden" name="maxPrice" th:value="${maxPrice}">
+    <input type="hidden" name="stock" th:value="${stock}">
+    <input type="hidden" name="sort" th:value="${sort}">
+    <input type="hidden" name="page" th:value="${page}">
+    <button type="submit">戻る</button>
+</form>
 <script>
     const csrfToken = document.querySelector('meta[name="_csrf"]').content;
     const csrfHeader = document.querySelector('meta[name="_csrf_header"]').content;
@@ -116,9 +136,6 @@
     // サーバーへ数量更新リクエスト送信
     function sendUpdate(productId, quantity) {
 
-        const csrfToken = document.querySelector('meta[name="_csrf"]').content;
-        const csrfHeader = document.querySelector('meta[name="_csrf_header"]').content;
-
         fetch("/cart/update", {
             method: "POST",
             headers: {
@@ -126,24 +143,8 @@
                 [csrfHeader]: csrfToken
             },
             body: `productId=${productId}&quantity=${quantity}`
-        })
-        .then(res => res.text())
-        .then(text => {
-
-            console.log("RESPONSE:", text);
-            const errorBox = document.getElementById("ajax-error");
-
-            errorBox.style.display = "none";
-            errorBox.textContent = "";
-
-            if (text.startsWith("ERROR")) {
-                errorBox.textContent = text.replace("ERROR:", "");
-                errorBox.style.display = "block";
-            }
-        })
-        .catch(err => console.error("FETCH ERROR:", err));
+        });
     }
-
 </script>
 </body>
 </html>

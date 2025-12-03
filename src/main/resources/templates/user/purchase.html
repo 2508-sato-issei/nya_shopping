@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.w3.org/1999/xhtml" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>購入者情報入力画面</title>
+    <link th:href="@{/css/navbar.css}" rel="stylesheet">
+</head>
+<body>
+<div th:replace="fragments/navbar :: navbar"></div>
+
+<h2>購入者情報を入力してください</h2>
+<div th:if="${errorMessage}">
+    <p th:text="${errorMessage}"></p>
+</div>
+
+<a th:href="@{/cart}">
+    <button type="button">← カートに戻る</button>
+</a>
+<hr>
+
+<table border="1" cellpadding="10" style="margin-top: 20px;">
+    <tr>
+        <th>商品名</th>
+        <th>価格</th>
+        <th>数量</th>
+        <th>小計</th>
+    </tr>
+
+    <tr th:each="item : ${items}">
+        <td th:text="${item.product.name}"></td>
+        <td th:text="${item.product.price}"></td>
+        <td th:text="${item.quantity}"></td>
+        <td th:text="${item.product.price * item.quantity}"></td>
+    </tr>
+</table>
+
+<h3>合計金額：<span th:text="${totalAmount}"></span> 円</h3>
+
+<form th:action="@{/order/purchase/confirm}" method="post" th:object="${purchaseForm}">
+
+    <label>氏名</label><br>
+    <div th:if="${#fields.hasErrors('customerName')}" th:errors="*{customerName}" class="error"></div>
+    <input type="text" th:field="*{customerName}" placeholder="例) ALH 太郎" ><br><br>
+
+    <label>郵便番号</label><br>
+    <div th:if="${#fields.hasErrors('customerPostalCode')}" th:errors="*{customerPostalCode}" class="error"></div>
+    <input type="text" th:field="*{customerPostalCode}" placeholder="例）1231234" ><br><br>
+
+    <label>住所</label><br>
+    <div th:if="${#fields.hasErrors('customerAddress')}" th:errors="*{customerAddress}" class="error"></div>
+    <input type="text" th:field="*{customerAddress}" placeholder="例）東京都渋谷区○○…" ><br><br>
+
+    <label>電話番号</label><br>
+    <div th:if="${#fields.hasErrors('customerPhone')}" th:errors="*{customerPhone}" class="error"></div>
+    <input type="text" th:field="*{customerPhone}" placeholder="例）12312341234" ><br><br>
+
+    <button type="submit">決済情報入力へ進む</button>
+</form>
+</body>
+</html>
