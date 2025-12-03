@@ -1,10 +1,58 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ja" xmlns:th="http://www.w3.org/1999/xhtml" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>注文詳細</title>
 </head>
 <body>
+    <!--ヘッダー-->
+    <div th:replace="fragments/navbar :: navbar"></div>
+    <div th:if="${errorMessage != null}" th:text="${errorMessage}"></div>
 
+    <!--何を買ったかを詳しく明記-->
+    <div>
+        <div th:each="o : ${orderDetailDtoList}">
+
+            <!--商品画像-->
+            <img th:src="@{'/storage/' + ${o.imageUrl}}"  th:alt="${o.productName}"/>
+
+            <!--商品名-->
+            <div th:text="${o.productName}"></div>
+
+            <!--商品の個数-->
+            <div th:text="${o.quantity}"></div>
+
+            <!--商品1個当たりの金額-->
+            <div th:text="${o.productPrice}"></div>
+
+            <!--商品の総額-->
+            <div th:text="${o.subtotal}"></div>
+        </div>
+    </div>
+
+    <!--購入者や注文の情報の記載-->
+    <div style="margin-top: 50px;">
+        <div th:text="${order.totalAmount}"></div>
+        <div th:text="${order.customerName}"></div>
+        <div th:text="${order.customerPostalCode}"></div>
+        <div th:text="${order.customerAddress}"></div>
+        <div th:text="${order.customerPhone}"></div>
+        <div th:text="${
+            order.status == 'CONFIRMED' ? '注文確定' :
+            order.status == 'PREPARING'  ? '発送準備中' :
+            order.status == 'SHIPPED'  ? '発送済み' :
+            '不明'}">
+        </div>
+        <form method="post" th:action="@{/admin/order/status}" th:object="${orderStatusForm}">
+            <input type="hidden" th:value="${order.id}" th:field="*{id}">
+            <select th:field="*{status}">
+                <option value="CONFIRMED">注文確定</option>
+                <option value="PREPARING">発送準備中</option>
+                <option value="SHIPPED">発送済み</option>
+            </select>
+            <input type="submit" value="ステータスを変更する">
+        </form>
+    </div>
+    <div th:replace="fragments/fragment :: footer"></div>
 </body>
 </html>

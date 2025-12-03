@@ -1,6 +1,7 @@
 package com.example.nya_shopping.service;
 
 import com.example.nya_shopping.controller.form.OrderNarrowForm;
+import com.example.nya_shopping.controller.form.OrderStatusForm;
 import com.example.nya_shopping.controller.form.PurchaseForm;
 import com.example.nya_shopping.dto.CartItem;
 import com.example.nya_shopping.repository.OrderRepository;
@@ -60,5 +61,15 @@ public class OrderService {
 
         orderRepository.insert(order);
         return order.getId();
+    }
+
+    //注文管理詳細画面 Orderを取り出す
+    public Order findOrderById(String id) {
+        return orderRepository.findOrderById(id);
+    }
+
+    //注文詳細ステータス変更処理
+    public void updateOrderStatus(OrderStatusForm form) {
+        orderRepository.updateOrderStatus(form.getId(), form.getStatus());
     }
 }
