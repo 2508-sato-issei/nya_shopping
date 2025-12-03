@@ -118,4 +118,16 @@
         #{customerPhone}, #{status});
     </insert>
 
+    <select id="findOrderById" resultType="com.example.nya_shopping.repository.entity.Order">
+        SELECT *
+        FROM orders
+        WHERE id = #{id}
+    </select>
+
+    <update id="updateOrderStatus">
+        UPDATE orders
+        SET status = #{status}
+        WHERE id = #{id}
+    </update>
+
 </mapper>

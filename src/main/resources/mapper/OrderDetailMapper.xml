@@ -12,4 +12,20 @@
         (#{orderId}, #{productId}, #{productName}, #{productPrice}, #{quantity}, #{subtotal});
     </insert>
 
+    <select id="findOrderDetailList" resultType="com.example.nya_shopping.dto.OrderDetailDto">
+        SELECT
+        o.id,
+        o.order_id,
+        o.product_id,
+        o.product_name,
+        o.product_price,
+        o.quantity,
+        o.subtotal,
+        p.image_url
+        FROM order_details o
+        INNER JOIN products p
+        ON o.product_id = p.id
+        WHERE order_id = #{id}
+    </select>
+
 </mapper>

@@ -21,7 +21,7 @@
     </ul>
 </div>
 
-<form th:action="@{/admin/products/csv}" method="post" enctype="multipart/form-data">
+<form th:action="@{/admin/products/import/csv}" method="post" enctype="multipart/form-data">
     <input type="file" name="file" accept=".csv">
     <button type="submit">アップロード</button>
 </form>

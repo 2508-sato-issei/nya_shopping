@@ -12,7 +12,6 @@
     <nav>
         <a th:href="@{/}">ホーム</a>
         <a th:href="@{/admin}">管理者ページ</a>
-        <a th:href="@{/admin/products/new}" class="btn-primary">商品登録</a>
         <a th:href="@{/admin/products/export/csv(
                 name=${cond.name},priceMin=${cond.priceMin},
                 priceMax=${cond.priceMax},
@@ -26,6 +25,7 @@
             )}" class="btn-secondary">
             商品一覧出力
         </a>
+        <a th:href="@{/admin/product/new}" class="btn-primary">商品登録</a>
         <a th:href="@{/admin/products/import/csv}" class="btn-secondary">商品一括登録</a>
     </nav>
 </header>
@@ -145,13 +145,7 @@
             <td th:text="${#temporals.format(p.createdAt, 'yyyy/MM/dd HH:mm')}"></td>
 
             <td>
-                <a th:href="@{'/admin/products/' + ${p.id} + '/edit'}" class="btn-small">編集</a>
-                <form th:action="@{'/admin/products/' + ${p.id} + '/delete'}" method="post" class="inline">
-                    <button type="submit" class="btn-danger btn-small"
-                            onclick="return confirm('削除しますか？');">
-                        削除
-                    </button>
-                </form>
+                <a th:href="@{'/admin/product/edit/' + ${p.id}}" class="btn-small">編集</a>
             </td>
         </tr>
         </tbody>

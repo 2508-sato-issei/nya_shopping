@@ -18,4 +18,9 @@ public interface OrderRepository {
                    @Param("limit") int limit);
 
     int insert(Order order);
+
+    Order findOrderById(@Param("id") String id);
+
+    void updateOrderStatus(@Param("id") Integer id,
+                           @Param("status") String status);
 }

@@ -15,15 +15,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.Writer;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.UUID;
 
 import static com.example.nya_shopping.validation.ErrorMessage.*;
@@ -87,102 +84,186 @@ public class ProductService {
 
         List<ProductDto> list = productRepository.searchAll(cond);
 
-        writer.write("id,name,price,category,stock,is_active,created_at\n");
+        writer.write("商品ID,商品名,価格,カテゴリー,在庫数,画像ファイル名,商品説明,公開/非公開,登録日\n");
 
         for (ProductDto p : list) {
             writer.write(String.format(
-                    "%d,%s,%d,%s,%d,%b,%s\n",
+                    "%d,%s,%d,%s,%d,%s,%s,%b,%s\n",
                     p.getId(),
                     p.getName(),
                     p.getPrice(),
                     p.getCategory(),
                     p.getStock(),
+                    p.getImageUrl(),
+                    nvl(p.getDescription()),
                     p.getIsActive(),
                     p.getCreatedAt()
             ));
         }
     }
 
-    /* 商品登録処理 */
-    public void create(ProductForm form) throws IOException {
+    public List<String> validateAndCreate(ProductForm form) {
 
-        // 画像チェック（サイズ・拡張子）
-        MultipartFile file = form.getImageFile();
-        if (file.isEmpty()) {
-            throw new RuntimeException(E0028);
+        List<String> errors = new ArrayList<>();
+
+        // ==========================
+        // 必須チェック
+        // ==========================
+        if (isEmpty(form.getName())) errors.add(E0024);
+        if (form.getPrice() == null) errors.add(E0025);
+        if (isEmpty(String.valueOf(form.getCategory()))) errors.add(E0026);
+        if (form.getStock() == null) errors.add(E0027);
+        if (form.getImageFile() == null || form.getImageFile().isEmpty())
+            errors.add(E0028);
+        if (form.getIsActive() == null)
+            errors.add(E0029);
+
+        // ==========================
+        // 文字数チェック
+        // ==========================
+        if (!isEmpty(form.getName()) && form.getName().length() > 100)
+            errors.add(E0030);
+
+        if (!isEmpty(form.getDescription()) && form.getDescription().length() > 1000)
+            errors.add(E0032);
+
+        // ==========================
+        // 画像形式チェック
+        // ==========================
+        String fileName = null;
+
+        if (form.getImageFile() != null && !form.getImageFile().isEmpty()) {
+
+            String original = form.getImageFile().getOriginalFilename().toLowerCase();
+
+            if (!(original.endsWith(".jpg") || original.endsWith(".jpeg") || original.endsWith(".png"))) {
+                errors.add(E0031);
+            } else {
+                // 保存ファイル名を生成
+                fileName = UUID.randomUUID() + "_" + original;
+
+                File uploadDir = new File("uploads/products");
+                if (!uploadDir.exists()) uploadDir.mkdirs();
+
+                try {
+                    form.getImageFile().transferTo(new File(uploadDir, fileName));
+                } catch (IOException e) {
+                    errors.add("画像の保存に失敗しました。");
+                }
+            }
         }
 
-        // UUIDファイル名生成
-        String ext = Objects.requireNonNull(file.getOriginalFilename())
-                .substring(file.getOriginalFilename().lastIndexOf("."));
-        String fileName = UUID.randomUUID() + ext;
+        if (!errors.isEmpty()) return errors;
 
-        // 保存先
-        Path uploadPath = Paths.get("uploads/products/" + fileName);
-        Files.copy(file.getInputStream(), uploadPath);
+        // ==========================
+        // DB INSERT
+        // ==========================
+        productRepository.insertProduct(
+                form.getName(),
+                form.getPrice(),
+                form.getCategory(),
+                form.getStock(),
+                fileName,
+                form.getDescription(),
+                form.getIsActive()
+        );
 
-        // Entityへ変換して保存
-        Product product = new Product();
-        product.setName(form.getName());
-        product.setPrice(form.getPrice());
-        product.setStock(form.getStock());
-        product.setCategory(form.getCategory());
-        product.setDescription(form.getDescription());
-        product.setImageUrl("/images/products/" + fileName);
-
-        productRepository.insert(product);
+        return errors;
     }
 
-    /* 商品編集画面表示 */
-    public Product findById(Long id) {
-        return productRepository.FindById(id)
-                .orElseThrow(() -> new RecordNotFoundException(E0018));
+    /**
+     * 編集画面表示用
+     */
+    public ProductForm findById(Long id) {
+        ProductDto dto = productRepository.findById(id);
+        if (dto == null) return null;
+
+        ProductForm form = new ProductForm();
+        form.setId(dto.getId());
+        form.setName(dto.getName());
+        form.setPrice(dto.getPrice());
+        form.setCategory(dto.getCategory());
+        form.setStock(dto.getStock());
+        form.setImageUrl(dto.getImageUrl());
+        form.setDescription(dto.getDescription());
+        form.setIsActive(dto.getIsActive());
+
+        return form;
     }
 
-    /* 商品編集処理 */
-    public void update(Long id, ProductForm form) throws IOException {
+    /**
+     * 更新処理
+     */
+    public List<String> validateAndUpdate(ProductForm form) {
 
-        Product product = productRepository.FindById(id)
-                .orElseThrow(() -> new RecordNotFoundException(E0018));
+        List<String> errors = new ArrayList<>();
 
-        // 必要な項目だけチェックして上書き
-        if (form.getName() != null) {
-            product.setName(form.getName());
-        }
-        if (form.getName() != null) {
-            product.setName(form.getName());
-        }
-        if (form.getName() != null) {
-            product.setName(form.getName());
-        }
-        if (form.getName() != null) {
-            product.setName(form.getName());
-        }
-        if (form.getName() != null) {
-            product.setName(form.getName());
-        }
-        if (form.getName() != null) {
-            product.setName(form.getName());
+        // 必須チェック
+        if (isEmpty(form.getName())) errors.add(E0024);
+        if (form.getPrice() == null) errors.add(E0025);
+        if (isEmpty(String.valueOf(form.getCategory()))) errors.add(E0026);
+        if (form.getStock() == null) errors.add(E0027);
+        if (form.getIsActive() == null) errors.add(E0029);
+
+        // 文字数チェック
+        if (!isEmpty(form.getName()) && form.getName().length() > 100)
+            errors.add(E0030);
+
+        if (!isEmpty(form.getDescription()) && form.getDescription().length() > 1000)
+            errors.add(E0032);
+
+        // 画像アップロード（任意）
+        String newImageFileName = form.getImageUrl();
+
+        if (form.getImageFile() != null && !form.getImageFile().isEmpty()) {
+
+            String original = form.getImageFile().getOriginalFilename().toLowerCase();
+
+            if (!(original.endsWith(".jpg") || original.endsWith(".jpeg") || original.endsWith(".png"))) {
+                errors.add(E0031);
+            } else {
+                newImageFileName = UUID.randomUUID() + "_" + original;
+
+                String projectPath = System.getProperty("user.dir");
+                File dir = new File(projectPath + "/uploads/products");
+                if (!dir.exists()) dir.mkdirs();
+
+                try {
+                    form.getImageFile().transferTo(new File(dir, newImageFileName));
+                } catch (IOException e) {
+                    errors.add("画像の保存に失敗しました。");
+                }
+            }
         }
 
-        // --- 画像変更がある場合のみ更新 ---
-        MultipartFile file = form.getImageFile();
-        String imageUrl = product.getImageUrl();
+        if (!errors.isEmpty()) return errors;
 
-        if (!file.isEmpty()) {
-            String ext = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));
-            String fileName = UUID.randomUUID() + ext;
+        // UPDATE実行
+        productRepository.update(
+                form.getId(),
+                form.getName(),
+                form.getPrice(),
+                form.getCategory(),
+                form.getStock(),
+                newImageFileName,
+                form.getDescription(),
+                form.getIsActive()
+        );
 
-            Path uploadPath = Paths.get("uploads/products/" + fileName);
-            Files.copy(file.getInputStream(), uploadPath);
-
-            imageUrl = "/images/products/" + fileName;
-        }
-        product.setImageUrl(imageUrl);
-
-        productRepository.update(product);
+        return errors;
     }
 
+    public void delete(Long id) {
+        productRepository.delete(id);
+    }
+
+    private boolean isEmpty(String s) {
+        return s == null || s.isEmpty();
+    }
+
+    private String nvl(String value) {
+        return value == null ? "" : value;
+    }
     //在庫を減らす処理
     @Transactional
     public void decreaseStock(List<CartItem> cart){

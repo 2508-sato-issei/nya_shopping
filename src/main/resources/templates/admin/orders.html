@@ -123,6 +123,9 @@
 
                     <!--購入日時（登録日時）-->
                     <td th:text="${o.createdAt}"></td>
+                    <td>
+                        <a th:href="@{@{'/admin/order/' + ${o.id}}}">詳しく見る</a>
+                    </td>
                 </tr>
             </tbody>
         </table>

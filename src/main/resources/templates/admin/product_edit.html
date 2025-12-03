@@ -7,97 +7,72 @@
 </head>
 <body>
 
-<header class="admin-header">
-    <h1>商品編集</h1>
-    <nav>
-        <a th:href="@{/admin/products}">商品一覧へ戻る</a>
-    </nav>
-</header>
+<h1>商品編集</h1>
 
-<main class="container">
+<nav>
+    <a th:href="@{/}">ホーム</a>
+    <a th:href="@{/admin/products}">商品管理一覧</a>
+</nav>
 
-    <!-- エラー表示 -->
-<!--    <div th:if="${#fields.hasErrors()}" class="error-box">-->
-<!--        <ul>-->
-<!--            <li th:each="err : ${#fields.errors('*')}" th:text="${err}"></li>-->
-<!--        </ul>-->
-<!--    </div>-->
+<!-- エラー表示 -->
+<div th:if="${errors}">
+    <ul>
+        <li th:each="err : ${errors}" th:text="${err}"></li>
+    </ul>
+</div>
 
-    <!-- 編集フォーム -->
-    <form th:action="@{'/admin/products/' + ${productForm.id}}"
-          th:object="${productForm}"
-          method="post"
-          enctype="multipart/form-data"
-          class="form-box">
+<form th:action="@{/admin/product/edit}" method="post"
+      th:object="${form}" enctype="multipart/form-data">
 
-        <!-- ID hidden -->
-        <input type="hidden" th:field="*{id}"/>
+    <input type="hidden" th:field="*{id}">
 
-        <!-- 商品名 -->
-        <div class="form-group">
-            <label>商品名</label>
-            <input type="text" th:field="*{name}">
-            <div class="error" th:errors="*{name}"></div>
-        </div>
+    <label>ID</label><br>
+    <span th:text="*{id}"></span><br><br>
 
-        <!-- 価格 -->
-        <div class="form-group">
-            <label>価格（円）</label>
-            <input type="number" th:field="*{price}" min="0">
-            <div class="error" th:errors="*{price}"></div>
-        </div>
+    <label>商品名</label><br>
+    <input type="text" th:field="*{name}"><br>
 
-        <!-- 在庫 -->
-        <div class="form-group">
-            <label>在庫数</label>
-            <input type="number" th:field="*{stock}" min="0">
-            <div class="error" th:errors="*{stock}"></div>
-        </div>
+    <label>価格</label><br>
+    <input type="number" th:field="*{price}"><br>
 
-        <!-- カテゴリ -->
-        <div class="form-group">
-            <label>カテゴリ</label>
-            <select th:field="*{category}">
-                <option th:each="c : ${categories}"
-                        th:value="${c}"
-                        th:text="${c}"
-                        th:selected="${c == productForm.category}">
-                </option>
-            </select>
-            <div class="error" th:errors="*{category}"></div>
-        </div>
+    <label>カテゴリ</label><br>
+    <select th:field="*{category}">
+        <option value="">選択してください</option>
+        <option th:each="c : ${categories}" th:value="${c}" th:text="${c}"></option>
+    </select><br>
 
-        <!-- 説明文 -->
-        <div class="form-group">
-            <label>商品説明</label>
-            <textarea th:field="*{description}" rows="6"></textarea>
-            <div class="error" th:errors="*{description}"></div>
-        </div>
+    <label>在庫数</label><br>
+    <input type="number" th:field="*{stock}"><br>
 
-        <!-- 画像（プレビューつき） -->
-        <div class="form-group">
-            <label>現在の画像</label>
-            <div>
-                <img th:if="${productForm.imageUrl}" th:src="@{${productForm.imageUrl}}" class="thumb-large">
-                <span th:if="${productForm.imageUrl == null}">画像なし</span>
-            </div>
-        </div>
+    <label>商品画像（変更する場合のみ選択）</label><br>
+    <input type="hidden" th:field="*{imageUrl}">
 
-        <div class="form-group">
-            <label>画像を変更する（任意）</label>
-            <input type="file" th:field="*{imageFile}" accept="image/png,image/jpeg">
-            <div class="error" th:errors="*{imageFile}"></div>
-            <p class="note">※ 空のままなら画像は変更されません</p>
-        </div>
+    <div th:if="${form.imageUrl != null}">
+        <p>現在の画像：</p>
+        <img th:src="@{'/uploads/products/' + ${form.imageUrl}}" width="200"><br>
+    </div>
 
-        <!-- 更新ボタン -->
-        <div class="form-button">
-            <button type="submit" class="btn-primary">更新する</button>
-            <a th:href="@{/admin/products}" class="btn-secondary">キャンセル</a>
-        </div>
-    </form>
+    <input type="file" th:field="*{imageFile}" accept="image/*"><br>
 
-</main>
+    <label>商品説明</label><br>
+    <textarea th:field="*{description}"></textarea><br>
+
+    <label>公開/非公開</label><br>
+    <select th:field="*{isActive}">
+        <option value="">選択してください</option>
+        <option value="true">公開</option>
+        <option value="false">非公開</option>
+    </select><br><br>
+
+    <button type="submit">更新</button>
+</form>
+
+<!-- 削除ボタン -->
+<form th:action="@{/admin/product/delete}" method="post"
+      onsubmit="return confirm('本当に削除しますか？');">
+    <input type="hidden" th:value="${form.id}" name="id">
+    <button type="submit">削除</button>
+</form>
 
 </body>
 </html>
