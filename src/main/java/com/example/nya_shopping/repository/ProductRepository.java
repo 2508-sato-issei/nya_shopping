@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Mapper
@@ -49,4 +50,7 @@ public interface ProductRepository {
     /* 商品編集処理 */
     void update(Product product);
 
+    //在庫を減らす際に必要な処理
+    Product findProductById(Integer id);
+    void updateStock(Product product);
 }

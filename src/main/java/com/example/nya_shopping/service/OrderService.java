@@ -1,8 +1,11 @@
 package com.example.nya_shopping.service;
 
 import com.example.nya_shopping.controller.form.OrderNarrowForm;
+import com.example.nya_shopping.controller.form.PurchaseForm;
+import com.example.nya_shopping.dto.CartItem;
 import com.example.nya_shopping.repository.OrderRepository;
 import com.example.nya_shopping.repository.entity.Order;
+import com.example.nya_shopping.repository.entity.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -16,6 +19,8 @@ import java.util.List;
 public class OrderService {
     @Autowired
     OrderRepository orderRepository;
+    @Autowired
+    ProductService productService;
 
     public Page<Order> findOrder(OrderNarrowForm form, PageRequest pageRequest) {
         int offset = (int) pageRequest.getOffset();
@@ -34,5 +39,26 @@ public class OrderService {
         int total = orderRepository.countOrder(form, offset, limit);
 
         return new PageImpl<>(orderList, pageRequest, total);
+    }
+
+    //注文を登録する処理
+    public int createOrder(PurchaseForm form, List<CartItem> cart) {
+
+        int totalAmount = 0;
+        for(CartItem ci : cart){
+            Product product = productService.findById(ci.getProductId());
+            totalAmount += product.getPrice() * ci.getQuantity();
+        }
+
+        Order order = new Order();
+        order.setCustomerName(form.getCustomerName());
+        order.setCustomerPostalCode(form.getCustomerPostalCode());
+        order.setCustomerAddress(form.getCustomerAddress());
+        order.setCustomerPhone(form.getCustomerPhone());
+        order.setTotalAmount(totalAmount);
+        order.setStatus("CONFIRMED");
+
+        orderRepository.insert(order);
+        return order.getId();
     }
 }
