@@ -1,6 +1,7 @@
 package com.example.nya_shopping.service;
 
 import com.example.nya_shopping.dto.CartItem;
+import com.example.nya_shopping.dto.OrderDetailDto;
 import com.example.nya_shopping.repository.OrderDetailRepository;
 import com.example.nya_shopping.repository.entity.OrderDetail;
 import com.example.nya_shopping.repository.entity.Product;
@@ -31,5 +32,11 @@ public class OrderDetailService {
             detail.setSubtotal(product.getPrice() * ci.getQuantity());
             orderDetailRepository.insert(detail);
         }
+    }
+
+    //注文管理詳細画面　OrderDetailを取り出す
+    public List<OrderDetailDto> findOrderDetailById(int id) {
+        List<OrderDetailDto> OrderDetailList = orderDetailRepository.findOrderDetailList(id);
+        return OrderDetailList;
     }
 }
