@@ -108,5 +108,14 @@
         ]]>
         </if>
     </select>
+    <insert id="insert" parameterType="com.example.nya_shopping.repository.entity.Order"
+            useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO orders
+        (user_id, total_amount, customer_name, customer_postal_code, customer_address,
+        customer_phone, status)
+        VALUES
+        (#{userId}, #{totalAmount}, #{customerName}, #{customerPostalCode}, #{customerAddress},
+        #{customerPhone}, #{status});
+    </insert>
 
 </mapper>

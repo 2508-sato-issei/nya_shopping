@@ -18,8 +18,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.example.nya_shopping.validation.ErrorMessage.E0019;
-
 @Controller
 public class CartController {
 
@@ -94,11 +92,6 @@ public class CartController {
         Product product = productService.findById(productId);
         if(product ==  null){
             return "ERROR:商品が存在しません";
-        }
-
-        //在庫チェック
-        if(product.getStock() < quantity){
-            return "ERROR:" + E0019;
         }
 
         //カート数量更新処理（セッション内の情報を更新）

@@ -66,7 +66,8 @@
     </table>
 </div>
 <div th:if="${not #lists.isEmpty(items)}">
-    <form th:action="@{/order/purchase}" method="get">
+    <form th:action="@{/order/purchase}" method="get" id="purchaseForm">
+        <input type="hidden" name="quantityMap" id="quantityMapInput">
         <button type="submit">購入する</button>
     </form>
 </div>
@@ -135,9 +136,6 @@
     // サーバーへ数量更新リクエスト送信
     function sendUpdate(productId, quantity) {
 
-        const csrfToken = document.querySelector('meta[name="_csrf"]').content;
-        const csrfHeader = document.querySelector('meta[name="_csrf_header"]').content;
-
         fetch("/cart/update", {
             method: "POST",
             headers: {
@@ -145,24 +143,8 @@
                 [csrfHeader]: csrfToken
             },
             body: `productId=${productId}&quantity=${quantity}`
-        })
-        .then(res => res.text())
-        .then(text => {
-
-            console.log("RESPONSE:", text);
-            const errorBox = document.getElementById("ajax-error");
-
-            errorBox.style.display = "none";
-            errorBox.textContent = "";
-
-            if (text.startsWith("ERROR")) {
-                errorBox.textContent = text.replace("ERROR:", "");
-                errorBox.style.display = "block";
-            }
-        })
-        .catch(err => console.error("FETCH ERROR:", err));
+        });
     }
-
 </script>
 </body>
 </html>

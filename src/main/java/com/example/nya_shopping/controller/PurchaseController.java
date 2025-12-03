@@ -9,6 +9,7 @@ import com.example.nya_shopping.service.OrderDetailService;
 import com.example.nya_shopping.service.OrderService;
 import com.example.nya_shopping.service.PaymentService;
 import com.example.nya_shopping.service.ProductService;
+import com.stripe.model.checkout.Session;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,11 +19,14 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static com.example.nya_shopping.validation.ErrorMessage.E0019;
+import static com.example.nya_shopping.validation.ErrorMessage.E0034;
 
 @Controller
 public class PurchaseController {
@@ -38,7 +42,7 @@ public class PurchaseController {
 
     //購入者情報入力画面を表示する
     @GetMapping("/order/purchase")
-    public String inputPurchase(HttpSession session, Model model){
+    public String inputPurchase(HttpSession session, Model model, RedirectAttributes redirectAttributes){
 
         //セッションからカートを取得
         List<CartItem> cart = (List<CartItem>) session.getAttribute("cart");
@@ -50,10 +54,9 @@ public class PurchaseController {
         // 在庫チェック追加
         for (CartItem ci : cart) {
             Product p = productService.findById(ci.getProductId());
-
             if (p.getStock() < ci.getQuantity()) {
-                model.addAttribute("errorMessage", E0019);
-                return "forward:/cart";
+                redirectAttributes.addFlashAttribute("errorMessage", E0019);
+                return "redirect:/cart";
             }
         }
 
@@ -107,5 +110,49 @@ public class PurchaseController {
 
         session.setAttribute("purchaseForm", purchaseForm);
         return "redirect:/order/purchase/payment";
+    }
+
+    //Stripeのページへ商品情報を送る処理（Checkoutセッションを作成）＝決済画面へ遷移
+    @GetMapping("/order/purchase/payment")
+    public String createStripe(HttpSession session, Model model){
+
+        //セッションからカートを取得
+        List<CartItem> cart = (List<CartItem>) session.getAttribute("cart");
+        PurchaseForm purchaseForm = (PurchaseForm) session.getAttribute("purchaseForm");
+        if(cart == null || cart.isEmpty() || purchaseForm == null){
+            model.addAttribute("error", E0034);
+            return "redirect:/cart";
+        }
+
+        //Stripeセッション作成
+        Session sessionObj = paymentService.createCheckoutSession(cart);
+        return "redirect:" + sessionObj.getUrl();
+    }
+
+    //決済が成功した際の処理
+    @GetMapping("/order/purchase/success")
+    public String orderSuccess(@RequestParam("session_id") String sessionId,
+                               HttpSession session, Model model){
+
+        //セッションからカートを取得
+        List<CartItem> cart = (List<CartItem>) session.getAttribute("cart");
+        PurchaseForm purchaseForm = (PurchaseForm) session.getAttribute("purchaseForm");
+        if(cart == null || cart.isEmpty() || purchaseForm == null){
+            model.addAttribute("error", E0034);
+            return "redirect:/cart";
+        }
+
+        //StripeセッションIDから決済情報を取得
+        String stripeSessionId = sessionId;
+        //注文テーブルと注文詳細テーブルに情報を登録
+        int orderId = orderService.createOrder(purchaseForm, cart);
+        orderDetailService.createOrderDetail(orderId, cart);
+        //在庫を減らす
+        productService.decreaseStock(cart);
+        //カートの情報を削除する
+        session.removeAttribute("cart");
+        session.removeAttribute("purchaseForm");
+        model.addAttribute("categories", Category.values());
+        return "/user/order-complete";
     }
 }
