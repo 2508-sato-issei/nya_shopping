@@ -4,8 +4,10 @@ import com.example.nya_shopping.controller.error.RecordNotFoundException;
 import com.example.nya_shopping.controller.form.ProductForm;
 import com.example.nya_shopping.controller.form.ProductSearchCondition;
 import com.example.nya_shopping.controller.form.SearchForm;
+import com.example.nya_shopping.dto.ProductDto;
 import com.example.nya_shopping.repository.ProductRepository;
 import com.example.nya_shopping.repository.entity.Product;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -14,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.io.Writer;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -25,6 +28,7 @@ import static com.example.nya_shopping.validation.ErrorMessage.E0018;
 import static com.example.nya_shopping.validation.ErrorMessage.E0028;
 
 @Service
+@RequiredArgsConstructor
 public class ProductService {
 
     @Autowired
@@ -67,9 +71,35 @@ public class ProductService {
         return product;
     }
 
-    /* 商品管理一覧画面表示 */
-    public List<Product> searchProducts(ProductSearchCondition condition) {
-        return productRepository.search(condition);
+    public List<ProductDto> search(ProductSearchCondition cond) {
+        return productRepository.search(cond);
+    }
+
+    public int count(ProductSearchCondition cond) {
+        return productRepository.count(cond);
+    }
+
+    /**
+     * CSV出力
+     */
+    public void exportCsv(ProductSearchCondition cond, Writer writer) throws IOException {
+
+        List<ProductDto> list = productRepository.searchAll(cond);
+
+        writer.write("id,name,price,category,stock,is_active,created_at\n");
+
+        for (ProductDto p : list) {
+            writer.write(String.format(
+                    "%d,%s,%d,%s,%d,%b,%s\n",
+                    p.getId(),
+                    p.getName(),
+                    p.getPrice(),
+                    p.getCategory(),
+                    p.getStock(),
+                    p.getIsActive(),
+                    p.getCreatedAt()
+            ));
+        }
     }
 
     /* 商品登録処理 */

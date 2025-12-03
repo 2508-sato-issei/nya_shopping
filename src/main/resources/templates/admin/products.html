@@ -10,11 +10,23 @@
 <header class="admin-header">
     <h1>商品管理一覧</h1>
     <nav>
+        <a th:href="@{/}">ホーム</a>
         <a th:href="@{/admin}">管理者ページ</a>
-        <a th:href="@{/admin/products}">商品管理一覧</a>
         <a th:href="@{/admin/products/new}" class="btn-primary">商品登録</a>
-        <a th:href="@{/admin/products/upload-csv}" class="btn-secondary">商品一括出力</a>
-        <a th:href="@{/admin/products/download-csv}" class="btn-secondary">商品一括登録</a>
+        <a th:href="@{/admin/products/export/csv(
+                name=${cond.name},priceMin=${cond.priceMin},
+                priceMax=${cond.priceMax},
+                category=${cond.category},
+                inStock=${cond.inStock},
+                isActive=${cond.isActive},
+                dateFrom=${cond.dateFrom},
+                dateTo=${cond.dateTo},
+                sortKey=${cond.sortKey},
+                sortOrder=${cond.sortOrder}
+            )}" class="btn-secondary">
+            商品一覧出力
+        </a>
+        <a th:href="@{/admin/products/import/csv}" class="btn-secondary">商品一括登録</a>
     </nav>
 </header>
 
@@ -50,10 +62,10 @@
             </select>
         </div>
 
-        <!-- 在庫 -->
+        <!-- 在庫有無 -->
         <div class="form-group-inline">
             <label>
-                <input type="checkbox" th:field="*{stockOnly}">
+                <input type="checkbox" th:field="*{inStock}">
                 在庫ありのみ
             </label>
         </div>
@@ -145,6 +157,16 @@
         </tbody>
 
     </table>
+
+    <div class="pagination">
+        <a th:if="${page > 1}"
+           th:href="@{/admin/products(page=${page - 1}, size=${size})}">前へ</a>
+
+        <span th:text="${page}"></span>
+
+        <a th:if="${page * size < total}"
+           th:href="@{/admin/products(page=${page + 1}, size=${size})}">次へ</a>
+    </div>
 
 </main>
 

@@ -1,9 +1,10 @@
 package com.example.nya_shopping.repository;
 
 import com.example.nya_shopping.controller.form.ProductSearchCondition;
+import com.example.nya_shopping.dto.ProductDto;
 import com.example.nya_shopping.repository.entity.Product;
 import org.apache.ibatis.annotations.Mapper;
-import org.springframework.data.repository.query.Param;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Optional;
@@ -33,7 +34,11 @@ public interface ProductRepository {
     Product findByIdIsActive(Integer id);
 
     /* 商品管理一覧画面表示 */
-    List<Product> search(@Param("condition")ProductSearchCondition condition);
+    List<ProductDto> search(@Param("cond") ProductSearchCondition cond);
+
+    int count(@Param("cond") ProductSearchCondition cond);
+
+    List<ProductDto> searchAll(@Param("cond") ProductSearchCondition cond); // CSV用
 
     /* 商品登録処理 */
     void insert(Product product);

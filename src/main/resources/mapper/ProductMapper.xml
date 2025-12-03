@@ -92,90 +92,161 @@
     </select>
 
     <!-- 商品管理一覧画面表示 -->
-    <select id="search" resultType="com.example.nya_shopping.repository.entity.Product">
-
+    <select id="search" resultType="com.example.nya_shopping.repository.ProductRepository">
         SELECT
-        id,
-        name,
-        price,
-        stock,
-        category,
-        image_url,
-        is_active,
-        created_at
+        id, name, price, stock, category, image_url,
+        is_active, created_at
         FROM products
         WHERE 1 = 1
 
-        <!-- 商品名（部分一致） -->
-        <if test="condition.name != null and condition.name != ''">
-            AND name LIKE CONCAT('%', #{condition.name}, '%')
+        <!-- 商品名 -->
+        <if test="cond.name != null and cond.name != ''">
+            AND name LIKE CONCAT('%', #{cond.name}, '%')
         </if>
 
-        <!-- 価格下限 -->
-        <if test="condition.priceMin != null">
-            AND price &gt;= #{condition.priceMin}
+        <!-- 価格 -->
+        <if test="cond.priceMin != null">
+            AND price >= #{cond.priceMin}
         </if>
-
-        <!-- 価格上限 -->
-        <if test="condition.priceMax != null">
-            AND price &lt;= #{condition.priceMax}
+        <if test="cond.priceMax != null">
+            AND price &lt;= #{cond.priceMax}
         </if>
 
         <!-- カテゴリ -->
-        <if test="condition.category != null and condition.category != ''">
-            AND category = #{condition.category}
+        <if test="cond.category != null and cond.category != ''">
+            AND category = #{cond.category}
         </if>
 
-        <!-- 在庫ありのみ -->
-        <if test="condition.stockOnly != null and condition.stockOnly == true">
-            AND stock &gt; 0
+        <!-- 在庫 -->
+        <if test="cond.inStock != null and cond.inStock == true">
+            AND stock > 0
         </if>
 
-        <!-- 公開 / 非公開 -->
-        <if test="condition.isActive != null">
-            AND is_active = #{condition.isActive}
+        <!-- 公開/非公開 -->
+        <if test="cond.isActive != null">
+            AND is_active = #{cond.isActive}
         </if>
 
-        <!-- 登録日時（開始） -->
-        <if test="condition.dateFrom != null and condition.dateFrom != ''">
-            AND created_at &gt;= #{condition.dateFrom}
+        <!-- 登録日（開始） -->
+        <if test="cond.dateFrom != null and cond.dateFrom != ''">
+            AND DATE(created_at) >= #{cond.dateFrom}
         </if>
 
-        <!-- 登録日時（終了） -->
-        <if test="condition.dateTo != null and condition.dateTo != ''">
-            AND created_at &lt;= #{condition.dateTo}
+        <!-- 登録日（終了） -->
+        <if test="cond.dateTo != null and cond.dateTo != ''">
+            AND DATE(created_at) &lt;= #{cond.dateTo}
         </if>
 
-        <!-- ======== ソート解決 ======== -->
-        <!-- ソートキーが正しく指定されている場合のみ ORDER BY を適用 -->
+        <!-- ソート -->
         <choose>
-
-            <!-- sortKey: id, name, price, category, stock, created_at -->
-            <when test="condition.sortKey != null
-                        and condition.sortKey != ''
-                        and (
-                            condition.sortKey == 'id' or
-                            condition.sortKey == 'name' or
-                            condition.sortKey == 'price' or
-                            condition.sortKey == 'category' or
-                            condition.sortKey == 'stock' or
-                            condition.sortKey == 'created_at'
-                        )">
-
-                ORDER BY ${condition.sortKey}
+            <when test="cond.sortKey != null and cond.sortKey != ''">
+                ORDER BY ${cond.sortKey}
                 <choose>
-                    <when test="condition.sortOrder == 'asc'">ASC</when>
+                    <when test="cond.sortOrder == 'asc'">ASC</when>
                     <otherwise>DESC</otherwise>
                 </choose>
-
             </when>
-
-            <!-- sortKey が未指定 → デフォルトソート -->
             <otherwise>
-                ORDER BY id DESC
+                ORDER BY id ASC
             </otherwise>
         </choose>
 
+        <!-- ページング -->
+        LIMIT #{cond.size}
+        OFFSET #{cond.offset}
+    </select>
+
+
+    <!-- 件数カウント -->
+    <select id="count" resultType="int">
+        SELECT COUNT(*) FROM products
+        WHERE 1 = 1
+
+        <if test="cond.name != null and cond.name != ''">
+            AND name LIKE CONCAT('%', #{cond.name}, '%')
+        </if>
+        <if test="cond.priceMin != null">
+            AND price >= #{cond.priceMin}
+        </if>
+        <if test="cond.priceMax != null">
+            AND price &lt;= #{cond.priceMax}
+        </if>
+        <if test="cond.category != null and cond.category != ''">
+            AND category = #{cond.category}
+        </if>
+        <if test="cond.inStock != null and cond.inStock == true">
+            AND stock > 0
+        </if>
+        <if test="cond.isActive != null">
+            AND is_active = #{cond.isActive}
+        </if>
+        <if test="cond.dateFrom != null and cond.dateFrom != ''">
+            AND DATE(created_at) >= #{cond.dateFrom}
+        </if>
+        <if test="cond.dateTo != null and cond.dateTo != ''">
+            AND DATE(created_at) &lt;= #{cond.dateTo}
+        </if>
+    </select>
+
+    <!-- CSV用 -->
+    <select id="searchAll" resultType="com.example.nya_shopping.repository.ProductRepository">
+        SELECT
+        id, name, price, stock, category, image_url,
+        is_active, created_at
+        FROM products
+        WHERE 1 = 1
+
+        <!-- 商品名 -->
+        <if test="cond.name != null and cond.name != ''">
+            AND name LIKE CONCAT('%', #{cond.name}, '%')
+        </if>
+
+        <!-- 価格 -->
+        <if test="cond.priceMin != null">
+            AND price >= #{cond.priceMin}
+        </if>
+        <if test="cond.priceMax != null">
+            AND price &lt;= #{cond.priceMax}
+        </if>
+
+        <!-- カテゴリ -->
+        <if test="cond.category != null and cond.category != ''">
+            AND category = #{cond.category}
+        </if>
+
+        <!-- 在庫 -->
+        <if test="cond.inStock != null and cond.inStock == true">
+            AND stock > 0
+        </if>
+
+        <!-- 公開/非公開 -->
+        <if test="cond.isActive != null">
+            AND is_active = #{cond.isActive}
+        </if>
+
+        <!-- 登録日（開始） -->
+        <if test="cond.dateFrom != null and cond.dateFrom != ''">
+            AND DATE(created_at) >= #{cond.dateFrom}
+        </if>
+
+        <!-- 登録日（終了） -->
+        <if test="cond.dateTo != null and cond.dateTo != ''">
+            AND DATE(created_at) &lt;= #{cond.dateTo}
+        </if>
+
+        <!-- ソート -->
+        <choose>
+            <when test="cond.sortKey != null and cond.sortKey != ''">
+                ORDER BY ${cond.sortKey}
+                <choose>
+                    <when test="cond.sortOrder == 'asc'">ASC</when>
+                    <otherwise>DESC</otherwise>
+                </choose>
+            </when>
+            <otherwise>
+                ORDER BY id ASC
+            </otherwise>
+        </choose>
     </select>
 
     <!-- 商品登録処理 -->
