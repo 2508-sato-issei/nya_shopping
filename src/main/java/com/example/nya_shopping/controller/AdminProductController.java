@@ -1,5 +1,6 @@
 package com.example.nya_shopping.controller;
 
+import com.example.nya_shopping.controller.form.ProductForm;
 import com.example.nya_shopping.controller.form.ProductSearchCondition;
 import com.example.nya_shopping.dto.ProductDto;
 import com.example.nya_shopping.model.Category;
@@ -15,7 +16,10 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
+
+import static com.example.nya_shopping.validation.ErrorMessage.E0018;
 
 @Controller
 @RequiredArgsConstructor
@@ -75,4 +79,70 @@ public class AdminProductController {
         return "redirect:/admin/products";
     }
 
+    @GetMapping("/product/new")
+    public String showNewForm(Model model) {
+        model.addAttribute("form", new ProductForm());
+        model.addAttribute("categories", Category.values());
+        return "admin/product_new";
+    }
+
+    @PostMapping("/product/new")
+    public String register(@ModelAttribute("form") ProductForm form, Model model) {
+
+        List<String> errors = productService.validateAndCreate(form);
+
+        if (!errors.isEmpty()) {
+            model.addAttribute("errors", errors);
+            model.addAttribute("categories", Category.values());
+            return "admin/product_new";
+        }
+
+        return "redirect:/admin/products";
+    }
+
+    @GetMapping("/product/edit/{id}")
+    public String showEditForm(@PathVariable("id") String idStr, Model model) {
+
+        List<String> errors = new ArrayList<>();
+
+        // 数字チェック
+        if (!idStr.matches("\\d+")) {
+            errors.add(E0018);
+            model.addAttribute("errors", errors);
+            return "/";
+        }
+
+        Long id = Long.valueOf(idStr);
+
+        ProductForm form = productService.findById(id);
+        if (form == null) {
+            errors.add(E0018);
+            model.addAttribute("errors", errors);
+            return "admin/product_edit";
+        }
+
+        model.addAttribute("form", form);
+        model.addAttribute("categories", Category.values());
+        return "admin/product_edit";
+    }
+
+    @PostMapping("/product/edit")
+    public String update(@ModelAttribute("form") ProductForm form, Model model) {
+
+        List<String> errors = productService.validateAndUpdate(form);
+
+        if (!errors.isEmpty()) {
+            model.addAttribute("errors", errors);
+            model.addAttribute("categories", Category.values());
+            return "admin/product_edit";
+        }
+
+        return "redirect:/admin/products";
+    }
+
+    @PostMapping("/product/delete")
+    public String delete(@RequestParam("id") Long id) {
+        productService.delete(id);
+        return "redirect:/admin/products";
+    }
 }

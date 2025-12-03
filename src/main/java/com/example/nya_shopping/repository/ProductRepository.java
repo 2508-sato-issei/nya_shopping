@@ -2,12 +2,12 @@ package com.example.nya_shopping.repository;
 
 import com.example.nya_shopping.controller.form.ProductSearchCondition;
 import com.example.nya_shopping.dto.ProductDto;
+import com.example.nya_shopping.model.Category;
 import com.example.nya_shopping.repository.entity.Product;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
-import java.util.Optional;
 
 @Mapper
 public interface ProductRepository {
@@ -41,12 +41,29 @@ public interface ProductRepository {
     List<ProductDto> searchAll(@Param("cond") ProductSearchCondition cond); // CSV用
 
     /* 商品登録処理 */
-    void insert(Product product);
+    void insertProduct(
+            @Param("name") String name,
+            @Param("price") Integer price,
+            @Param("category") Category category,
+            @Param("stock") Integer stock,
+            @Param("imageUrl") String imageUrl,
+            @Param("description") String description,
+            @Param("isActive") Boolean isActive
+    );
 
-    /* 商品編集画面表示 */
-    Optional<Product> FindById(Long id);
+    ProductDto findById(@Param("id") Long id);
 
-    /* 商品編集処理 */
-    void update(Product product);
+    void update(
+            @Param("id") Integer id,
+            @Param("name") String name,
+            @Param("price") Integer price,
+            @Param("category") Category category,
+            @Param("stock") Integer stock,
+            @Param("imageUrl") String imageUrl,
+            @Param("description") String description,
+            @Param("isActive") Boolean isActive
+    );
+
+    void delete(@Param("id") Long id);
 
 }
