@@ -18,7 +18,7 @@ public class PaymentService {
 
     private final ProductService productService;
 
-    @Value("${stripe.secret-key}")
+    @Value("${stripe.key.secret}")
     private String secretKey;
 
     @Value("${stripe.checkout.success-url}")

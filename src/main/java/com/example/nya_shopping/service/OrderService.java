@@ -43,7 +43,7 @@ public class OrderService {
     }
 
     //注文を登録する処理
-    public int createOrder(PurchaseForm form, List<CartItem> cart) {
+    public int createOrder(PurchaseForm form, List<CartItem> cart, Integer userId) {
 
         int totalAmount = 0;
         for(CartItem ci : cart){
@@ -58,6 +58,7 @@ public class OrderService {
         order.setCustomerPhone(form.getCustomerPhone());
         order.setTotalAmount(totalAmount);
         order.setStatus("CONFIRMED");
+        order.setUserId(userId);
 
         orderRepository.insert(order);
         return order.getId();

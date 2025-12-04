@@ -4,11 +4,12 @@
     <meta charset="UTF-8">
     <title>ホーム画面</title>
     <link th:href="@{/css/navbar.css}" rel="stylesheet">
+    <link th:href="@{/css/style.css}" rel="stylesheet">
 </head>
 <body>
 <div th:replace="fragments/navbar :: navbar"></div>
 <div th:if="${errorMessage != null}" th:text="${errorMessage}"></div>
-<div>
+<div class="contents">
     <div>
         <form th:action="@{/search}" method="get">
 

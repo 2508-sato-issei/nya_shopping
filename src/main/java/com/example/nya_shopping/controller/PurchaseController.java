@@ -1,6 +1,7 @@
 package com.example.nya_shopping.controller;
 
 import com.example.nya_shopping.controller.form.PurchaseForm;
+import com.example.nya_shopping.controller.security.LoginUserDetails;
 import com.example.nya_shopping.dto.CartItem;
 import com.example.nya_shopping.dto.CartView;
 import com.example.nya_shopping.model.Category;
@@ -13,6 +14,8 @@ import com.stripe.model.checkout.Session;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -39,6 +42,8 @@ public class PurchaseController {
     OrderDetailService orderDetailService;
     @Autowired
     PaymentService paymentService;
+    @Autowired
+    SimpMessagingTemplate simpMessagingTemplate;
 
     //購入者情報入力画面を表示する
     @GetMapping("/order/purchase")
@@ -132,6 +137,7 @@ public class PurchaseController {
     //決済が成功した際の処理
     @GetMapping("/order/purchase/success")
     public String orderSuccess(@RequestParam("session_id") String sessionId,
+                               @AuthenticationPrincipal LoginUserDetails loginUser,
                                HttpSession session, Model model){
 
         //セッションからカートを取得
@@ -142,11 +148,15 @@ public class PurchaseController {
             return "redirect:/cart";
         }
 
-        //StripeセッションIDから決済情報を取得
-        String stripeSessionId = sessionId;
+        //ログインユーザーID取得
+        Integer userId = loginUser.getUser().getId();
         //注文テーブルと注文詳細テーブルに情報を登録
-        int orderId = orderService.createOrder(purchaseForm, cart);
+        int orderId = orderService.createOrder(purchaseForm, cart, userId);
         orderDetailService.createOrderDetail(orderId, cart);
+
+        //WebSocketの通知
+        simpMessagingTemplate.convertAndSend("/topic/payment", "新しい注文が入りました（注文ID: " + orderId + "）");
+
         //在庫を減らす
         productService.decreaseStock(cart);
         //カートの情報を削除する
