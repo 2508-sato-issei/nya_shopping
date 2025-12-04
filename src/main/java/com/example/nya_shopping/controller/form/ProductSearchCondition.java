@@ -1,26 +1,29 @@
 package com.example.nya_shopping.controller.form;
 
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 
 @Data
-@Getter
-@Setter
 public class ProductSearchCondition {
 
-    private String name;          // 商品名部分一致
-    private Integer priceMin;     // 価格下限
-    private Integer priceMax;     // 価格上限
-    private String category;      // カテゴリ
-    private Boolean stockOnly;    // 在庫ありのみ
-    private Boolean isActive;     // 公開・非公開
-    private String dateFrom;      // 登録日時（開始）
-    private String dateTo;        // 登録日時（終了）
+    private String name;
+    private Integer priceMin;
+    private Integer priceMax;
 
-    // ソート項目（id, name, price, category, stock, created_at）
-    private String sortKey;
+    private String category;
 
-    // ソート順（asc / desc）
-    private String sortOrder;
+    private Boolean inStock;   // 在庫有無
+    private Boolean isActive;  // 公開/非公開
+
+    private String dateFrom;   // created_at >=
+    private String dateTo;     // created_at <=
+
+    private String sortKey;    // id, name, price, category, stock, created_at
+    private String sortOrder;  // asc or desc
+
+    private Integer page = 1;  // ページ番号
+    private Integer size = 10; // 1ページ件数
+
+    public int getOffset() {
+        return (page - 1) * size;
+    }
 }

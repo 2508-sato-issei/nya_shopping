@@ -5,67 +5,129 @@
 
 <mapper namespace="com.example.nya_shopping.repository.OrderRepository">
 
-    <select id="findOrder" resultType="com.example.nya_shopping.repository.entity.Order"
-            parameterType="com.example.nya_shopping.controller.form.OrderNarrowForm">
+    <select id="findOrder" resultType="com.example.nya_shopping.repository.entity.Order">
         SELECT *
         FROM orders
         WHERE 1 = 1
 
         <!-- 合計金額（下限） -->
-        <if test="minAmount != null">
-            AND total_amount >= #{minAmount}
+        <if test="form.minAmount != null">
+            AND total_amount >= #{form.minAmount}
         </if>
 
         <!-- 合計金額（上限） -->
-        <if test="maxAmount != null">
-            AND total_amount &lt;= #{maxAmount}
+        <if test="form.maxAmount != null">
+            AND total_amount &lt;= #{form.maxAmount}
         </if>
 
         <!-- 購入者氏名（部分一致） -->
-        <if test="customerName != null and customerName != ''">
-            AND customer_name LIKE CONCAT('%', #{customerName}, '%')
+        <if test="form.customerName != null and form.customerName != ''">
+            AND customer_name LIKE CONCAT('%', #{form.customerName}, '%')
         </if>
 
         <!-- 購入者住所（部分一致） -->
-        <if test="customerAddress != null and customerAddress != ''">
-            AND customer_address LIKE CONCAT('%', #{customerAddress}, '%')
+        <if test="form.customerAddress != null and form.customerAddress != ''">
+            AND customer_address LIKE CONCAT('%', #{form.customerAddress}, '%')
         </if>
 
         <!-- 購入者電話番号（部分一致） -->
-        <if test="customerPhone != null and customerPhone != ''">
-            AND customer_phone LIKE CONCAT('%', #{customerPhone}, '%')
+        <if test="form.customerPhone != null and form.customerPhone != ''">
+            AND customer_phone LIKE CONCAT('%', #{form.customerPhone}, '%')
         </if>
 
         <!-- 注文状態 -->
-        <if test="status != null and status != ''">
-            AND status = #{status}
+        <if test="form.status != null and form.status != ''">
+            AND status = #{form.status}
         </if>
 
         <!-- 登録日時（開始） -->
-        <if test="startTimeStamp != null">
-            AND created_at >= #{startTimeStamp}
+        <if test="form.startTimeStamp != null">
+            AND created_at >= #{form.startTimeStamp}
         </if>
 
         <!-- 登録日時（終了） -->
-        <if test="endTimeStamp != null">
+        <if test="form.endTimeStamp != null">
             <![CDATA[
-                AND created_at < DATE_ADD(#{endTimeStamp}, INTERVAL 1 DAY)
+                AND created_at < DATE_ADD(#{form.endTimeStamp}, INTERVAL 1 DAY)
             ]]>
         </if>
 
         ORDER BY
         <choose>
-            <when test="sort == 'id'">id</when>
-            <when test="sort == 'userId'">user_id</when>
-            <when test="sort == 'amount'">total_amount</when>
-            <when test="sort == 'sortCustomerName'">customer_name</when>
-            <when test="sort == 'address'">customer_address</when>
-            <when test="sort == 'created'">created_at</when>
+            <when test="form.sort == 'id'">id</when>
+            <when test="form.sort == 'userId'">user_id</when>
+            <when test="form.sort == 'amount'">total_amount</when>
+            <when test="form.sort == 'sortCustomerName'">customer_name</when>
+            <when test="form.sort == 'address'">customer_address</when>
+            <when test="form.sort == 'created'">created_at</when>
             <otherwise>id</otherwise> <!-- デフォルトソート -->
         </choose>
         <choose>
-            <when test="order == 'DESC'">DESC</when>
+            <when test="form.order == 'DESC'">DESC</when>
             <otherwise>ASC</otherwise>
         </choose>
+        LIMIT #{limit} OFFSET #{offset}
     </select>
+
+    <select id="countOrder" resultType="int">
+        SELECT COUNT(*)
+        FROM orders
+        WHERE 1=1
+
+        <if test="form.minAmount != null">
+            AND total_amount >= #{form.minAmount}
+        </if>
+
+        <if test="form.maxAmount != null">
+            AND total_amount &lt;= #{form.maxAmount}
+        </if>
+
+        <if test="form.customerName != null and form.customerName != ''">
+            AND customer_name LIKE CONCAT('%', #{form.customerName}, '%')
+        </if>
+
+        <if test="form.customerAddress != null and form.customerAddress != ''">
+            AND customer_address LIKE CONCAT('%', #{form.customerAddress}, '%')
+        </if>
+
+        <if test="form.customerPhone != null and form.customerPhone != ''">
+            AND customer_phone LIKE CONCAT('%', #{form.customerPhone}, '%')
+        </if>
+
+        <if test="form.status != null and form.status != ''">
+            AND status = #{form.status}
+        </if>
+
+        <if test="form.startTimeStamp != null">
+            AND created_at >= #{form.startTimeStamp}
+        </if>
+
+        <if test="form.endTimeStamp != null">
+            <![CDATA[
+            AND created_at < DATE_ADD(#{form.endTimeStamp}, INTERVAL 1 DAY)
+        ]]>
+        </if>
+    </select>
+    <insert id="insert" parameterType="com.example.nya_shopping.repository.entity.Order"
+            useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO orders
+        (user_id, total_amount, customer_name, customer_postal_code, customer_address,
+        customer_phone, status)
+        VALUES
+        (#{userId}, #{totalAmount}, #{customerName}, #{customerPostalCode}, #{customerAddress},
+        #{customerPhone}, #{status});
+    </insert>
+
+    <select id="findOrderById" resultType="com.example.nya_shopping.repository.entity.Order">
+        SELECT *
+        FROM orders
+        WHERE id = #{id}
+    </select>
+
+    <update id="updateOrderStatus">
+        UPDATE orders
+        SET status = #{status}
+        WHERE id = #{id}
+    </update>
+
 </mapper>

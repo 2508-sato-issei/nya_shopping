@@ -79,7 +79,7 @@ public class SearchController {
             return "redirect:/";
         }
 
-        model.addAttribute("category", category);
+        model.addAttribute("category", Category.values());
         model.addAttribute("keyword", keyword);
         model.addAttribute("maxPrice", maxPrice);
         model.addAttribute("minPrice", minPrice);

@@ -10,12 +10,14 @@
 <header class="admin-header">
     <h1>管理者画面</h1>
     <nav>
-        <a th:href="@{/admin}">ホーム</a>
+        <a th:href="@{/}">ホーム</a>
         <a th:href="@{/admin/products}">商品管理一覧</a>
         <a th:href="@{/admin/orders}">注文管理一覧</a>
         <a th:href="@{/admin/users}">会員一覧</a>
     </nav>
 </header>
+
+<div id="paymentAlert" style="display:none;">🔔 新しい注文が入りました！</div>
 
 <main class="container">
 
@@ -45,6 +47,33 @@
     </section>
 
 </main>
+<script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/webstomp-client@1/dist/webstomp.min.js"></script>
+
+<script>
+    const alertBox = document.getElementById("paymentAlert");
+
+    // WebSocket 接続
+    const socket = new SockJS('/ws');
+    const stomp = webstomp.over(socket);
+    stomp.debug = () => {};
+
+    stomp.connect({}, function () {
+
+        stomp.subscribe('/topic/payment', function (msg) {
+
+            console.log("受信:", msg.body);
+
+            alertBox.style.display = "block";
+            alertBox.textContent = "🛒 新しい注文が入りました！";
+
+            // 3 秒後に非表示に戻す
+            setTimeout(() => {
+                alertBox.style.display = "none";
+            }, 3000);
+        });
+    });
+</script>
 
 </body>
 </html>

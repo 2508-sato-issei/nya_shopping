@@ -123,11 +123,31 @@
 
                     <!--購入日時（登録日時）-->
                     <td th:text="${o.createdAt}"></td>
+                    <td>
+                        <a th:href="@{@{'/admin/order/' + ${o.id}}}">詳しく見る</a>
+                    </td>
                 </tr>
             </tbody>
         </table>
     </div>
     <!--フッター-->
+    <!-- ページネーション -->
+    <div th:if="${page.totalPages > 1}" class="pagination">
+        <a th:if="${showFirst}" th:href="@{/admin/orders(page=0)}">最初</a>
+        <a th:if="${page.number > 0}" th:href="@{/admin/orders(page=${page.number - 1})}">
+            前へ
+        </a>
+        <span th:each="i : ${#numbers.sequence(startPage, endPage)}">
+            <a th:if="${i != page.number}" th:href="@{/admin/orders(page=${i})}" th:text="${i + 1}"></a>
+            <strong th:if="${i == page.number}" th:text="${i + 1}"></strong>
+        </span>
+        <a th:if="${page.number < page.totalPages - 1}" th:href="@{/admin/orders(page=${page.number + 1})}">
+            次へ
+        </a>
+        <a th:if="${showLast}" th:href="@{/admin/orders(page=${page.totalPages - 1})}">
+            最後
+        </a>
+    </div>
     <div th:replace="fragments/fragment :: footer"></div>
 </body>
 </html>

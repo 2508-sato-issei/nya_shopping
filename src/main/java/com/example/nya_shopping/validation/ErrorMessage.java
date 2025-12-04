@@ -14,9 +14,9 @@ public class ErrorMessage {
     public static final String E0010 = "メールアドレスの形式が不正です";
     public static final String E0011 = "パスワードは半角英数字混在かつ8~32文字で入力してください";
     public static final String E0012 = "氏名は50文字以内で入力してください";
-    public static final String E0013 = "郵便番号は数字7桁で入力してください";
+    public static final String E0013 = "郵便番号は半角数字7桁で入力してください";
     public static final String E0014 = "住所は100文字以内で入力してください";
-    public static final String E0015 = "電話番号は数字10~11桁で入力してください";
+    public static final String E0015 = "電話番号は半角数字10~11桁で入力してください";
     public static final String E0016 = "登録済みのメールアドレスです";
     public static final String E0017 = "パスワードとパスワード（確認用）が一致しません";
     public static final String E0018 = "不正なパラメータが入力されました";
