@@ -142,11 +142,12 @@ public class ProductService {
                 // 保存ファイル名を生成
                 fileName = UUID.randomUUID() + "_" + original;
 
-                File uploadDir = new File("uploads/products");
-                if (!uploadDir.exists()) uploadDir.mkdirs();
+                String projectPath = System.getProperty("user.dir");
+                File dir = new File(projectPath + "/uploads/products");
+                if (!dir.exists()) dir.mkdirs();
 
                 try {
-                    form.getImageFile().transferTo(new File(uploadDir, fileName));
+                    form.getImageFile().transferTo(new File(dir, fileName));
                 } catch (IOException e) {
                     errors.add("画像の保存に失敗しました。");
                 }
@@ -175,7 +176,8 @@ public class ProductService {
      * 編集画面表示用
      */
     public ProductForm findById(Long id) {
-        ProductDto dto = productRepository.findById(id);
+        ProductDto dto = productRepository.findById(id)
+                .orElseThrow(() -> new RecordNotFoundException(E0018));
         if (dto == null) return null;
 
         ProductForm form = new ProductForm();

@@ -8,7 +8,6 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 @Mapper
@@ -53,7 +52,7 @@ public interface ProductRepository {
             @Param("isActive") Boolean isActive
     );
 
-    ProductDto findById(@Param("id") Long id);
+    Optional<ProductDto> findById(@Param("id") Long id);
 
     void update(
             @Param("id") Integer id,
