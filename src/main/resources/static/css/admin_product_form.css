@@ -1,0 +1,105 @@
+/* =============================
+   商品登録・編集フォーム
+============================= */
+
+.product-form {
+    max-width: 600px;
+    margin: 0 auto;
+    background: #fff;
+    padding: 30px 40px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.product-form label {
+    font-weight: 600;
+    margin-top: 18px;
+    display: block;
+}
+
+.product-form input[type="text"],
+.product-form input[type="number"],
+.product-form input[type="file"],
+.product-form textarea,
+.product-form select {
+    width: 100%;
+    padding: 10px 12px;
+    margin-top: 6px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 15px;
+    box-sizing: border-box;
+}
+
+.product-form textarea {
+    resize: vertical;
+}
+
+/* ボタン系 */
+.btn-submit {
+    width: 100%;
+    padding: 12px;
+    margin-top: 25px;
+    background: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.btn-submit:hover {
+    background: #0068d9;
+}
+
+/* エラー表示 */
+.error-box {
+    background: #ffe5e5;
+    border-left: 4px solid #d93025;
+    padding: 12px 16px;
+    border-radius: 6px;
+    margin-bottom: 20px;
+}
+
+.error-box ul {
+    margin: 0;
+    padding-left: 18px;
+    color: #d93025;
+}
+
+/* 画像プレビュー（編集画面用） */
+.image-preview {
+    margin-top: 10px;
+}
+
+.image-preview img {
+    max-width: 200px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+}
+
+/* 削除ボタン */
+.btn-danger {
+    width: 100%;
+    padding: 12px;
+    margin-top: 10px;
+    background: #d93025;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.btn-danger:hover {
+    background: #c2271a;
+}
+
+/* 読み取り専用フィールド（ID表示用） */
+.readonly-field {
+    background: #f4f4f4;
+    padding: 10px 12px;
+    border-radius: 6px;
+    border: 1px solid #ddd;
+    margin-top: 6px;
+}

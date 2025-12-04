@@ -3,192 +3,214 @@
 <head>
     <meta charset="UTF-8">
     <title>商品管理一覧画面</title>
+    <link th:href="@{/css/style.css}" rel="stylesheet">
+    <link th:href="@{/css/navbar.css}" rel="stylesheet">
     <link rel="stylesheet" th:href="@{/css/admin.css}">
+    <link rel="stylesheet" th:href="@{/css/admin_products.css}">
 </head>
 <body>
 
-<header class="admin-header">
-    <h1>商品管理一覧</h1>
-    <nav>
-        <a th:href="@{/}">ホーム</a>
-        <a th:href="@{/admin}">管理者ページ</a>
-        <a th:href="@{/admin/products/export/csv(
-                name=${cond.name},priceMin=${cond.priceMin},
-                priceMax=${cond.priceMax},
-                category=${cond.category},
-                inStock=${cond.inStock},
-                isActive=${cond.isActive},
-                dateFrom=${cond.dateFrom},
-                dateTo=${cond.dateTo},
-                sortKey=${cond.sortKey},
-                sortOrder=${cond.sortOrder}
-            )}" class="btn-secondary">
-            商品一覧出力
-        </a>
-        <a th:href="@{/admin/product/new}" class="btn-primary">商品登録</a>
-        <a th:href="@{/admin/products/import/csv}" class="btn-secondary">商品一括登録</a>
-    </nav>
-</header>
+<div th:replace="fragments/navbar :: navbar"></div>
 
-<main class="container">
+<nav>
+    <ul class="navigation">
+        <li><a th:href="@{/}">ホーム</a></li>
+        <li><a th:href="@{/admin}">管理者ページ</a></li>
+        <li>商品管理一覧</li>
+    </ul>
+</nav>
 
-    <!-- ==========================
-        検索フォーム
-    =========================== -->
-    <form method="get" class="search-form" th:object="${condition}">
+<div class="contents">
+    <header class="admin-header">
+        <h1>商品管理一覧</h1>
+        <nav>
+            <a th:href="@{/admin/product/new}" class="btn-primary">商品登録</a>
+            <a th:href="@{/admin/products/import/csv}" class="btn-primary">商品一括登録</a>
+            <a th:href="@{/admin/products/export/csv(
+                    name=${cond.name},priceMin=${cond.priceMin},
+                    priceMax=${cond.priceMax},
+                    category=${cond.category},
+                    inStock=${cond.inStock},
+                    isActive=${cond.isActive},
+                    dateFrom=${cond.dateFrom},
+                    dateTo=${cond.dateTo},
+                    sortKey=${cond.sortKey},
+                    sortOrder=${cond.sortOrder}
+                )}" class="btn-primary">
+                商品一覧出力
+            </a>
+        </nav>
+    </header>
 
-        <!-- 商品名 -->
-        <div class="form-group-inline">
-            <label>商品名</label>
-            <input type="text" th:field="*{name}" placeholder="商品名を部分一致">
+    <main class="container">
+
+        <!-- ==========================
+            検索フォーム
+        =========================== -->
+        <details class="search-details">
+            <summary>検索・並び替え</summary>
+
+            <form method="get" class="search-form" th:object="${condition}">
+
+                <!-- 商品名 -->
+                <div class="form-group-inline">
+                    <label>商品名</label>
+                    <input type="text" th:field="*{name}" placeholder="部分一致">
+                </div>
+
+                <!-- 価格範囲 -->
+                <div class="form-group-inline">
+                    <label>価格</label>
+                    <input class="number-area" type="number" th:field="*{priceMin}" placeholder="下限" min="0">
+                    <span>〜</span>
+                    <input class="number-area" type="number" th:field="*{priceMax}" placeholder="上限" min="0">
+                </div>
+
+                <!-- カテゴリ -->
+                <div class="form-group-inline">
+                    <label>カテゴリ</label>
+                    <select th:field="*{category}">
+                        <option value="">すべて</option>
+                        <option th:each="c : ${categories}"
+                                th:value="${c.name}"
+                                th:text="${c.label}"></option>
+                    </select>
+                </div>
+
+                <!-- 在庫有無 -->
+                <div class="form-group-inline">
+                    <label>在庫有無</label>
+                    <select th:field="*{inStock}">
+                        <option value="" th:selected="${condition.inStock == null}">すべて</option>
+                        <option value="true" th:selected="${condition.inStock == true}">あり</option>
+                        <option value="false" th:selected="${condition.inStock == false}">なし</option>
+                    </select>
+                </div>
+
+                <!-- 公開/非公開 -->
+                <div class="form-group-inline">
+                    <label>公開/非公開</label>
+                    <select th:field="*{isActive}">
+                        <option value="" th:selected="${condition.isActive == null}">すべて</option>
+                        <option value="true" th:selected="${condition.isActive == true}">公開</option>
+                        <option value="false" th:selected="${condition.isActive == false}">非公開</option>
+                    </select>
+                </div>
+
+                <!-- 日付 -->
+                <div class="form-group-inline">
+                    <label>登録日時</label>
+                    <input type="date" th:field="*{dateFrom}">
+                    <span>〜</span>
+                    <input type="date" th:field="*{dateTo}">
+                </div>
+
+                <!-- ソート -->
+                <div class="form-group-inline">
+                    <label>並び替え</label>
+                    <select th:field="*{sortKey}">
+                        <option value="">デフォルト</option>
+                        <option value="id">商品ID</option>
+                        <option value="name">商品名</option>
+                        <option value="price">価格</option>
+                        <option value="category">カテゴリ</option>
+                        <option value="stock">在庫数</option>
+                        <option value="created_at">登録日時</option>
+                    </select>
+
+                    <select th:field="*{sortOrder}">
+                        <option value="asc">昇順</option>
+                        <option value="desc">降順</option>
+                    </select>
+                </div>
+
+                <div class="form-group-inline form-button">
+                    <button type="submit" class="btn-search">検索</button>
+                    <a th:href="@{/admin/products}" class="btn-clear">クリア</a>
+                </div>
+            </form>
+        </details>
+
+        <!-- ==========================
+            商品一覧テーブル
+        =========================== -->
+        <table class="product-table">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>商品名</th>
+                <th>カテゴリ</th>
+                <th>価格</th>
+                <th>在庫数</th>
+                <th>公開/非公開</th>
+                <th>登録日</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <tr th:each="p : ${products}">
+                <td class="td-center"
+                    th:text="${p.id}"></td>
+                <td th:text="${p.name}"></td>
+                <td th:text="${p.category.label}"></td>
+                <td class="td-right"
+                    th:text="${p.price} + '円'"></td>
+
+                <td class="td-right"
+                    th:text="${p.stock}"
+                    th:classappend="${p.stock == 0} ? 'stock-zero' : ''"></td>
+
+                <td class="td-center"
+                    th:text="${p.isActive ? '公開' : '非公開'}"></td>
+
+                <td class="td-center"
+                    th:text="${#temporals.format(p.createdAt, 'yyyy/MM/dd')}"></td>
+
+                <td class="td-center">
+                    <a th:href="@{'/admin/product/edit/' + ${p.id}}" class="btn-small">編集</a>
+                </td>
+            </tr>
+            </tbody>
+
+        </table>
+
+        <div class="pagination">
+            <a th:if="${page > 1}"
+               th:href="@{/admin/products(
+               name=${cond.name},
+               priceMin=${cond.priceMin},
+               priceMax=${cond.priceMax},
+               category=${cond.category},
+               inStock=${cond.inStock},
+               isActive=${cond.isActive},
+               dateFrom=${cond.dateFrom},
+               dateTo=${cond.dateTo},
+               sortKey=${cond.sortKey},
+               sortOrder=${cond.sortOrder},
+               page=${page - 1},
+               size=${size})}">前へ</a>
+
+            <span th:text="${page}"></span>
+
+            <a th:if="${page * size < total}"
+               th:href="@{/admin/products(
+               name=${cond.name},
+               priceMin=${cond.priceMin},
+               priceMax=${cond.priceMax},
+               category=${cond.category},
+               inStock=${cond.inStock},
+               isActive=${cond.isActive},
+               dateFrom=${cond.dateFrom},
+               dateTo=${cond.dateTo},
+               sortKey=${cond.sortKey},
+               sortOrder=${cond.sortOrder},
+               page=${page + 1},
+               size=${size})}">次へ</a>
         </div>
 
-        <!-- 価格範囲 -->
-        <div class="form-group-inline">
-            <label>価格</label>
-            <input type="number" th:field="*{priceMin}" placeholder="下限" min="0">
-            <span>〜</span>
-            <input type="number" th:field="*{priceMax}" placeholder="上限" min="0">
-        </div>
-
-        <!-- カテゴリ -->
-        <div class="form-group-inline">
-            <label>カテゴリ</label>
-            <select th:field="*{category}">
-                <option value="">すべて</option>
-                <option th:each="c : ${categories}"
-                        th:value="${c.name}"
-                        th:text="${c.label}"></option>
-            </select>
-        </div>
-
-        <!-- 在庫有無 -->
-        <div class="form-group-inline">
-            <label>在庫有無</label>
-            <select th:field="*{inStock}">
-                <option value="" th:selected="${condition.inStock == null}">すべて</option>
-                <option value="true" th:selected="${condition.inStock == true}">あり</option>
-                <option value="false" th:selected="${condition.inStock == false}">なし</option>
-            </select>
-        </div>
-
-        <!-- 公開/非公開 -->
-        <div class="form-group-inline">
-            <label>公開/非公開</label>
-            <select th:field="*{isActive}">
-                <option value="" th:selected="${condition.isActive == null}">すべて</option>
-                <option value="true" th:selected="${condition.isActive == true}">公開</option>
-                <option value="false" th:selected="${condition.isActive == false}">非公開</option>
-            </select>
-        </div>
-
-        <!-- 日付 -->
-        <div class="form-group-inline">
-            <label>登録日時</label>
-            <input type="date" th:field="*{dateFrom}">
-            <span>〜</span>
-            <input type="date" th:field="*{dateTo}">
-        </div>
-
-        <!-- ソート -->
-        <div class="form-group-inline">
-            <label>並び替え</label>
-            <select th:field="*{sortKey}">
-                <option value="">デフォルト</option>
-                <option value="id">商品ID</option>
-                <option value="name">商品名</option>
-                <option value="price">価格</option>
-                <option value="category">カテゴリ</option>
-                <option value="stock">在庫数</option>
-                <option value="created_at">登録日時</option>
-            </select>
-
-            <select th:field="*{sortOrder}">
-                <option value="asc">昇順</option>
-                <option value="desc">降順</option>
-            </select>
-        </div>
-
-        <div class="form-group-inline">
-            <button type="submit" class="btn-search">検索</button>
-            <a th:href="@{/admin/products}" class="btn-secondary">クリア</a>
-        </div>
-    </form>
-
-    <!-- ==========================
-        商品一覧テーブル
-    =========================== -->
-    <table class="product-table">
-        <thead>
-        <tr>
-            <th>ID</th>
-            <th>商品名</th>
-            <th>カテゴリ</th>
-            <th>価格</th>
-            <th>在庫数</th>
-            <th>公開/非公開</th>
-            <th>登録日</th>
-            <th>操作</th>
-        </tr>
-        </thead>
-
-        <tbody>
-        <tr th:each="p : ${products}">
-            <td th:text="${p.id}"></td>
-            <td th:text="${p.name}"></td>
-            <td th:text="${p.category.label}"></td>
-            <td th:text="${p.price} + '円'"></td>
-
-            <td th:text="${p.stock}"
-                th:classappend="${p.stock == 0} ? 'stock-zero' : ''"></td>
-
-            <td th:text="${p.isActive ? '公開' : '非公開'}"></td>
-
-            <td th:text="${#temporals.format(p.createdAt, 'yyyy/MM/dd HH:mm')}"></td>
-
-            <td>
-                <a th:href="@{'/admin/product/edit/' + ${p.id}}" class="btn-small">編集</a>
-            </td>
-        </tr>
-        </tbody>
-
-    </table>
-
-    <div class="pagination">
-        <a th:if="${page > 1}"
-           th:href="@{/admin/products(
-           name=${cond.name},
-           priceMin=${cond.priceMin},
-           priceMax=${cond.priceMax},
-           category=${cond.category},
-           inStock=${cond.inStock},
-           isActive=${cond.isActive},
-           dateFrom=${cond.dateFrom},
-           dateTo=${cond.dateTo},
-           sortKey=${cond.sortKey},
-           sortOrder=${cond.sortOrder},
-           page=${page - 1},
-           size=${size})}">前へ</a>
-
-        <span th:text="${page}"></span>
-
-        <a th:if="${page * size < total}"
-           th:href="@{/admin/products(
-           name=${cond.name},
-           priceMin=${cond.priceMin},
-           priceMax=${cond.priceMax},
-           category=${cond.category},
-           inStock=${cond.inStock},
-           isActive=${cond.isActive},
-           dateFrom=${cond.dateFrom},
-           dateTo=${cond.dateTo},
-           sortKey=${cond.sortKey},
-           sortOrder=${cond.sortOrder},
-           page=${page + 1},
-           size=${size})}">次へ</a>
-    </div>
-
-</main>
+    </main>
+</div>
 
 </body>
 </html>

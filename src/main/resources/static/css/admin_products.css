@@ -1,0 +1,210 @@
+/* ================================
+   検索フォーム
+================================ */
+summary {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.search-form {
+    padding: 20px;
+    background: #fafafa;
+    border-radius: 10px;
+    margin-bottom: 30px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.07);
+}
+
+.form-group-inline {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px;
+}
+
+.form-group-inline label {
+    width: 80px;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.search-form input,
+.search-form select {
+    padding: 6px 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    min-width: 120px;
+}
+
+.number-area {
+
+}
+
+.form-button{
+    justify-content: flex-end;
+}
+
+.btn-search {
+    padding: 8px 14px;
+    background: #007bff;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.btn-search:hover {
+    background: #0068d9;
+}
+
+.btn-clear {
+    font-size: 15px;
+    padding: 6px 6px;
+    background: white;
+    color: #333;
+    border: 1px solid #666;
+    border-radius: 6px;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.btn-clear:hover {
+    background: #f2f2f2;
+}
+
+.btn-primary {
+    padding: 8px 14px;
+    border: 1px solid #666;
+    border-radius: 6px;
+    background: white;
+    color: #333;
+    text-decoration: none;
+}
+
+.btn-primary:hover {
+    background: #f2f2f2;
+}
+
+/* ================================
+   商品一覧テーブル
+================================ */
+.product-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.product-table thead {
+    background: #e5e7eb; /* 薄いグレー */
+}
+
+.product-table th {
+    padding: 12px 10px;
+    font-weight: bold;
+    font-size: 14px;
+    border-bottom: 2px solid #ddd;
+    text-align: center;
+    white-space: nowrap;
+}
+
+.product-table td {
+    padding: 10px 12px;
+    border-bottom: 1px solid #eee;
+    font-size: 14px;
+}
+
+.td-right {
+    text-align: right;
+}
+
+.td-center {
+    text-align: center;
+}
+
+
+.product-table tbody tr:nth-child(odd) {
+    background: #fafafa;
+}
+
+.product-table tbody tr:hover {
+    background: #e7f1ff;
+}
+
+/* 在庫ゼロの赤強調 */
+.stock-zero {
+    color: #d93025;
+    font-weight: bold;
+}
+
+/* 公開/非公開バッジ（任意で使用可能） */
+.badge-active {
+    background: #28a745;
+    padding: 4px 8px;
+    color: white;
+    border-radius: 4px;
+    font-size: 12px;
+}
+
+.badge-inactive {
+    background: #999;
+    padding: 4px 8px;
+    color: white;
+    border-radius: 4px;
+    font-size: 12px;
+}
+
+/* 編集ボタン */
+.btn-small {
+    padding: 6px 10px;
+    background: #007bff;
+    color: #fff;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 13px;
+}
+
+.btn-small:hover {
+    background: #0068d9;
+}
+
+/* 操作列を固定幅に */
+.product-table td:last-child,
+.product-table th:last-child {
+    width: 80px;
+}
+
+/* ================================
+   ページネーション
+================================ */
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    margin-top: 20px;
+}
+
+.pagination a {
+    padding: 6px 12px;
+    border: 1px solid #007bff;
+    color: #007bff;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 14px;
+    transition: 0.2s;
+}
+
+.pagination a:hover {
+    background: #007bff;
+    color: #fff;
+}
+
+.pagination span {
+    padding: 6px 12px;
+    background: #f0f0f0;
+    border-radius: 6px;
+    font-weight: bold;
+}
