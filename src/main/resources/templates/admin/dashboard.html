@@ -60,6 +60,7 @@
 
     stomp.connect({}, function () {
 
+        //ここで「controllerが送り、Configが放送したもの」を見ようとしている
         stomp.subscribe('/topic/payment', function (msg) {
 
             console.log("受信:", msg.body);

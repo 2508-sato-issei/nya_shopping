@@ -154,7 +154,7 @@ public class PurchaseController {
         int orderId = orderService.createOrder(purchaseForm, cart, userId);
         orderDetailService.createOrderDetail(orderId, cart);
 
-        //WebSocketの通知
+        //WebSocketの通知(/topic/paymentに対して通知を送るという指令を出す）
         simpMessagingTemplate.convertAndSend("/topic/payment", "新しい注文が入りました（注文ID: " + orderId + "）");
 
         //在庫を減らす
