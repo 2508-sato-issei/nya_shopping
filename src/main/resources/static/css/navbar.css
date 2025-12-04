@@ -1,69 +1,79 @@
 .nya-navbar {
     width: 100%;
-    padding: 10px 20px;
-    background: #ffffff;
-    border-bottom: 2px solid #eee;
+    padding: 12px 24px;
+    background: #2e221c;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.25);
     position: fixed;
     top: 0;
     left: 0;
     z-index: 100;
+    display: flex;
+    justify-content: flex-start;
 }
 
-.navbar-inner {
+.container-fluid {
+    max-width: 1200px;
+    width: 100%;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding: 0 20px;
 }
 
 .brand-area {
     display: flex;
-    align-items: center;
+    flex-direction: column;
+    align-items: flex-start;
     text-decoration: none;
-    color: #333;
+    gap: 3px;
 }
 
-.brand-area .logo {
-    height: 40px;
-    margin-right: 10px;
+.logo {
+    height: 46px;
 }
 
 .site-title {
-    font-size: 20px;
-    font-weight: bold;
+    font-size: 11px;
+    color: #f3e8dc;
+    opacity: 0.9;
+    letter-spacing: 0.05em;
 }
 
 .menu {
     list-style: none;
     display: flex;
     gap: 25px;
-    align-items: center;
     margin: 0;
     padding: 0;
+    align-items: center;
 }
 
 .menu a {
     text-decoration: none;
-    color: #333;
+    color: #eee0d0;
     font-size: 15px;
+    transition: 0.2s;
 }
 
 .menu a:hover {
-    color: #007bff;
+    color: #ffe4b3;
+    transform: translateY(-2px);
 }
 
 .logout-btn {
-    border: none;
     background: none;
-    color: #333;
-    font-size: 15px;
+    border: none;
+    color: #eee0d0;
     cursor: pointer;
-    padding: 0;
+    font-size: 15px;
+    transition: 0.2s;
 }
 
 .logout-btn:hover {
-    color: #007bff;
+    color: #ffe4b3;
 }
 
 body {
-    padding-top: 80px;
+    padding-top: 90px;
 }
