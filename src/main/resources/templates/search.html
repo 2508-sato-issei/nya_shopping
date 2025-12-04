@@ -5,13 +5,14 @@
     <title>検索結果画面</title>
     <link th:href="@{/css/navbar.css}" rel="stylesheet">
     <link th:href="@{/css/style.css}" rel="stylesheet">
+    <link th:href="@{/css/search.css}" rel="stylesheet">
 </head>
 <body>
 <div th:replace="fragments/navbar :: navbar"></div>
 <a th:href="@{/cart}">カートを見る</a>
 <div th:if="${errorMessage != null}" th:text="${errorMessage}"></div>
 <div class="contents">
-    <div>
+    <div class="home-search-area">
         <form th:action="@{/search}" method="get">
 
             <select name="category" th:value="${searchForm.category}">

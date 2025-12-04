@@ -31,7 +31,7 @@ public class SearchController {
         if (searchForm.getSort() == null) {
             searchForm.setSort("");
         }
-        Page<Product> resultPage = productService.searchProduct(searchForm, PageRequest.of(page, 10));
+        Page<Product> resultPage = productService.searchProduct(searchForm, PageRequest.of(page, 20));
         int totalPages = resultPage.getTotalPages();
         int currentPage = resultPage.getNumber();
         int displayRange = 5;
