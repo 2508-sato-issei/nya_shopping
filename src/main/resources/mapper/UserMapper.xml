@@ -52,15 +52,14 @@
             AND isStopped = #{form.isStopped}
         </if>
 
-        <if test="form.startTimeStamp != null and form.startTimeStamp != ''">
+        <if test="form.startTimeStamp != null">
             AND created_at >= #{form.startTimeStamp}
         </if>
 
         <if test="form.endTimeStamp != null">
-            <![CDATA[
-            AND created_at < DATE_ADD(#{form.endTimeStamp}, INTERVAL 1 DAY)
-        ]]>
+            AND created_at &lt;= #{form.endTimeStamp}
         </if>
+
 
 
         <choose>
@@ -123,8 +122,12 @@
             AND isStopped = #{form.isStopped}
         </if>
 
-        <if test="form.startTimeStamp != null and form.startTimeStamp != ''">
+        <if test="form.startTimeStamp != null">
             AND created_at >= #{form.startTimeStamp}
+        </if>
+
+        <if test="form.endTimeStamp != null">
+            AND created_at &lt;= #{form.endTimeStamp}
         </if>
     </select>
 
