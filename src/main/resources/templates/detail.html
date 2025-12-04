@@ -4,10 +4,16 @@
     <meta charset="UTF-8">
     <title th:text="${product.name} + 'の商品詳細'">商品詳細画面</title>
     <link th:href="@{/css/navbar.css}" rel="stylesheet">
+    <link th:href="@{/css/style.css}" rel="stylesheet">
 </head>
 <body>
 <div th:replace="fragments/navbar :: navbar"></div>
-
+<nav>
+    <ul class="navigation">
+        <li><a>ホーム</a></li>
+        <li><a th:text="${product.name}">商品名</a></li>
+    </ul>
+</nav>
 <h1 th:text="${product.name}">商品名</h1>
 
 <div>
@@ -37,7 +43,7 @@
 </form>
 <form th:action="@{/cart/add}" method="post">
     <input type="hidden" name="id" th:value="${product.id}">
-    <button type="submit">カートに入れる</button>
+    <button type="submit" class="active-button ">カートに入れる</button>
 </form>
 </body>
 </html>

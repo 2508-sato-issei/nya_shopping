@@ -19,8 +19,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.example.nya_shopping.validation.ErrorMessage.E0018;
-
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/admin")
@@ -101,25 +99,11 @@ public class AdminProductController {
     }
 
     @GetMapping("/product/edit/{id}")
-    public String showEditForm(@PathVariable("id") String idStr, Model model) {
+    public String showEditForm(@PathVariable("id") Long id, Model model) {
 
         List<String> errors = new ArrayList<>();
 
-        // 数字チェック
-        if (!idStr.matches("\\d+")) {
-            errors.add(E0018);
-            model.addAttribute("errors", errors);
-            return "/";
-        }
-
-        Long id = Long.valueOf(idStr);
-
         ProductForm form = productService.findById(id);
-        if (form == null) {
-            errors.add(E0018);
-            model.addAttribute("errors", errors);
-            return "admin/product_edit";
-        }
 
         model.addAttribute("form", form);
         model.addAttribute("categories", Category.values());
