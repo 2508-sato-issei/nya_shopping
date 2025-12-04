@@ -11,7 +11,7 @@ public class ProductSearchCondition {
 
     private String category;
 
-    private Boolean inStock;   // 在庫あり
+    private Boolean inStock;   // 在庫有無
     private Boolean isActive;  // 公開/非公開
 
     private String dateFrom;   // created_at >=
