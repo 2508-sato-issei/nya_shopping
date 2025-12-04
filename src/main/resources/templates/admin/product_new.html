@@ -32,7 +32,9 @@
     <label>カテゴリー</label><br>
     <select th:field="*{category}">
         <option value="">選択してください</option>
-        <option th:each="c : ${categories}" th:value="${c}" th:text="${c}"></option>
+        <option th:each="c : ${categories}"
+                th:value="${c.name}"
+                th:text="${c.label}"></option>
     </select><br>
 
     <label>在庫数</label><br>

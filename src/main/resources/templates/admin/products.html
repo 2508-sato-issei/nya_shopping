@@ -57,22 +57,24 @@
             <select th:field="*{category}">
                 <option value="">すべて</option>
                 <option th:each="c : ${categories}"
-                        th:value="${c}"
-                        th:text="${c}"></option>
+                        th:value="${c.name}"
+                        th:text="${c.label}"></option>
             </select>
         </div>
 
         <!-- 在庫有無 -->
         <div class="form-group-inline">
-            <label>
-                <input type="checkbox" th:field="*{inStock}">
-                在庫ありのみ
-            </label>
+            <label>在庫有無</label>
+            <select th:field="*{inStock}">
+                <option value="" th:selected="${condition.inStock == null}">すべて</option>
+                <option value="true" th:selected="${condition.inStock == true}">あり</option>
+                <option value="false" th:selected="${condition.inStock == false}">なし</option>
+            </select>
         </div>
 
         <!-- 公開/非公開 -->
         <div class="form-group-inline">
-            <label>公開状態</label>
+            <label>公開/非公開</label>
             <select th:field="*{isActive}">
                 <option value="" th:selected="${condition.isActive == null}">すべて</option>
                 <option value="true" th:selected="${condition.isActive == true}">公開</option>
@@ -134,7 +136,7 @@
         <tr th:each="p : ${products}">
             <td th:text="${p.id}"></td>
             <td th:text="${p.name}"></td>
-            <td th:text="${p.category}"></td>
+            <td th:text="${p.category.label}"></td>
             <td th:text="${p.price} + '円'"></td>
 
             <td th:text="${p.stock}"
@@ -154,12 +156,36 @@
 
     <div class="pagination">
         <a th:if="${page > 1}"
-           th:href="@{/admin/products(page=${page - 1}, size=${size})}">前へ</a>
+           th:href="@{/admin/products(
+           name=${cond.name},
+           priceMin=${cond.priceMin},
+           priceMax=${cond.priceMax},
+           category=${cond.category},
+           inStock=${cond.inStock},
+           isActive=${cond.isActive},
+           dateFrom=${cond.dateFrom},
+           dateTo=${cond.dateTo},
+           sortKey=${cond.sortKey},
+           sortOrder=${cond.sortOrder},
+           page=${page - 1},
+           size=${size})}">前へ</a>
 
         <span th:text="${page}"></span>
 
         <a th:if="${page * size < total}"
-           th:href="@{/admin/products(page=${page + 1}, size=${size})}">次へ</a>
+           th:href="@{/admin/products(
+           name=${cond.name},
+           priceMin=${cond.priceMin},
+           priceMax=${cond.priceMax},
+           category=${cond.category},
+           inStock=${cond.inStock},
+           isActive=${cond.isActive},
+           dateFrom=${cond.dateFrom},
+           dateTo=${cond.dateTo},
+           sortKey=${cond.sortKey},
+           sortOrder=${cond.sortOrder},
+           page=${page + 1},
+           size=${size})}">次へ</a>
     </div>
 
 </main>

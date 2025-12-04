@@ -118,9 +118,16 @@
         </if>
 
         <!-- 在庫 -->
-        <if test="cond.inStock != null and cond.inStock == true">
-            AND stock > 0
-        </if>
+        <choose>
+            <when test="cond.inStock == true">
+                AND stock > 0
+            </when>
+            <when test="cond.inStock == false">
+                AND stock = 0
+            </when>
+            <otherwise>
+            </otherwise>
+        </choose>
 
         <!-- 公開/非公開 -->
         <if test="cond.isActive != null">

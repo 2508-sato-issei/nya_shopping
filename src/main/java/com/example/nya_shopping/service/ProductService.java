@@ -111,7 +111,7 @@ public class ProductService {
         // ==========================
         if (isEmpty(form.getName())) errors.add(E0024);
         if (form.getPrice() == null) errors.add(E0025);
-        if (isEmpty(String.valueOf(form.getCategory()))) errors.add(E0026);
+        if (form.getCategory() == null) errors.add(E0026);
         if (form.getStock() == null) errors.add(E0027);
         if (form.getImageFile() == null || form.getImageFile().isEmpty())
             errors.add(E0028);
@@ -203,7 +203,7 @@ public class ProductService {
         // 必須チェック
         if (isEmpty(form.getName())) errors.add(E0024);
         if (form.getPrice() == null) errors.add(E0025);
-        if (isEmpty(String.valueOf(form.getCategory()))) errors.add(E0026);
+        if (form.getCategory() == null) errors.add(E0026);
         if (form.getStock() == null) errors.add(E0027);
         if (form.getIsActive() == null) errors.add(E0029);
 
