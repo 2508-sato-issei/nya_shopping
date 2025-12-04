@@ -17,6 +17,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry config){
+        //(/topicというチャンネルが放送局。controllerはここを呼び出す
         config.enableSimpleBroker("/topic");
         config.setApplicationDestinationPrefixes("/app");
     }

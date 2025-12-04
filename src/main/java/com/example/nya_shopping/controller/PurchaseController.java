@@ -149,12 +149,15 @@ public class PurchaseController {
         }
 
         //ログインユーザーID取得
-        Integer userId = loginUser.getUser().getId();
+        Integer userId = null;
+        if(loginUser != null){
+            userId = loginUser.getUser().getId();
+        }
         //注文テーブルと注文詳細テーブルに情報を登録
         int orderId = orderService.createOrder(purchaseForm, cart, userId);
         orderDetailService.createOrderDetail(orderId, cart);
 
-        //WebSocketの通知
+        //WebSocketの通知(/topic/paymentに対して通知を送るという指令を出す）
         simpMessagingTemplate.convertAndSend("/topic/payment", "新しい注文が入りました（注文ID: " + orderId + "）");
 
         //在庫を減らす

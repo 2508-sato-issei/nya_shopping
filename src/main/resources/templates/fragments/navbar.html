@@ -6,7 +6,7 @@
     <link th:href="@{/css/navbar.css}" rel="stylesheet">
 </head>
 <body>
-<nav class="navbar navbar-expand-lg nya-navbar fixed-top" th:fragment="navbar">
+<nav class="nya-navbar fixed-top" th:fragment="navbar">
     <div class="container-fluid">
         <!-- ブランド（画像ロゴ） -->
         <a class="brand-area" th:href="@{/}">
@@ -39,6 +39,10 @@
                     <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
                     <button type="submit" class="logout-btn">🚪 ログアウト</button>
                 </form>
+            </li>
+
+            <li>
+                <a class="cart-nav-btn" th:href="@{/cart}">🛒 カート</a>
             </li>
         </ul>
     </div>

@@ -5,13 +5,13 @@
     <title>検索結果画面</title>
     <link th:href="@{/css/navbar.css}" rel="stylesheet">
     <link th:href="@{/css/style.css}" rel="stylesheet">
+    <link th:href="@{/css/search.css}" rel="stylesheet">
 </head>
 <body>
 <div th:replace="fragments/navbar :: navbar"></div>
-<a th:href="@{/cart}">カートを見る</a>
 <div th:if="${errorMessage != null}" th:text="${errorMessage}"></div>
 <div class="contents">
-    <div>
+    <div class="home-search-area">
         <form th:action="@{/search}" method="get">
 
             <select name="category" th:value="${searchForm.category}">
@@ -54,11 +54,23 @@
     <!-- 商品一覧 -->
     <div th:if="${not #lists.isEmpty(results)}">
         <h2>検索結果</h2>
+
         <div class="product-list">
-            <div class="product-card" th:each="product : ${results}">
+            <a class="product-card"
+               th:each="product : ${results}"
+               th:href="@{/product/{id}(
+                    id=${product.id},
+                    category=${searchForm.category},
+                    keyword=${searchForm.keyword},
+                    maxPrice=${searchForm.maxPrice},
+                    minPrice=${searchForm.minPrice},
+                    stock=${searchForm.stock},
+                    sort=${searchForm.sort},
+                    page=${page.number}
+           )}">
 
                 <div class="product-image">
-                    <img th:src="@{'/storage/' + ${product.imageUrl}}" alt="商品画像" width="150">
+                    <img th:src="@{'/storage/' + ${product.imageUrl}}" alt="商品画像">
                 </div>
 
                 <div class="product-info">
@@ -67,22 +79,9 @@
                     <p>価格：<span th:text="${product.price}"></span>円</p>
                     <p>カテゴリー：<span th:text="${product.category.label}"></span></p>
                     <p>在庫：<span th:text="${product.stock}"></span> 点</p>
-
-                    <a th:href="@{/product/{id}(
-                            id=${product.id},
-                            category=${searchForm.category},
-                            keyword=${searchForm.keyword},
-                            maxPrice=${searchForm.maxPrice},
-                            minPrice=${searchForm.minPrice},
-                            stock=${searchForm.stock},
-                            sort=${searchForm.sort},
-                            page=${page.number}
-                        )}">
-                        詳細を見る
-                    </a>
                 </div>
 
-            </div>
+            </a>
         </div>
     </div>
 

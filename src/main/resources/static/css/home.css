@@ -1,0 +1,75 @@
+/* タイトル */
+.home-header {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.home-header h1 {
+    margin: 0;
+    font-size: 26px;
+}
+
+.home-popular-section {
+    margin-top: 60px;
+}
+
+.home-popular-section h2 {
+    font-size: 20px;
+    margin-bottom: 15px;
+}
+
+.home-popular-list {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.home-popular-item {
+    background: #fff;
+    border: 1px solid #eee;
+    padding: 14px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.2s;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    font-size: 14px;
+    color: #444;
+}
+
+.home-search-area {
+    margin-top: 60px;
+}
+
+.home-search-area form {
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    gap: 12px !important;
+    justify-content: center;
+    align-items: center;
+    max-width: 100% !important;
+}
+
+.home-search-area select,
+.home-search-area input[type="text"],
+.home-search-area input[type="number"] {
+    width: 160px;
+    height: 40px;
+    padding: 0 12px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+}
+
+.home-search-area button {
+    height: 40px;
+    padding: 0 20px;
+    background: #ff9900;
+    border: none;
+    border-radius: 6px;
+    color: #fff;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+
+

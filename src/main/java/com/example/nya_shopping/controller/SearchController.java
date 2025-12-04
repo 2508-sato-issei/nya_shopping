@@ -31,7 +31,7 @@ public class SearchController {
         if (searchForm.getSort() == null) {
             searchForm.setSort("");
         }
-        Page<Product> resultPage = productService.searchProduct(searchForm, PageRequest.of(page, 10));
+        Page<Product> resultPage = productService.searchProduct(searchForm, PageRequest.of(page, 20));
         int totalPages = resultPage.getTotalPages();
         int currentPage = resultPage.getNumber();
         int displayRange = 5;
@@ -79,7 +79,7 @@ public class SearchController {
             return "redirect:/";
         }
 
-        model.addAttribute("category", Category.values());
+        model.addAttribute("category", category);
         model.addAttribute("keyword", keyword);
         model.addAttribute("maxPrice", maxPrice);
         model.addAttribute("minPrice", minPrice);
