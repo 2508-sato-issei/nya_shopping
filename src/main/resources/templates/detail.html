@@ -5,45 +5,71 @@
     <title th:text="${product.name} + 'の商品詳細'">商品詳細画面</title>
     <link th:href="@{/css/navbar.css}" rel="stylesheet">
     <link th:href="@{/css/style.css}" rel="stylesheet">
+    <link th:href="@{/css/detail.css}" rel="stylesheet">
 </head>
 <body>
 <div th:replace="fragments/navbar :: navbar"></div>
-<nav>
-    <ul class="navigation">
-        <li><a>ホーム</a></li>
-        <li><a th:text="${product.name}">商品名</a></li>
-    </ul>
-</nav>
-<h1 th:text="${product.name}">商品名</h1>
+<div class="detail-wrapper">
 
-<div>
-    <p><strong>商品ID：</strong> <span th:text="${product.id}"></span></p>
-    <p><strong>価格：</strong> <span th:text="${product.price}"></span> 円</p>
-    <p><strong>カテゴリー：</strong> <span th:text="${product.category.label}"></span></p>
-    <p><strong>在庫数：</strong> <span th:text="${product.stock}"></span></p>
+    <!-- 左側：画像 -->
+    <div class="detail-image">
+        <img th:src="@{'/storage/' + ${product.imageUrl}}" alt="商品画像">
+    </div>
 
-    <p><strong>説明：</strong></p>
-    <p th:text="${product.description}">説明文</p>
+    <!-- 右側：商品情報 -->
+    <div class="detail-info">
+        <h1 th:text="${product.name}"></h1>
 
-    <p><strong>画像：</strong></p>
-    <div th:if="${product.imageUrl != null}">
-        <img th:src="@{'/storage/' + ${product.imageUrl}}" alt="商品画像" style="max-width: 300px;">
+        <p><strong>カテゴリー：</strong><span th:text="${product.category.label}"></span></p>
+        <p><strong>在庫：</strong><span th:text="${product.stock}"></span> 点</p>
+        <p><strong>説明：</strong></p>
+        <p th:text="${product.description}"></p>
+
+        <div class="buy-block">
+            <div class="qty-area">
+                <button type="button" class="qty-down">－</button>
+                <input type="number" id="detailQty" name="quantity" value="1" min="1">
+                <button type="button" class="qty-up">＋</button>
+            </div>
+
+            <div class="detail-price">
+                価格：<span th:text="${product.price}"></span> 円
+            </div>
+
+            <form th:action="@{/cart/add}" method="post">
+                <input type="hidden" name="id" th:value="${product.id}">
+                <input type="hidden" id="qtyHidden" name="quantity" value="1">
+                <button type="submit" class="add-cart-btn">カートに入れる</button>
+            </form>
+        </div>
+
     </div>
 </div>
+<script>
+    const qtyInput = document.getElementById("detailQty");
+    const qtyHidden = document.getElementById("qtyHidden");
 
-<form th:action="@{/search}" method="get">
-    <input type="hidden" name="category" th:value="${category}">
-    <input type="hidden" name="keyword" th:value="${keyword}">
-    <input type="hidden" name="maxPrice" th:value="${maxPrice}">
-    <input type="hidden" name="minPrice" th:value="${minPrice}">
-    <input type="hidden" name="stock" th:value="${stock}">
-    <input type="hidden" name="sort" th:value="${sort}">
-    <input type="hidden" name="page" th:value="${page}">
-    <button type="submit">戻る</button>
-</form>
-<form th:action="@{/cart/add}" method="post">
-    <input type="hidden" name="id" th:value="${product.id}">
-    <button type="submit" class="active-button ">カートに入れる</button>
-</form>
+    document.querySelector(".qty-down").addEventListener("click", () => {
+        let v = parseInt(qtyInput.value);
+        if (v > 1) v--;
+        qtyInput.value = v;
+        qtyHidden.value = v;
+    });
+
+    document.querySelector(".qty-up").addEventListener("click", () => {
+        let v = parseInt(qtyInput.value);
+        v++;
+        qtyInput.value = v;
+        qtyHidden.value = v;
+    });
+
+    qtyInput.addEventListener("change", () => {
+        let v = parseInt(qtyInput.value);
+        if (v < 1) v = 1;
+        qtyInput.value = v;
+        qtyHidden.value = v;
+    });
+</script>
+
 </body>
 </html>

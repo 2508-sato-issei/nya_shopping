@@ -77,3 +77,19 @@
 body {
     padding-top: 90px;
 }
+
+.cart-nav-btn {
+    background: transparent;
+    color: #f3e8dc !important;
+    padding: 6px 14px;
+    border-radius: 6px;
+    border: 1px solid #f3e8dc;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 14px;
+    transition: 0.2s;
+}
+
+.cart-nav-btn:hover {
+    background: rgba(255, 255, 255, 0.15);
+}

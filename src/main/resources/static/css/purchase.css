@@ -1,0 +1,129 @@
+.purchase-container {
+    max-width: 900px;
+    margin: 40px auto;
+    display: flex;
+    gap: 40px;
+}
+
+.purchase-left {
+    flex: 1;
+}
+
+.purchase-right {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.purchase-title {
+    font-size: 20px;
+    margin-bottom: 15px;
+    color: #4a3d35;
+    font-weight: bold;
+}
+
+.purchase-table {
+    width: 70%;
+    margin: 0 auto;
+    border-collapse: collapse;
+    background: #fff;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.purchase-table th {
+    background: #f7f3ef;
+    padding: 12px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.purchase-table td {
+    padding: 12px;
+    border-bottom: 1px solid #eee;
+    text-align: center;
+}
+
+.purchase-table th:first-child,
+.purchase-table td:first-child {
+    width: 100px;
+    text-align: center;
+}
+
+.total-box {
+    width: 50%;
+    margin: 25px auto 0;
+    font-size: 20px;
+    font-weight: bold;
+    padding: 12px;
+    text-align: center;
+    color: #222;
+    background: #fffbf7;
+    border-radius: 6px;
+    border: 1px solid #e5d8c8;
+}
+
+.purchase-form {
+    width: 50%;
+    margin: 0 auto;
+    background: #fff;
+    padding: 20px 25px;
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.form-block {
+    margin-bottom: 20px;
+}
+
+.form-block label {
+    display: block;
+    margin-bottom: 6px;
+    color: #4a3d35;
+    font-weight: bold;
+}
+
+.form-block input {
+    width: 60%;
+    height: 40px;
+    border: 1px solid #d0c5bd;
+    border-radius: 6px;
+    padding: 0 10px;
+    box-sizing: border-box;
+    display: block;
+    margin: 0 auto;
+}
+
+.purchase-btn {
+    width: 60%;
+    padding: 12px;
+    background: #d9843b;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+    display: block;
+    margin: 0 auto;
+}
+
+.purchase-btn:hover {
+    background: #bf742f;
+}
+
+.error {
+    color: #c13a2d;
+    font-size: 16px;
+    margin-top: 4px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.purchase-thumb {
+    width: 80px;
+    height: auto;
+    border-radius: 4px;
+    object-fit: cover;
+}
