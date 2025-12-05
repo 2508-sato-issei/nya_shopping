@@ -1,0 +1,59 @@
+/* エラー表示 */
+.error-box {
+    display: block;
+    background: #ffe5e5;
+    border-left: 4px solid #d93025;
+    padding: 12px 16px;
+    border-radius: 6px;
+    width: 75%;
+    margin: auto;
+}
+
+.error-box ul {
+    margin: 0;
+    padding-left: 18px;
+    color: #d93025;
+}
+
+form {
+    max-width: 600px;
+    margin: 0 auto;
+    background: #fff;
+    padding: 0 40px 30px;
+    border-radius: 10px;
+}
+
+.csv-form label {
+    font-weight: 600;
+    margin-top: 18px;
+    display: block;
+}
+
+.csv-form input[type="file"]
+{
+    width: 100%;
+    padding: 10px 12px;
+    margin-top: 6px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 15px;
+    box-sizing: border-box;
+}
+
+/* ボタン系 */
+.btn-submit {
+    display: block;
+    margin: 35px auto 0;
+    width: 30%;
+    padding: 12px;
+    background: #d9843b;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.btn-submit:hover {
+    background: #bf742f;
+}
