@@ -130,4 +130,45 @@
         WHERE id = #{id}
     </update>
 
+    <select id="findOrderHistory"
+            resultType="com.example.nya_shopping.dto.OrderHistoryItemDto">
+
+        SELECT
+        O.id,
+        O.total_amount AS totalAmount,
+        O.status,
+        O.created_at AS createdAt,
+        COALESCE(SUM(OD.quantity), 0) AS totalItems
+        FROM
+        orders O
+        LEFT JOIN
+        order_details OD ON O.id = OD.order_id
+
+        WHERE O.user_id = #{userId} <if test="form.status != null and form.status != ''">
+        AND O.status = #{form.status}
+    </if>
+
+        <if test="form.startDate != null and form.endDate != null">
+            AND O.created_at >= #{form.startDate}
+            <![CDATA[
+            AND O.created_at < DATE_ADD(#{form.endDate}, INTERVAL 1 DAY)
+            ]]>
+        </if>
+
+        GROUP BY
+        O.id, O.total_amount, O.status, O.created_at  ORDER BY
+        O.created_at DESC
+    </select>
+
+    <select id="findOrderYearsByUserId" resultType="java.lang.Integer">
+        SELECT DISTINCT
+        YEAR(created_at)
+        FROM
+        orders
+        WHERE
+        user_id = #{userId}
+        ORDER BY
+        YEAR(created_at) DESC
+    </select>
+
 </mapper>

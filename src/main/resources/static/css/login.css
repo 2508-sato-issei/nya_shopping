@@ -77,3 +77,18 @@
     font-size: 12px;
     color: #7a6f69;
 }
+
+.register-link {
+    text-align: center;
+    font-size: 14px;
+    margin-top: 12px;
+}
+
+.register-link a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.register-link a:hover {
+    text-decoration: underline;
+}

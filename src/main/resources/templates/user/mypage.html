@@ -1,10 +1,127 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+<html lang="ja" xmlns:th="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta charset="UTF-8">
+        <title>マイページ</title>
+    </head>
+    <body>
+        <h1>マイペ―ジ</h1>
+        <!--メニュー（ホーム画面・会員情報変更画面へ遷移できる）-->
+        <div>
+            <a th:href="@{/}">ホームへ戻る</a>
+            <a th:href="@{/user/mypage/edit}">会員情報変更</a>
+        </div>
+        <!--会員情報-->
+        <h2>会員情報</h2>
+        <div th:object="${user}">
+            <!--メールアドレス-->
+            <label>メールアドレス:</label>
+            <span th:text="*{email}"></span>
+            <!--氏名-->
+            <label>氏名:</label>
+            <span th:text="*{name}"></span>
+            <!--郵便番号-->
+            <label>郵便番号:</label>
+            <span th:text="*{postalCode}"></span>
+            <!--住所-->
+            <label>住所:</label>
+            <span th:text="*{address}"></span>
+            <!--電話番号-->
+            <label>電話番号:</label>
+            <span th:text="*{phone}"></span>
+            <!--登録日時-->
+            <label>購入日時:</label>
+            <span th:text="*{#dates.format(createdAt, 'yyyy/MM/dd HH:mm')}"></span>
+        </div>
 
-</body>
+        <!--注文履歴一覧-->
+        <h2 th:text="'注文履歴' + (${#lists.isEmpty(orderHistoryList)} ? '' : ' (' + ${#lists.size(orderHistoryList)} + '件)')"></h2>
+
+        <div th:object="${myPageForm}">
+        </div>
+
+        <div th:object="${myPageForm}">
+            <p th:if="${globalError == null} and *{startDate} != null and *{endDate} != null"
+               style="font-size: 0.9em; margin-top: -10px; color: #555;">
+                現在、
+                <span th:text="*{#temporals.format(startDate, 'yyyy年MM月')}"></span>
+                から
+                <span th:text="*{#temporals.format(endDate, 'yyyy年MM月')}"></span>
+                までの注文を表示しています。
+            </p>
+
+            <p th:if="${globalError == null} and *{startDate} == null and *{endDate} == null"
+               style="font-size: 0.9em; margin-top: -10px; color: #555;">
+                現在、全期間の注文を表示しています。
+            </p>
+        </div>
+        <div th:if="${globalError}" style="color: red;">
+            <p th:text="${globalError}"></p>
+        </div>
+
+
+        <form th:action="@{/user/mypage}" th:object="${myPageForm}" method="get">
+        <!--注文検索-->
+            <!--発送状態検索-->
+            <label>発送状態：</label>
+            <select th:field="*{status}">
+                <option value="">全て</option>
+                <option value="CONFIRMED" th:text="'注文確定（支払い成功）'"></option>
+                <option value="PREPARING" th:text="発送準備中"></option>
+                <option value="SHIPPED" th:text="発送済み"></option>
+            </select>
+            <!--注文年検索欄-->
+            <label>年：</label>
+            <select th:field="*{year}">
+                <option value=""></option>
+                <option th:each="y : ${orderYears}" th:value="${y}" th:text="${y}"></option>
+            </select>
+            <!--注文月検索欄-->
+            <label>月：</label>
+            <select th:field="*{month}">
+                <option value=""></option>
+                <option th:each="m : ${#numbers.sequence(1,12)}"
+                        th:value="${m}"
+                        th:text="${m}">
+                </option>
+            </select>
+            <!--絞り込みボタン-->
+            <button type="submit">絞り込み</button>
+        </form>
+
+        <!--何もないときにメッセージを出す-->
+        <div th:if="${#lists.isEmpty(orderHistoryList)}">
+            注文履歴はありません。
+        </div>
+
+
+        <table th:unless="${#lists.isEmpty(orderHistoryList)}">
+            <thead>
+                <tr>
+                    <th>注文日</th>
+                    <th>合計金額</th>
+                    <th>購入点数</th>
+                    <th>発送状態</th>
+                    <th>詳細</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="order : ${orderHistoryList}">
+                    <td th:text="${#dates.format(order.createdAt, 'yyyy/MM/dd')}"></td>
+                    <td th:text="'¥' + ${#numbers.formatInteger(order.totalAmount, 1, 'COMMA')}"></td>
+                    <td th:text="${order.totalItems}"></td>
+                    <td>
+                        <span th:switch="${order.status}">
+                                <span th:case="'CONFIRMED'">注文確定（支払い成功）</span>
+                                <span th:case="'PREPARING'">発送準備中</span>
+                                <span th:case="'SHIPPED'">発送済み</span>
+                                <span th:case="*">その他</span>
+                        </span>
+                    </td>
+                    <td>
+                        <a th:href="@{/user/order/detail/{id}(id=${order.id})}">詳細</a>
+                    </td>
+            </tbody>
+        </table>
+    </body>
 </html>

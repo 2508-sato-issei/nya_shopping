@@ -1,6 +1,8 @@
 package com.example.nya_shopping.repository;
 
+import com.example.nya_shopping.controller.form.MyPageOrderNarrowForm;
 import com.example.nya_shopping.controller.form.OrderNarrowForm;
+import com.example.nya_shopping.dto.OrderHistoryItemDto;
 import com.example.nya_shopping.repository.entity.Order;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.data.repository.query.Param;
@@ -23,4 +25,14 @@ public interface OrderRepository {
 
     void updateOrderStatus(@Param("id") Integer id,
                            @Param("status") String status);
+
+    //マイページで注文履歴一覧を取得する。
+    List<OrderHistoryItemDto> findOrderHistory(@Param("userId") Integer userId,
+                                               @Param("form") MyPageOrderNarrowForm form);
+
+    //注文した年を取得
+    List<Integer> findOrderYearsByUserId(@Param("userId") Integer userId);
+
+
+
 }

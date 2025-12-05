@@ -7,6 +7,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import java.util.List;
+
 @Controller
 public class HomeController {
 
@@ -20,6 +22,15 @@ public class HomeController {
             session.removeAttribute("errorMessage");
         }
 
+        List<Category> popularCategories = List.of(
+                Category.PC_AND_PERIPHERALS,
+                Category.STATIONERY_AND_SUPPLIES,
+                Category.OA_EQUIPMENT
+        );
+        List<String> popularKeywords = List.of("ノートPC", "プリンタ", "オフィスチェア", "業務用");
+
+        model.addAttribute("popularCategories", popularCategories);
+        model.addAttribute("popularKeywords", popularKeywords);
         model.addAttribute("categories", Category.values());
         model.addAttribute("searchForm", new SearchForm());
         return "index";

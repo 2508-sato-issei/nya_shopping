@@ -36,4 +36,8 @@ public class UserService {
 
         return new PageImpl<>(userList, pageRequest, total);
     }
+
+//   public void updateUserStatus(UserStatusForm form) {
+//       userRepository.updateUserStatus(form.getId(), form.getIsStopped());
+//    }
 }

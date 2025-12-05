@@ -1,6 +1,7 @@
 package com.example.nya_shopping.controller;
 
 import com.example.nya_shopping.controller.form.UserNarrowForm;
+import com.example.nya_shopping.controller.security.LoginUserDetails;
 import com.example.nya_shopping.repository.entity.User;
 import com.example.nya_shopping.service.UserService;
 
@@ -8,10 +9,12 @@ import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
@@ -23,7 +26,8 @@ public class AdminUserController {
     @GetMapping("/admin/users")
     public String showAdminUser(Model model,
                                 @ModelAttribute UserNarrowForm form,
-                                @RequestParam(defaultValue = "0") int page){
+                                @RequestParam(defaultValue = "0") int page,
+                                @AuthenticationPrincipal LoginUserDetails loginUser){
         Page<User> resultPage = userService.findAllUser
                 (form, PageRequest.of(page, 10));
         int totalPages = resultPage.getTotalPages();
@@ -40,9 +44,13 @@ public class AdminUserController {
         boolean showFirst = totalPages > 0 && startPage > 0;
         boolean showLast = totalPages > 0 && endPage < totalPages - 1;
 
+        // ログイン中のユーザー情報を取得
+        User loginUserEntity = loginUser.getUser();
+
+
         model.addAttribute("form", form);
         model.addAttribute("userList", resultPage);
-
+        model.addAttribute("loginUser", loginUserEntity);
         // ページネーション
         model.addAttribute("page", resultPage);
         model.addAttribute("startPage", startPage);
@@ -51,4 +59,10 @@ public class AdminUserController {
         model.addAttribute("showLast", showLast);
         return "admin/users";
     }
+
+//    @PostMapping("/admin/user/status")
+//    public String updateUserStatus(Model model, UserStatusForm form) {
+//       userService.updateUserStatus(form);
+//        return "redirect:/admin/users";
+//    }
 }

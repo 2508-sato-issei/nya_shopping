@@ -9,7 +9,7 @@
 </head>
 <body>
 <div th:replace="fragments/navbar :: navbar"></div>
-<div th:if="${errorMessage != null}" th:text="${errorMessage}"></div>
+<div th:if="${errorMessage != null}" th:text="${errorMessage}" class="error-item"></div>
 <div class="contents">
     <div class="home-search-area">
         <form th:action="@{/search}" method="get">
@@ -37,27 +37,17 @@
             <button type="submit">検索</button>
         </form>
     </div>
-    <div class="home-popular-section">
-        <h2>人気カテゴリ</h2>
-
-        <div class="home-popular-list">
-
-            <div class="home-popular-item">
-                <span>オフィス用品（雑貨）</span>
-            </div>
-
-            <div class="home-popular-item">
-                <span>OA機器</span>
-            </div>
-
-            <div class="home-popular-item">
-                <span>PC・周辺機器</span>
-            </div>
-
-            <div class="home-popular-item">
-                <span>文房具・消耗品</span>
-            </div>
-
+    <h2>✨ 人気カテゴリ ✨</h2>
+    <div class="home-popular-list">
+        <div class="home-popular-item" th:each="cat : ${popularCategories}">
+            <a th:href="@{/search(category=${cat.name()})}"
+               th:text="${cat.label}"></a>
+        </div>
+    </div>
+    <h2>🎢 人気キーワード 🎢</h2>
+    <div class="home-popular-list">
+        <div class="home-popular-item" th:each="kw : ${popularKeywords}">
+            <a th:href="@{/search(keyword=${kw})}" th:text="${kw}"></a>
         </div>
     </div>
 </div>
