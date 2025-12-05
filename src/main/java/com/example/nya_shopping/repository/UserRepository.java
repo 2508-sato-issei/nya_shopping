@@ -12,6 +12,8 @@ import java.util.Optional;
 public interface UserRepository {
     Optional<User> findByEmail(@Param("email") String email);
 
+    void save(User user);
+    
     List<User> findAllUser(@Param("form")UserNarrowForm form,
                             @Param("offset") int offset,
                             @Param("limit") int limit);
