@@ -50,6 +50,14 @@
             <a th:href="@{/search(keyword=${kw})}" th:text="${kw}"></a>
         </div>
     </div>
+    <h2>🆕 新着アイテム 🆕</h2>
+    <div class="home-new-list">
+        <a class="home-new-item" th:each="item : ${newItems}"
+           th:href="@{/product/{id}(id=${item.id})}">
+            <img th:src="@{'/storage/' + ${item.imageUrl}}" alt="商品画像">
+            <p th:text="${item.name}"></p>
+        </a>
+    </div>
 </div>
 </body>
 </html>
