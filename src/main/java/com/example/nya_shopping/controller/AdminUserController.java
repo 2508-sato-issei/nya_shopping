@@ -60,9 +60,9 @@ public class AdminUserController {
         return "admin/users";
     }
 
-    //@PostMapping("/admin/user/status")
-    //public String updateUserStatus(Model model, UserStatusForm form) {
-      //  userService.updateUserStatus(form);
-        //return "redirect:/admin/users";
-    //}
+//    @PostMapping("/admin/user/status")
+//    public String updateUserStatus(Model model, UserStatusForm form) {
+//       userService.updateUserStatus(form);
+//        return "redirect:/admin/users";
+//    }
 }
