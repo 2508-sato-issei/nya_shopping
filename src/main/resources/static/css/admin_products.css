@@ -45,7 +45,7 @@ summary {
 
 .btn-search {
     padding: 8px 14px;
-    background: #007bff;
+    background: #d9843b;
     color: white;
     border: none;
     border-radius: 6px;
@@ -53,7 +53,7 @@ summary {
 }
 
 .btn-search:hover {
-    background: #0068d9;
+    background: #bf742f;
 }
 
 .btn-clear {
@@ -159,7 +159,7 @@ summary {
 /* 編集ボタン */
 .btn-small {
     padding: 6px 10px;
-    background: #007bff;
+    background: #d9843b;
     color: #fff;
     border-radius: 6px;
     text-decoration: none;
@@ -167,7 +167,7 @@ summary {
 }
 
 .btn-small:hover {
-    background: #0068d9;
+    background: #bf742f;
 }
 
 /* 操作列を固定幅に */
@@ -181,30 +181,32 @@ summary {
 ================================ */
 .pagination {
     display: flex;
+    gap: 6px;
     justify-content: center;
     align-items: center;
-    gap: 12px;
-    margin-top: 20px;
+    margin: 30px 0;
+    flex-wrap: wrap;
 }
 
-.pagination a {
+.pagination a,
+.pagination span {
     padding: 6px 12px;
-    border: 1px solid #007bff;
-    color: #007bff;
+    border: 1px solid #d9843b;
     border-radius: 6px;
-    text-decoration: none;
     font-size: 14px;
+    text-decoration: none;
+    color: black;
     transition: 0.2s;
 }
 
 .pagination a:hover {
-    background: #007bff;
+    background: #d9843b;
     color: #fff;
 }
 
-.pagination span {
-    padding: 6px 12px;
-    background: #f0f0f0;
-    border-radius: 6px;
-    font-weight: bold;
+.active-page {
+    background: #007bff !important;
+    color: #fff !important;
+    border-color: #007bff;
 }
+

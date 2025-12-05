@@ -6,6 +6,7 @@
     <link th:href="@{/css/style.css}" rel="stylesheet">
     <link th:href="@{/css/navbar.css}" rel="stylesheet">
     <link rel="stylesheet" th:href="@{/css/admin.css}">
+    <link rel="stylesheet" th:href="@{/css/admin_products_csv.css}">
 </head>
 <body>
 
@@ -25,15 +26,16 @@
     <h1>商品一括登録</h1>
 
     <!-- エラー表示 -->
-    <div th:if="${errors != null}">
+    <div th:if="${errors != null}" class="error-box">
         <ul>
             <li th:each="err : ${errors}" th:text="${err}"></li>
         </ul>
     </div>
 
-    <form th:action="@{/admin/products/import/csv}" method="post" enctype="multipart/form-data">
+    <form th:action="@{/admin/products/import/csv}" method="post" enctype="multipart/form-data" class="csv-form">
+        <label>商品一覧（CSV）</label>
         <input type="file" name="file" accept=".csv">
-        <button type="submit">アップロード</button>
+        <button type="submit" class="btn-submit">アップロード</button>
     </form>
 </div>
 
