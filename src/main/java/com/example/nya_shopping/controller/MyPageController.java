@@ -34,10 +34,10 @@ public class MyPageController {
 
         if (form.getMonth() != null && form.getYear() == null) {
 
-            // 1. エラーメッセージをModelに設定
+            //エラーメッセージをModelに設定
             model.addAttribute("globalError", "月を指定する場合は、年を必ず指定してください。");
 
-            // 2. 画面再表示に必要なデータを再取得
+            //画面再表示に必要なデータを再取得
             model.addAttribute("myPageForm", form);
             model.addAttribute("user", user);
             model.addAttribute("orderYears", myPageService.findOrderYearsByUserId(userId));
@@ -52,15 +52,15 @@ public class MyPageController {
         //注文年を取得
         List<Integer> orderYears = myPageService.findOrderYearsByUserId(userId);
 
-        //1.会員情報、注文履歴リスト、注文年リストをModelにセット
+        //会員情報、注文履歴リスト、注文年リストをModelにセット
         model.addAttribute("user", user);
         model.addAttribute("orderHistoryList", orderHistoryList);
         model.addAttribute("orderYears", orderYears);
 
-        //2.絞り込みフォーム（画面再表示用）をModelにセット
+        //絞り込みフォーム（画面再表示用）をModelにセット
         model.addAttribute("myPageForm", form);
 
-        //3.注文状態の選択肢をModelにセット
+        //注文状態の選択肢をModelにセット
         List<String> orderStatusOptions = List.of("CONFIRMED", "PREPARING", "SHIPPED");
         model.addAttribute("orderStatusesList", orderStatusOptions);
 
