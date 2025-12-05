@@ -107,9 +107,17 @@
                 <td th:text="${u.role}"></td>
 
                 <!--ユーザーのアクティブ状態-->
-                <td th:text="${u.isStopped} ? '停止中' : '稼働中'"></td>
+                <td>
+                    <span th:text="${u.isStopped} ? '停止中' : '稼働中'"></span>
 
-                <!--注文状態-->
+                    <form method="post" th:action="@{/admin/user/status}">
+                        <input type="hidden" name="id" th:value="${u.id}">
+                        <input type="hidden" name="isStopped" th:value="${!u.isStopped}">
+                        <button type="submit"  th:disabled="${loginUser.id == u.id}">切り替え</button>
+                    </form>
+                </td>
+
+                <!--登録日時-->
                 <td th:text="${u.createdAt}">
                 </td>
             </tr>

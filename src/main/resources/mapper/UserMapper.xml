@@ -131,4 +131,10 @@
         </if>
     </select>
 
+    <update id="updateUserStatus">
+        UPDATE users
+        SET is_stopped = #{isStopped}
+        WHERE id = #{id}
+    </update>
+
 </mapper>
