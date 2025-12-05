@@ -129,8 +129,9 @@ public class PurchaseController {
             return "redirect:/cart";
         }
 
-        //Stripeセッション作成
+        //Stripeセッション作成（商品の情報をStripeへ渡す）
         Session sessionObj = paymentService.createCheckoutSession(cart);
+        //Stripeが用意したCheckoutページのURL（決済画面）に飛ばしている
         return "redirect:" + sessionObj.getUrl();
     }
 
