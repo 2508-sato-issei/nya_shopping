@@ -16,7 +16,7 @@
 .navigation {
     display: flex;
     gap: 12px;
-    font-size: 10px;
+    font-size: 15px;
     color: #666;
 }
 .navigation li {

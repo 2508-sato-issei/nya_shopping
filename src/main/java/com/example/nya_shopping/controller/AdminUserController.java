@@ -1,7 +1,6 @@
 package com.example.nya_shopping.controller;
 
 import com.example.nya_shopping.controller.form.UserNarrowForm;
-import com.example.nya_shopping.controller.form.UserStatusForm;
 import com.example.nya_shopping.controller.security.LoginUserDetails;
 import com.example.nya_shopping.repository.entity.User;
 import com.example.nya_shopping.service.UserService;
@@ -61,9 +60,9 @@ public class AdminUserController {
         return "admin/users";
     }
 
-    @PostMapping("/admin/user/status")
-    public String updateUserStatus(Model model, UserStatusForm form) {
-        userService.updateUserStatus(form);
-        return "redirect:/admin/users";
-    }
+    //@PostMapping("/admin/user/status")
+    //public String updateUserStatus(Model model, UserStatusForm form) {
+      //  userService.updateUserStatus(form);
+        //return "redirect:/admin/users";
+    //}
 }

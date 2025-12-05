@@ -9,6 +9,11 @@
 </head>
 <body>
 <div th:replace="fragments/navbar :: navbar"></div>
+<ul class="navigation">
+    <li><a th:href="@{/}">ホーム</a></li>
+    <li><a th:href="@{/search}">検索結果</a></li>
+    <li th:text="${product.name}"></li>
+</ul>
 <div class="detail-wrapper">
 
     <!-- 左側：画像 -->
