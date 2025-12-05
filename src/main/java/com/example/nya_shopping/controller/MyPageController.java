@@ -32,6 +32,20 @@ public class MyPageController {
         User user = loginUser.getUser();
         Integer userId = user.getId();
 
+        if (form.getMonth() != null && form.getYear() == null) {
+
+            // 1. エラーメッセージをModelに設定
+            model.addAttribute("globalError", "月を指定する場合は、年を必ず指定してください。");
+
+            // 2. 画面再表示に必要なデータを再取得
+            model.addAttribute("myPageForm", form);
+            model.addAttribute("user", user);
+            model.addAttribute("orderYears", myPageService.findOrderYearsByUserId(userId));
+
+            //注文履歴を取得せずに画面に戻る
+            return "user/mypage";
+        }
+
         //注文情報取得（メソッドを活用）
         List<OrderHistoryItemDto> orderHistoryList = myPageService.findOrderHistory(userId, form);
 
@@ -50,7 +64,7 @@ public class MyPageController {
         List<String> orderStatusOptions = List.of("CONFIRMED", "PREPARING", "SHIPPED");
         model.addAttribute("orderStatusesList", orderStatusOptions);
 
-        return "mypage";
+        return "user/mypage";
 
 
     }

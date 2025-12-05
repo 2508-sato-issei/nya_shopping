@@ -31,11 +31,35 @@
             <span th:text="*{phone}"></span>
             <!--登録日時-->
             <label>購入日時:</label>
-            <span th:text="*{#temporals.format(createdAt, 'yyyy/MM/dd HH:mm')}"></span>
+            <span th:text="*{#dates.format(createdAt, 'yyyy/MM/dd HH:mm')}"></span>
         </div>
 
         <!--注文履歴一覧-->
         <h2 th:text="'注文履歴' + (${#lists.isEmpty(orderHistoryList)} ? '' : ' (' + ${#lists.size(orderHistoryList)} + '件)')"></h2>
+
+        <div th:object="${myPageForm}">
+        </div>
+
+        <div th:object="${myPageForm}">
+            <p th:if="${globalError == null} and *{startDate} != null and *{endDate} != null"
+               style="font-size: 0.9em; margin-top: -10px; color: #555;">
+                現在、
+                <span th:text="*{#temporals.format(startDate, 'yyyy年MM月')}"></span>
+                から
+                <span th:text="*{#temporals.format(endDate, 'yyyy年MM月')}"></span>
+                までの注文を表示しています。
+            </p>
+
+            <p th:if="${globalError == null} and *{startDate} == null and *{endDate} == null"
+               style="font-size: 0.9em; margin-top: -10px; color: #555;">
+                現在、全期間の注文を表示しています。
+            </p>
+        </div>
+        <div th:if="${globalError}" style="color: red;">
+            <p th:text="${globalError}"></p>
+        </div>
+
+
         <form th:action="@{/user/mypage}" th:object="${myPageForm}" method="get">
         <!--注文検索-->
             <!--発送状態検索-->
@@ -49,13 +73,13 @@
             <!--注文年検索欄-->
             <label>年：</label>
             <select th:field="*{year}">
-                <option value="">全て</option>
+                <option value=""></option>
                 <option th:each="y : ${orderYears}" th:value="${y}" th:text="${y}"></option>
             </select>
             <!--注文月検索欄-->
-            <label>月</label>
+            <label>月：</label>
             <select th:field="*{month}">
-                <option value="">全て</option>
+                <option value=""></option>
                 <option th:each="m : ${#numbers.sequence(1,12)}"
                         th:value="${m}"
                         th:text="${m}">
@@ -83,8 +107,8 @@
             </thead>
             <tbody>
                 <tr th:each="order : ${orderHistoryList}">
-                    <td th:text="${#temporals.format(order.createdAt, 'yyyy/MM/dd')}"></td>
-                    <td th:text="${#numbers.formatCurrency(order.totalAmount)}"></td>
+                    <td th:text="${#dates.format(order.createdAt, 'yyyy/MM/dd')}"></td>
+                    <td th:text="'¥' + ${#numbers.formatInteger(order.totalAmount, 1, 'COMMA')}"></td>
                     <td th:text="${order.totalItems}"></td>
                     <td>
                         <span th:switch="${order.status}">

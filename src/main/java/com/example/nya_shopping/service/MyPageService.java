@@ -18,14 +18,14 @@ public class MyPageService {
     /**
      *【日付】
      *1.年が指定されている場合：年または年月で期間を設定
-     *2.年と月が未指定の場合：過去3ヶ月をデフォルト期間とする
-     *3.月のみが指定されている場合：フロントエンドでエラーとする（ここでは期間指定しない）
+     *2.年と月が未指定の場合：全部表示
+     *3.月のみが指定されている場合：エラーとする(コントローラーで対応済み)
+     *
      */
 
     //注文履歴を取得するメソッドを定義（引数にはIDと条件）
     public List<OrderHistoryItemDto> findOrderHistory(Integer userId, MyPageOrderNarrowForm narrowForm) {
         //MuBatis専用FORMを使ってマッピング
-
         //IDをFORMにセット
         narrowForm.setUserId(userId);
 
@@ -49,19 +49,10 @@ public class MyPageService {
             narrowForm.setStartDate(start);
             narrowForm.setEndDate(end);
 
-            //年も月も入力されていなかった場合
-        } else if (year == null && month == null) {
 
-
-            //過去3ヶ月をデフォルト設定
-            LocalDate today = LocalDate.now();
-            LocalDate threeMonthsAgo = today.minusMonths(3);
-            //3ヶ月前の月の1日から今日までを期間とする
-            narrowForm.setStartDate(threeMonthsAgo.withDayOfMonth(1));
-            narrowForm.setEndDate(today);
         }
 
-        return orderRepository.findOrderHistory(narrowForm);
+        return orderRepository.findOrderHistory(userId, narrowForm);
     }
 
     /**

@@ -27,7 +27,8 @@ public interface OrderRepository {
                            @Param("status") String status);
 
     //マイページで注文履歴一覧を取得する。
-    List<OrderHistoryItemDto> findOrderHistory(@Param("form") MyPageOrderNarrowForm form);
+    List<OrderHistoryItemDto> findOrderHistory(@Param("userId") Integer userId,
+                                               @Param("form") MyPageOrderNarrowForm form);
 
     //注文した年を取得
     List<Integer> findOrderYearsByUserId(@Param("userId") Integer userId);

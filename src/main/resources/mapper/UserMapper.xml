@@ -22,4 +22,30 @@
         WHERE email = #{email}
     </select>
 
+    <insert id="save" parameterType="com.example.nya_shopping.repository.entity.User">
+        INSERT INTO users (
+        email,
+        password,
+        name,
+        postal_code,
+        address,
+        phone,
+        role,
+        is_stopped,
+        created_at,
+        updated_at
+        ) VALUES (
+        #{email},
+        #{password},
+        #{name},
+        #{postalCode},
+        #{address},
+        #{phone},
+        #{role},
+        #{isStopped},
+        #{createdAt},
+        #{updatedAt}
+        )
+    </insert>
+
 </mapper>

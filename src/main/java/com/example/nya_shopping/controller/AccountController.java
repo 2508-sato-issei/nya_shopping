@@ -3,6 +3,7 @@ package com.example.nya_shopping.controller;
 import com.example.nya_shopping.controller.form.UserForm;
 import com.example.nya_shopping.controller.form.UserRegisterForm;
 import com.example.nya_shopping.service.AccountService;
+import com.example.nya_shopping.validation.ErrorMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,8 +27,8 @@ public class AccountController {
     //アカウント登録画面表示
     @GetMapping("/user/register")
     public String showRegister(Model model){
-        model.addAttribute("UserRegisterForm", new UserRegisterForm());
-        return "register";
+        model.addAttribute("userRegisterForm", new UserRegisterForm());
+        return "user/register";
     }
 
     //アカウント登録機能
@@ -40,17 +41,18 @@ public class AccountController {
         //パスワードと確認用が一致しているのか確認一致しない場合（E0017）
         if(userRegisterForm.getPassword() != null && userRegisterForm.getConfirmPassword() != null &&
                 !userRegisterForm.getPassword().equals(userRegisterForm.getConfirmPassword())){
-            result.reject("E0017");
+            result.rejectValue("password", "E0017", ErrorMessage.E0017);
         }
 
         //メールアドレス重複チェック
         if(userRegisterForm.getEmail() != null && !userRegisterForm.getEmail().isEmpty() &&
                 accountService.isEmailDuplicate(userRegisterForm.getEmail())){
-            result.reject("E0016");
+            result.rejectValue("email", "E0016", ErrorMessage.E0016);
+
         }
 
         if (result.hasErrors()) {
-            return "register";
+            return "user/register";
         }
 
         // 問題なければ登録
