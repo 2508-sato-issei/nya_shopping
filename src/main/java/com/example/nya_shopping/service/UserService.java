@@ -1,6 +1,7 @@
 package com.example.nya_shopping.service;
 
 import com.example.nya_shopping.controller.form.UserNarrowForm;
+import com.example.nya_shopping.controller.form.UserStatusForm;
 import com.example.nya_shopping.repository.UserRepository;
 import com.example.nya_shopping.repository.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,5 +36,9 @@ public class UserService {
         int total = userRepository.countUser(form, offset, limit);
 
         return new PageImpl<>(userList, pageRequest, total);
+    }
+
+    public void updateUserStatus(UserStatusForm form) {
+        userRepository.updateUserStatus(form.getId(), form.getIsStopped());
     }
 }

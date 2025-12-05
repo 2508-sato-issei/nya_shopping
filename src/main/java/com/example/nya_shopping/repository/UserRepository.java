@@ -19,4 +19,6 @@ public interface UserRepository {
     int countUser(@Param("form")UserNarrowForm form,
                   @Param("offset") int offset,
                   @Param("limit") int limit);
+    void updateUserStatus(@Param("id") Integer id,
+                          @Param("isStopped") boolean isStopped);
 }
