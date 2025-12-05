@@ -285,4 +285,7 @@ public class ProductService {
         }
     }
 
+    public List<Product> findRecentProduct(int limit) {
+        return productRepository.findRecentProducts(limit);
+    }
 }

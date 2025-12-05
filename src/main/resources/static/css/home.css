@@ -112,3 +112,23 @@
 .home-popular-item a:hover {
     color: #d9843b;
 }
+
+.home-new-list {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-top: 20px;
+}
+
+.home-new-item {
+    width: 140px;
+    text-align: center;
+    text-decoration: none;
+    color: #444;
+}
+
+.home-new-item img {
+    width: 100%;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}

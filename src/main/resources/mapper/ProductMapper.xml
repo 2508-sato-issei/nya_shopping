@@ -312,5 +312,11 @@
         SET stock = #{stock}
         WHERE id = #{id}
     </update>
+    <select id="findRecentProducts" parameterType="int" resultType="com.example.nya_shopping.repository.entity.Product">
+        SELECT *
+        FROM products
+        ORDER BY created_at DESC
+        LIMIT #{limit}
+    </select>
 
 </mapper>
