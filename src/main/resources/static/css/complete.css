@@ -1,0 +1,37 @@
+.order-complete-box {
+    width: 50%;
+    margin: 60px auto;
+    padding: 40px 50px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    text-align: center;
+}
+
+.order-complete-box h2 {
+    font-size: 22px;
+    color: #4a3d35;
+    margin-bottom: 20px;
+    font-weight: bold;
+}
+
+.order-complete-box p {
+    font-size: 16px;
+    color: #4a3d35;
+    margin-bottom: 30px;
+}
+
+.order-complete-box .back-btn {
+    padding: 12px 30px;
+    background: #d9843b;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.order-complete-box .back-btn:hover {
+    background: #bf742f;
+}

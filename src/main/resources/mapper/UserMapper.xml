@@ -22,6 +22,7 @@
         WHERE email = #{email}
     </select>
 
+
     <insert id="save" parameterType="com.example.nya_shopping.repository.entity.User">
         INSERT INTO users (
         email,
@@ -47,5 +48,121 @@
         #{updatedAt}
         )
     </insert>
+
+    <select id="findAllUser"  resultType="com.example.nya_shopping.repository.entity.User">
+        SELECT *
+        FROM users
+        WHERE 1 = 1
+
+        <!-- メールアドレス -->
+        <if test="form.email != null and form.email != ''">
+            AND email LIKE CONCAT('%', #{form.email}, '%')
+        </if>
+
+        <!-- 名前 -->
+        <if test="form.name != null and form.name != ''">
+            AND name LIKE CONCAT('%', #{form.name}, '%')
+        </if>
+
+        <!-- 住所 -->
+        <if test="form.address != null and form.address != ''">
+            AND address LIKE CONCAT('%', #{form.address}, '%')
+        </if>
+
+        <!-- 電話番号 -->
+        <if test="form.phone != null and form.phone != ''">
+            AND phone LIKE CONCAT('%', #{form.phone}, '%')
+        </if>
+
+        <!-- 電話番号 -->
+        <if test="form.isStopped != null">
+            AND isStopped = #{form.isStopped}
+        </if>
+
+        <if test="form.startTimeStamp != null">
+            AND created_at >= #{form.startTimeStamp}
+        </if>
+
+        <if test="form.endTimeStamp != null">
+            AND created_at &lt;= #{form.endTimeStamp}
+        </if>
+
+
+
+        <choose>
+            <when test="form.sort == 'id'">
+                ORDER BY id
+            </when>
+            <when test="form.sort == 'name'">
+                ORDER BY name
+            </when>
+            <when test="form.sort == 'address'">
+                ORDER BY adress
+            </when>
+            <when test="form.sort == 'created'">
+                ORDER BY created_at
+            </when>
+            <otherwise>
+                ORDER BY id
+            </otherwise>
+        </choose>
+
+        <choose>
+            <when test="form.order == 'DESC'">
+                DESC
+            </when>
+            <otherwise>
+                ASC
+            </otherwise>
+        </choose>
+
+        LIMIT #{limit} OFFSET #{offset}
+    </select>
+
+    <select id="countUser" resultType="int">
+        SELECT COUNT(*)
+        FROM users
+        WHERE 1 = 1
+
+        <!-- メールアドレス -->
+        <if test="form.email != null and form.email != ''">
+            AND email LIKE CONCAT('%', #{form.email}, '%')
+        </if>
+
+        <!-- 名前 -->
+        <if test="form.name != null and form.name != ''">
+            AND name LIKE CONCAT('%', #{form.name}, '%')
+        </if>
+
+        <!-- 住所 -->
+        <if test="form.address != null and form.address != ''">
+            AND address LIKE CONCAT('%', #{form.address}, '%')
+        </if>
+
+        <!-- 電話番号 -->
+        <if test="form.phone != null and form.phone != ''">
+            AND phone LIKE CONCAT('%', #{form.phone}, '%')
+        </if>
+
+        <!-- 電話番号 -->
+        <if test="form.isStopped != null">
+            AND isStopped = #{form.isStopped}
+        </if>
+
+        <if test="form.startTimeStamp != null">
+            AND created_at >= #{form.startTimeStamp}
+        </if>
+
+        <if test="form.endTimeStamp != null">
+            AND created_at &lt;= #{form.endTimeStamp}
+        </if>
+    </select>
+
+    <update id="updateUserStatus">
+        UPDATE users
+        SET is_stopped = #{isStopped}
+        WHERE id = #{id}
+    </update>
+
 
 </mapper>

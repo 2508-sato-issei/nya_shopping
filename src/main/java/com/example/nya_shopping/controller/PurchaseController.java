@@ -149,7 +149,10 @@ public class PurchaseController {
         }
 
         //ログインユーザーID取得
-        Integer userId = loginUser.getUser().getId();
+        Integer userId = null;
+        if(loginUser != null){
+            userId = loginUser.getUser().getId();
+        }
         //注文テーブルと注文詳細テーブルに情報を登録
         int orderId = orderService.createOrder(purchaseForm, cart, userId);
         orderDetailService.createOrderDetail(orderId, cart);

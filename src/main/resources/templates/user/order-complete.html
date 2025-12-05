@@ -4,17 +4,22 @@
     <meta charset="UTF-8">
     <title>注文完了画面</title>
     <link th:href="@{/css/navbar.css}" rel="stylesheet">
+    <link th:href="@{/css/style.css}" rel="stylesheet">
+    <link th:href="@{/css/complete.css}" rel="stylesheet">
 </head>
 <body>
 <div th:replace="fragments/navbar :: navbar"></div>
 
-<h2>注文が完了しました。</h2>
+<div class="contents">
+    <div class="order-complete-box">
 
-<p>ご購入手続きが正常に完了しました。</p>
+        <h2>注文が完了しました。</h2>
 
-<a th:href="@{/}">
-    <button>トップへ戻る</button>
-</a>
+        <p>ご購入手続きが正常に完了しました。</p>
 
+        <a th:href="@{/}" class="back-btn">トップへ戻る</a>
+
+    </div>
+</div>
 </body>
 </html>

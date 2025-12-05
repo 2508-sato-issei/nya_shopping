@@ -49,6 +49,7 @@ public class CartController {
     //カートに追加する処理
     @PostMapping("/cart/add")
     public String addToCart(@RequestParam("id") Integer productId,
+                            @RequestParam("quantity") Integer quantity,
                             HttpSession session,
                             RedirectAttributes redirectAttributes) {
 
@@ -58,7 +59,7 @@ public class CartController {
         boolean exists = false;
         for(CartItem item : cart){
             if(item.getProductId().equals(productId)){
-                item.setQuantity(item.getQuantity() + 1);
+                item.setQuantity(item.getQuantity() + quantity);
                 exists = true;
                 break;
             }
@@ -66,7 +67,7 @@ public class CartController {
 
         //CartItem を一発で正しい状態に初期化するためにコンストラクタが必要
         if(!exists){
-            cart.add(new CartItem(productId, 1));
+            cart.add(new CartItem(productId, quantity));
         }
 
         session.setAttribute("cart", cart);
@@ -107,7 +108,7 @@ public class CartController {
     }
 
     //カートの商品を削除する処理
-    @GetMapping("/cart/delete")
+    @PostMapping("/cart/delete")
     public String deleteProduct(@RequestParam("productId") Integer productId,
                                 HttpSession session,
                                 RedirectAttributes redirectAttributes){
