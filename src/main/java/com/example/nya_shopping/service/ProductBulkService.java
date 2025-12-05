@@ -115,7 +115,7 @@ public class ProductBulkService {
         List<String> errors = new ArrayList<>();
 
         if (cols.length != 9) {
-            errors.add(rowNum + "行目：カラム数が不正です。");
+            errors.add(rowNum + "行目：カラム数が不正です");
             return errors;
         }
 
@@ -136,16 +136,16 @@ public class ProductBulkService {
         }
 
         // 必須チェック
-        if (cols[1].isEmpty()) errors.add(rowNum + "行目：商品名が空です。");
-        if (cols[2].isEmpty()) errors.add(rowNum + "行目：価格が空です。");
-        if (cols[3].isEmpty()) errors.add(rowNum + "行目：カテゴリーが空です。");
-        if (cols[4].isEmpty()) errors.add(rowNum + "行目：在庫数が空です。");
-        if (cols[5].isEmpty()) errors.add(rowNum + "行目：画像ファイル名が空です。");
-        if (cols[7].isEmpty()) errors.add(rowNum + "行目：公開/非公開が空です。");
+        if (cols[1].isEmpty()) errors.add(rowNum + "行目：商品名が空です");
+        if (cols[2].isEmpty()) errors.add(rowNum + "行目：価格が空です");
+        if (cols[3].isEmpty()) errors.add(rowNum + "行目：カテゴリーが空です");
+        if (cols[4].isEmpty()) errors.add(rowNum + "行目：在庫数が空です");
+        if (cols[5].isEmpty()) errors.add(rowNum + "行目：画像ファイル名が空です");
+        if (cols[7].isEmpty()) errors.add(rowNum + "行目：公開/非公開が空です");
 
         // 文字数チェック
-        if (cols[1].length() > 100) errors.add(rowNum + "行目：商品名は100文字以内です。");
-        if (cols[6].length() > 1000) errors.add(rowNum + "行目：商品説明は1000文字以内です。");
+        if (cols[1].length() > 100) errors.add(rowNum + "行目：商品名は100文字以内です");
+        if (cols[6].length() > 1000) errors.add(rowNum + "行目：商品説明は1000文字以内です");
 
         return errors;
     }

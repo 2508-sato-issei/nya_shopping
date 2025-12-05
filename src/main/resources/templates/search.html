@@ -9,6 +9,12 @@
 </head>
 <body>
 <div th:replace="fragments/navbar :: navbar"></div>
+<ul class="navigation">
+    <li>
+        <a th:href="@{/}">ホーム</a>
+    </li>
+    <li>検索結果</li>
+</ul>
 <div th:if="${errorMessage != null}" th:text="${errorMessage}"></div>
 <div class="contents">
     <div class="home-search-area">

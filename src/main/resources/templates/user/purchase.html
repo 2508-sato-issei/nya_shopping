@@ -9,7 +9,11 @@
 </head>
 <body>
 <div th:replace="fragments/navbar :: navbar"></div>
-
+<ul class="navigation">
+    <li><a th:href="@{/}">ホーム</a></li>
+    <li><a th:href="@{/cart}">カート</a></li>
+    <li>購入者情報入力</li>
+</ul>
 <div class="contents">
     <!-- 左：購入商品一覧 -->
     <div class="purchase-left">

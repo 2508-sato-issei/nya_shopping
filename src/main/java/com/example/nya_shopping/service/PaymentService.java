@@ -18,6 +18,7 @@ public class PaymentService {
 
     private final ProductService productService;
 
+    //applicationの値を注入するための書き方
     @Value("${stripe.key.secret}")
     private String secretKey;
 
@@ -27,6 +28,7 @@ public class PaymentService {
     @Value("${stripe.checkout.cancel-url}")
     private String cancelUrl;
 
+    //商品情報を取得するため
     public PaymentService(ProductService productService){
         this.productService = productService;
     }
@@ -36,8 +38,10 @@ public class PaymentService {
 
         //Stripeに秘密鍵を渡し、誰からのリクエストかを示す
         Stripe.apiKey = secretKey;
+        //購入商品の一覧を渡している（LineItem）
         List<SessionCreateParams.LineItem> lineItems = new ArrayList<>();
 
+        //カートの中身をStripeが理解出来るLineItemに変換
         for(CartItem ci : cart){
             Product product = productService.findById(ci.getProductId());
             SessionCreateParams.LineItem lineItem = SessionCreateParams.LineItem.builder()
@@ -53,12 +57,14 @@ public class PaymentService {
             lineItems.add(lineItem);
         }
 
+        //Checkoutセッションのパラメータを組み立てている
         SessionCreateParams params = SessionCreateParams.builder().setMode(SessionCreateParams.Mode.PAYMENT)
                 .addAllLineItem(lineItems)
                 .setSuccessUrl(successUrl)
                 .setCancelUrl(cancelUrl)
                 .build();
 
+        //セッションの作成に失敗した際に投げられる例外を受け取る処理
         try{
             return Session.create(params);
         } catch (StripeException e){

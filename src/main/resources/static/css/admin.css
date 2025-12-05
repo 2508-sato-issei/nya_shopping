@@ -1,0 +1,91 @@
+.admin-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #ddd;
+}
+
+.admin-header h1 {
+    font-size: 28px;
+    font-weight: bold;
+    margin: 0;
+}
+
+.admin-header nav a {
+    margin-left: 20px;
+    font-size: 16px;
+    color: #333;
+    text-decoration: none;
+    font-weight: 500;
+    padding: 6px 12px;
+    border-radius: 6px;
+    border: none;
+    transition: 0.2s ease-in-out;
+}
+
+.admin-header nav a:hover {
+    background-color: #bf742f;
+    color: white;
+}
+
+.container {
+    display: flex;
+    gap: 30px;
+    flex-wrap: wrap;
+}
+
+.summary-box {
+    background: #fff;
+    width: 48%;
+    min-width: 350px;
+    border-radius: 10px;
+    padding: 20px 25px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.summary-box h2 {
+    font-size: 20px;
+    margin-bottom: 15px;
+}
+
+.summary-box ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.summary-box li {
+    font-size: 16px;
+    padding: 6px 0;
+}
+
+/* ===========================
+   WebSocket 通知アラート
+=========================== */
+#paymentAlert {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #ff9800;
+    color: #fff;
+    padding: 14px 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    font-weight: bold;
+    font-size: 16px;
+    animation: slideIn 0.4s ease-out;
+}
+
+/* スライドインアニメーション */
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}

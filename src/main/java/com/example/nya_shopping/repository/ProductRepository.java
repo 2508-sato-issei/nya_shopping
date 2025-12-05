@@ -6,7 +6,9 @@ import com.example.nya_shopping.model.Category;
 import com.example.nya_shopping.repository.entity.Product;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.data.domain.PageRequest;
 
+import java.net.ContentHandler;
 import java.util.List;
 import java.util.Optional;
 
@@ -70,4 +72,6 @@ public interface ProductRepository {
     //在庫を減らす際に必要な処理
     Product findProductById(Integer id);
     void updateStock(Product product);
+
+    List<Product> findRecentProducts(@Param("limit") int limit);
 }
