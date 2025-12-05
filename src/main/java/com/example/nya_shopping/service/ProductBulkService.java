@@ -119,22 +119,6 @@ public class ProductBulkService {
             return errors;
         }
 
-        // パース（tryで囲む）
-        Long id = null;
-        Integer price = null;
-        Integer stock = null;
-        Boolean isActive = null;
-
-        try {
-            id = cols[0].isEmpty() ? null : Long.valueOf(cols[0]);
-            price = Integer.valueOf(cols[2]);
-            stock = Integer.valueOf(cols[4]);
-            isActive = Boolean.valueOf(cols[7]);
-        } catch (Exception e) {
-            errors.add(rowNum + "行目：形式エラー（値が不正です）");
-            return errors;
-        }
-
         // 必須チェック
         if (cols[1].isEmpty()) errors.add(rowNum + "行目：商品名が空です");
         if (cols[2].isEmpty()) errors.add(rowNum + "行目：価格が空です");

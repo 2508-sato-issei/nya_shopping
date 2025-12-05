@@ -266,6 +266,7 @@ public class ProductService {
     private String nvl(String value) {
         return value == null ? "" : value;
     }
+
     //在庫を減らす処理
     @Transactional
     public void decreaseStock(List<CartItem> cart){
