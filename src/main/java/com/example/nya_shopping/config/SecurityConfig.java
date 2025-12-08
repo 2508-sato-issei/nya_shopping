@@ -52,7 +52,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                                 .requestMatchers("/", "/login", "/user/register", "/user/add", "/search", "/product/**","/cart","/cart/**",
                                         "/order/**").permitAll()
-                                .requestMatchers("/webjars/**", "/css/**", "/js/**", "/storage/**").permitAll()
+                                .requestMatchers("/webjars/**", "/css/**", "/js/**", "/storage/**", "/uploads/**").permitAll()
                                 .requestMatchers("/user/mypage/**", "/user/mypage/edit/**",  "/withdraw/**").hasRole("USER")
                                 .requestMatchers("/admin/**").hasRole("ADMIN")
                                 .anyRequest().authenticated()

@@ -34,7 +34,7 @@
             <tbody>
             <tr th:each="item : ${items}">
                 <td>
-                    <img th:src="@{'/storage/' + ${item.product.imageUrl}}"
+                    <img th:src="@{'/uploads/products/' + ${item.product.imageUrl}}"
                          alt="商品画像" class="purchase-thumb">
                 </td>
                 <td th:text="${item.product.name}"></td>

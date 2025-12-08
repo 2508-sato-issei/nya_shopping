@@ -47,7 +47,7 @@
             <tr th:each="item : ${items}" class="cart-row"
                 th:data-product-id="${item.product.id}">
                 <td>
-                    <img th:src="@{'/storage/' + ${item.product.imageUrl}}" width="100">
+                    <img th:src="@{'/uploads/products/' + ${item.product.imageUrl}}" width="100">
                 </td>
                 <td th:text="${item.product.name}"></td>
                 <td>
