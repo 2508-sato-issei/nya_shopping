@@ -22,7 +22,7 @@ public class UserEditForm {
 
     //パスワードは変更時のみ入力が必須。
     //空の場合はスキップ
-    @Pattern(regexp = "^[a-zA-Z0-9]{8,32}$", message = E0011)
+    @Size(min = 0, max = 32, message = E0011)
     private String password;
 
     private String confirmPassword;

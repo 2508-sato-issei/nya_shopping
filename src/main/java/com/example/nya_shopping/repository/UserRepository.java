@@ -23,4 +23,8 @@ public interface UserRepository {
                   @Param("limit") int limit);
     void updateUserStatus(@Param("id") Integer id,
                           @Param("isStopped") boolean isStopped);
+
+    Optional<User> findById(@Param("id") Integer id);
+
+    void updateUser(User user);
 }

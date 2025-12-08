@@ -26,7 +26,11 @@ public class MyPageController {
     @GetMapping("/user/mypage")
     public String showMyPage(Model model,
                              @AuthenticationPrincipal LoginUserDetails loginUser,
-                             @ModelAttribute MyPageOrderNarrowForm form){
+                             @ModelAttribute MyPageOrderNarrowForm form,
+                             @RequestParam(defaultValue = "0") int page){
+
+        final int LIMIT = 10; // 1ページあたりの表示件数
+        int offset = page * LIMIT;
 
         //ログインユーザー情報取得
         User user = loginUser.getUser();
@@ -46,11 +50,17 @@ public class MyPageController {
             return "user/mypage";
         }
 
+        int totalCount = myPageService.countOrderHistory(userId, form);
+
         //注文情報取得（メソッドを活用）
-        List<OrderHistoryItemDto> orderHistoryList = myPageService.findOrderHistory(userId, form);
+        List<OrderHistoryItemDto> orderHistoryList = myPageService.findOrderHistory(userId, form, offset, LIMIT);
 
         //注文年を取得
         List<Integer> orderYears = myPageService.findOrderYearsByUserId(userId);
+
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", (int) Math.ceil((double) totalCount / LIMIT));
+        model.addAttribute("totalCount", totalCount);
 
         //会員情報、注文履歴リスト、注文年リストをModelにセット
         model.addAttribute("user", user);

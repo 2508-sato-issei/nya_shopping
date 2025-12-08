@@ -144,9 +144,11 @@
         LEFT JOIN
         order_details OD ON O.id = OD.order_id
 
-        WHERE O.user_id = #{userId} <if test="form.status != null and form.status != ''">
-        AND O.status = #{form.status}
-    </if>
+        WHERE O.user_id = #{userId}
+
+        <if test="form.status != null and form.status != ''">
+            AND O.status = #{form.status}
+        </if>
 
         <if test="form.startDate != null and form.endDate != null">
             AND O.created_at >= #{form.startDate}
@@ -156,8 +158,11 @@
         </if>
 
         GROUP BY
-        O.id, O.total_amount, O.status, O.created_at  ORDER BY
+        O.id, O.total_amount, O.status, O.created_at
+
+        ORDER BY
         O.created_at DESC
+        LIMIT #{limit} OFFSET #{offset}
     </select>
 
     <select id="findOrderYearsByUserId" resultType="java.lang.Integer">
@@ -169,6 +174,13 @@
         user_id = #{userId}
         ORDER BY
         YEAR(created_at) DESC
+    </select>
+
+    <select id="countOrderHistory" resultType="int">
+        SELECT COUNT(DISTINCT O.id)  FROM orders O
+        LEFT JOIN order_details OD ON O.id = OD.order_id
+
+        WHERE O.user_id = #{userId}
     </select>
 
 </mapper>

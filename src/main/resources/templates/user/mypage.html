@@ -9,7 +9,7 @@
         <!--メニュー（ホーム画面・会員情報変更画面へ遷移できる）-->
         <div>
             <a th:href="@{/}">ホームへ戻る</a>
-            <a th:href="@{/user/mypage/edit}">会員情報変更</a>
+            <a th:href="@{/user/mypage/edit/{id}(id=${user.id})}">会員情報変更</a>
         </div>
         <!--会員情報-->
         <h2>会員情報</h2>
@@ -32,6 +32,10 @@
             <!--登録日時-->
             <label>購入日時:</label>
             <span th:text="*{#dates.format(createdAt, 'yyyy/MM/dd HH:mm')}"></span>
+        </div>
+
+        <div th:if="${globalMessage}" style="color: green; border: 1px solid green; padding: 10px; margin-bottom: 20px;">
+            <p th:text="${globalMessage}"></p>
         </div>
 
         <!--注文履歴一覧-->
@@ -102,7 +106,6 @@
                     <th>合計金額</th>
                     <th>購入点数</th>
                     <th>発送状態</th>
-                    <th>詳細</th>
                 </tr>
             </thead>
             <tbody>
@@ -118,10 +121,31 @@
                                 <span th:case="*">その他</span>
                         </span>
                     </td>
-                    <td>
-                        <a th:href="@{/user/order/detail/{id}(id=${order.id})}">詳細</a>
-                    </td>
             </tbody>
         </table>
+
+        <div th:if="${totalPages > 1}" style="text-align: center; margin-top: 20px;">
+            <th:block th:with="baseURL=@{/user/mypage(status=${myPageForm.status}, year=${myPageForm.year}, month=${myPageForm.month})}">
+
+                <span th:if="${currentPage > 0}">
+                    <a th:href="@{${baseURL}(page=${currentPage - 1})}">« 前へ</a>
+                </span>
+                <span th:unless="${currentPage > 0}" style="color: #aaa;">« 前へ</span>
+
+                <th:block th:each="i : ${#numbers.sequence(0, totalPages - 1)}">
+                    <span th:if="${i == currentPage}" style="font-weight: bold; margin: 0 5px;">
+                        [[${i + 1}]] </span>
+                    <span th:unless="${i == currentPage}" style="margin: 0 5px;">
+                        <a th:href="@{${baseURL}(page=${i})}" th:text="${i + 1}">1</a>
+                    </span>
+                </th:block>
+
+                <span th:if="${currentPage < totalPages - 1}">
+                    <a th:href="@{${baseURL}(page=${currentPage + 1})}">次へ »</a>
+                </span>
+                <span th:unless="${currentPage < totalPages - 1}" style="color: #aaa;">次へ »</span>
+
+            </th:block>
+        </div>
     </body>
 </html>
