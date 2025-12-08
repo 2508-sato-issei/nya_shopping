@@ -30,6 +30,7 @@
     font-size: 16px;
     cursor: pointer;
     transition: 0.2s;
+    text-decoration: none;
 }
 
 .order-complete-box .back-btn:hover {
