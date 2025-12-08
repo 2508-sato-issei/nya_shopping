@@ -159,8 +159,8 @@
         </choose>
 
         <!-- ページング -->
-        LIMIT #{cond.size}
-        OFFSET #{cond.offset}
+        LIMIT #{limit}
+        OFFSET #{offset}
     </select>
 
 

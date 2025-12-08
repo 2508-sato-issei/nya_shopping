@@ -69,13 +69,19 @@ public class ProductService {
         return product;
     }
 
-    public List<ProductDto> search(ProductSearchCondition cond) {
-        return productRepository.search(cond);
+    public Page<ProductDto> search(ProductSearchCondition cond, PageRequest pageRequest) {
+        int offset = (int) pageRequest.getOffset();
+        int limit = pageRequest.getPageSize();
+
+        List<ProductDto> products = productRepository.search(cond, offset, limit);
+        int total = productRepository.count(cond, offset, limit);
+
+        return new PageImpl<>(products, pageRequest, total);
     }
 
-    public int count(ProductSearchCondition cond) {
-        return productRepository.count(cond);
-    }
+//    public int count(ProductSearchCondition cond) {
+//        return productRepository.count(cond);
+//    }
 
     /**
      * CSV出力
@@ -269,15 +275,15 @@ public class ProductService {
 
     //在庫を減らす処理
     @Transactional
-    public void decreaseStock(List<CartItem> cart){
+    public void decreaseStock(List<CartItem> cart) {
 
-        for(CartItem ci : cart){
+        for (CartItem ci : cart) {
             Product product = productRepository.findProductById(ci.getProductId());
-            if(cart == null){
+            if (cart == null) {
                 throw new RuntimeException("商品が存在しません");
             }
             int newStock = product.getStock() - ci.getQuantity();
-            if(newStock < 0){
+            if (newStock < 0) {
                 throw new RuntimeException(E0019);
             }
             product.setStock(newStock);

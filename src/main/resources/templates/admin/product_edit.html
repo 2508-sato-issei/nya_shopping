@@ -70,7 +70,7 @@
         <!-- 画像 -->
         <label>現在の画像</label>
         <div class="image-preview" th:if="${form.imageUrl}">
-            <img th:src="@{'/uploads/products/' + ${form.imageUrl}}">
+            <img th:src="@{'/uploads/products/' + ${form.imageUrl}}" alt="商品画像">
         </div>
 
         <input type="hidden" th:field="*{imageUrl}">

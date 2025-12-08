@@ -6,9 +6,7 @@ import com.example.nya_shopping.model.Category;
 import com.example.nya_shopping.repository.entity.Product;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-import org.springframework.data.domain.PageRequest;
 
-import java.net.ContentHandler;
 import java.util.List;
 import java.util.Optional;
 
@@ -37,9 +35,13 @@ public interface ProductRepository {
     Product findByIdIsActive(Integer id);
 
     /* 商品管理一覧画面表示 */
-    List<ProductDto> search(@Param("cond") ProductSearchCondition cond);
+    List<ProductDto> search(@Param("cond") ProductSearchCondition cond,
+                            @Param("offset") int offset,
+                            @Param("limit") int limit);
 
-    int count(@Param("cond") ProductSearchCondition cond);
+    int count(@Param("cond") ProductSearchCondition cond,
+              @Param("offset") int offset,
+              @Param("limit") int limit);
 
     List<ProductDto> searchAll(@Param("cond") ProductSearchCondition cond); // CSV用
 

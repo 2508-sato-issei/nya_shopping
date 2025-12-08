@@ -176,14 +176,12 @@ summary {
 .pagination {
     display: flex;
     gap: 6px;
-    justify-content: center;
     align-items: center;
-    margin: 30px 0;
+    margin: 0 auto 40px;
     flex-wrap: wrap;
 }
 
-.pagination a,
-.pagination span {
+.pages {
     padding: 6px 12px;
     border: 1px solid #d9843b;
     border-radius: 6px;
@@ -199,8 +197,5 @@ summary {
 }
 
 .active-page {
-    background: #007bff !important;
-    color: #fff !important;
-    border-color: #007bff;
+    color: #d9843b;
 }
-

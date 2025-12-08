@@ -174,8 +174,9 @@
 
         </table>
 
-        <div class="pagination">
-            <a th:if="${page > 1}"
+        <div th:if="${page.totalPages > 1}" class="pagination">
+            <a class="pages"
+               th:if="${showFirst}"
                th:href="@{/admin/products(
                name=${cond.name},
                priceMin=${cond.priceMin},
@@ -187,12 +188,47 @@
                dateTo=${cond.dateTo},
                sortKey=${cond.sortKey},
                sortOrder=${cond.sortOrder},
-               page=${page - 1},
+               page=0,
+               size=${size})}">最初</a>
+
+            <a class="pages"
+               th:if="${page.number > 0}"
+               th:href="@{/admin/products(
+               name=${cond.name},
+               priceMin=${cond.priceMin},
+               priceMax=${cond.priceMax},
+               category=${cond.category},
+               inStock=${cond.inStock},
+               isActive=${cond.isActive},
+               dateFrom=${cond.dateFrom},
+               dateTo=${cond.dateTo},
+               sortKey=${cond.sortKey},
+               sortOrder=${cond.sortOrder},
+               page=${page.number - 1},
                size=${size})}">前へ</a>
 
-            <span th:text="${page}"></span>
+            <span class="pages"
+                  th:each="i : ${#numbers.sequence(startPage, endPage)}">
+                <a th:if="${i != page.number}"
+                   th:href="@{/admin/products(
+                   name=${cond.name},
+                   priceMin=${cond.priceMin},
+                   priceMax=${cond.priceMax},
+                   category=${cond.category},
+                   inStock=${cond.inStock},
+                   isActive=${cond.isActive},
+                   dateFrom=${cond.dateFrom},
+                   dateTo=${cond.dateTo},
+                   sortKey=${cond.sortKey},
+                   sortOrder=${cond.sortOrder},
+                   page=${i},
+                   size=${size})}"
+                   th:text="${i + 1}"></a>
+                <strong class="active-page" th:if="${i == page.number}" th:text="${i + 1}"></strong>
+            </span>
 
-            <a th:if="${page * size < total}"
+            <a class="pages"
+               th:if="${page.number < page.totalPages - 1}"
                th:href="@{/admin/products(
                name=${cond.name},
                priceMin=${cond.priceMin},
@@ -204,8 +240,26 @@
                dateTo=${cond.dateTo},
                sortKey=${cond.sortKey},
                sortOrder=${cond.sortOrder},
-               page=${page + 1},
+               page=${page.number + 1},
                size=${size})}">次へ</a>
+
+            <a class="pages"
+               th:if="${showLast}"
+               th:href="@{/admin/products(
+               name=${cond.name},
+               priceMin=${cond.priceMin},
+               priceMax=${cond.priceMax},
+               category=${cond.category},
+               inStock=${cond.inStock},
+               isActive=${cond.isActive},
+               dateFrom=${cond.dateFrom},
+               dateTo=${cond.dateTo},
+               sortKey=${cond.sortKey},
+               sortOrder=${cond.sortOrder},
+               page=${page.totalPages - 1},
+               size=${size})}">
+                最後
+            </a>
         </div>
 
     </main>
