@@ -71,7 +71,7 @@
     white-space: nowrap;
 }
 
-.error-item{
+.error-item {
     background: #ffecea;
     color: #c03d2f;
     border: 1px solid #f5b5ac;
@@ -79,6 +79,9 @@
     margin-bottom: 18px;
     border-radius: 6px;
     text-align: left;
+    width: 80%;
+    display: block;
+    margin: 0 auto;
 }
 
 .home-popular-item {

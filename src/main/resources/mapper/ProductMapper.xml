@@ -199,7 +199,7 @@
     <select id="searchAll" resultType="com.example.nya_shopping.dto.ProductDto">
         SELECT
         id, name, price, stock, category, image_url,
-        is_active, created_at
+        description, is_active, created_at
         FROM products
         WHERE 1 = 1
 
