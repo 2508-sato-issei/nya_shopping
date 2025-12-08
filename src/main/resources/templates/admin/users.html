@@ -126,7 +126,9 @@
                     <form method="post" th:action="@{/admin/user/status}">
                         <input type="hidden" name="id" th:value="${u.id}">
                         <input type="hidden" name="isStopped" th:value="${!u.isStopped}">
-                        <button type="submit"  th:disabled="${loginUser.id == u.id}">切り替え</button>
+                        <th:block th:if="${loginUser.id != u.id}">
+                            <button type="submit">切り替え</button>
+                        </th:block>
                     </form>
                 </td>
 
