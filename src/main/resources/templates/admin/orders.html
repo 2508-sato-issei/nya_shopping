@@ -3,63 +3,85 @@
 <head>
     <meta charset="UTF-8">
     <title>注文管理</title>
+    <link th:href="@{/css/navbar.css}" rel="stylesheet">
+    <link th:href="@{/css/style.css}" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/admin.css}">
+    <link th:href="@{/css/admin_orders.css}" rel="stylesheet">
 </head>
 <body>
-    <!--ヘッダー-->
-    <div th:replace="fragments/navbar :: navbar"></div>
-    <div th:if="${errorMessage != null}" th:text="${errorMessage}"></div>
+<!--ヘッダー-->
+<div th:replace="fragments/navbar :: navbar"></div>
 
-    <!--コンテンツ-->
-    <div>
-        <!--検索、ソート-->
-        <form th:action="@{/admin/orders}" method="get" th:object="${form}">
-            <div>
-                <!--検索-->
-                <div>
-                    <!--合計金額-->
-                    <div>
-                        <label>合計金額</label>
-                        <input type="number" th:field="*{minAmount}" min="0">
-                        <input type="number" th:field="*{maxAmount}" min="0">
-                    </div>
-                    <!--購入者氏名-->
-                    <div>
-                        <label>購入者氏名</label>
-                        <input type="text" th:field="*{customerName}">
-                    </div>
-                    <!--購入者住所-->
-                    <div>
-                        <label>購入者住所</label>
-                        <input type="text" th:field="*{customerAddress}">
-                    </div>
+<nav>
+    <ul class="navigation">
+        <li><a th:href="@{/}">ホーム</a></li>
+        <li><a th:href="@{/admin}">管理者ページ</a></li>
+        <li>注文管理一覧</li>
+    </ul>
+</nav>
 
-                    <!--購入者電話番号-->
-                    <div>
-                        <label>購入者電話番号</label>
-                        <input type="text" th:field="*{customerPhone}">
-                    </div>
+<div th:if="${errorMessage != null}" th:text="${errorMessage}"></div>
 
-                    <!--注文状態-->
-                    <div>
-                        <label>注文状態</label>
-                        <select th:field="*{status}">
-                            <option value="">--選択する--</option>
-                            <option value="CONFIRMED">注文確定</option>
-                            <option value="PREPARING">発送準備中</option>
-                            <option value="SHIPPED">発送済み</option>
-                        </select>
-                    </div>
+<!--コンテンツ-->
+<div class="contents">
+    <header class="admin-header">
+        <h1>商品管理一覧</h1>
 
-                    <!--登録日時-->
-                    <div>
-                        <label>登録日時</label>
-                        <input type="date" th:field="*{startDate}">～<input type="date" th:field="*{endDate}">
-                    </div>
+    </header>
+
+    <main class="container">
+
+        <details class="search-details">
+            <summary>検索・並び替え</summary>
+
+            <!--検索、ソート-->
+            <form th:action="@{/admin/orders}" class="search-form" method="get" th:object="${form}">
+
+                <!--合計金額-->
+                <div class="form-group-inline">
+                    <label>合計金額</label>
+                    <input type="number" th:field="*{minAmount}" min="0">
+                    <input type="number" th:field="*{maxAmount}" min="0">
                 </div>
 
-                <!--ソート-->
-                <div>
-                    <!-- ソート条件 -->
+                <!--購入者氏名-->
+                <div class="form-group-inline">
+                    <label>購入者氏名</label>
+                    <input type="text" th:field="*{customerName}">
+                </div>
+                <!--購入者住所-->
+
+                <div class="form-group-inline">
+                    <label>購入者住所</label>
+                    <input type="text" th:field="*{customerAddress}">
+                </div>
+
+                <!--購入者電話番号-->
+                <div class="form-group-inline">
+                    <label>購入者電話番号</label>
+                    <input type="text" th:field="*{customerPhone}">
+                </div>
+
+                <!--注文状態-->
+                <div class="form-group-inline">
+                    <label>注文状態</label>
+                    <select th:field="*{status}">
+                        <option value="">--選択する--</option>
+                        <option value="CONFIRMED">注文確定</option>
+                        <option value="PREPARING">発送準備中</option>
+                        <option value="SHIPPED">発送済み</option>
+                    </select>
+                </div>
+
+                <!--登録日時-->
+                <div class="form-group-inline">
+                    <label>登録日時</label>
+                    <input type="date" th:field="*{startDate}">～<input type="date" th:field="*{endDate}">
+                </div>
+
+
+                <!-- ソート条件 -->
+                <div class="form-group-inline">
                     <select name="sort" th:field="*{sort}">
                         <option value="id">ID</option>
                         <option value="userId">ユーザーID</option>
@@ -68,86 +90,177 @@
                         <option value="address">住所</option>
                         <option value="created">作成日</option>
                     </select>
+                </div>
 
-                    <!-- 昇順/降順 -->
+                <!-- 昇順/降順 -->
+                <div class="form-group-inline">
                     <select name="order" th:field="*{order}">
                         <option value="ASC">昇順</option>
                         <option value="DESC">降順</option>
                     </select>
                 </div>
-                <input type="submit" value="検索する">
-            </div>
-        </form>
+
+                <div class="form-group-inline form-button">
+                    <button type="submit" class="btn-search">検索</button>
+                    <a th:href="@{/admin/orders}" class="btn-clear">クリア</a>
+                </div>
+            </form>
+        </details>
 
         <!--注文一覧-->
-        <table>
+        <table class="product-table">
             <thead>
-                <tr>
-                    <td>購入者ID</td>
-                    <td>合計金額</td>
-                    <td>購入者氏名</td>
-                    <td>購入者郵便番号</td>
-                    <td>購入者住所</td>
-                    <td>購入者電話番号</td>
-                    <td>注文状態</td>
-                    <td>購入日時</td>
-                </tr>
+            <tr>
+                <td>購入者ID</td>
+                <td>合計金額</td>
+                <td>購入者氏名</td>
+                <td>購入者郵便番号</td>
+                <td>購入者住所</td>
+                <td>購入者電話番号</td>
+                <td>注文状態</td>
+                <td>購入日時</td>
+                <td>操作</td>
+            </tr>
             </thead>
             <tbody th:each="o: ${order}">
-                <tr>
-                    <!--注文者のID-->
-                    <td th:text="${o.userId}"></td>
+            <tr>
+                <!--注文者のID-->
+                <td th:text="${o.userId}"></td>
 
-                    <!--合計金額-->
-                    <td th:text="${o.totalAmount}"></td>
+                <!--合計金額-->
+                <td th:text="${o.totalAmount}"></td>
 
-                    <!--購入者氏名-->
-                    <td th:text="${o.customerName}"></td>
+                <!--購入者氏名-->
+                <td th:text="${o.customerName}"></td>
 
-                    <!--購入者郵便番号-->
-                    <td th:text="${o.customerPostalCode}"></td>
+                <!--購入者郵便番号-->
+                <td th:text="${o.customerPostalCode}"></td>
 
-                    <!--購入者住所-->
-                    <td th:text="${o.customerAddress}"></td>
+                <!--購入者住所-->
+                <td th:text="${o.customerAddress}"></td>
 
-                    <!--購入者電話番号-->
-                    <td th:text="${o.customerPhone}"></td>
+                <!--購入者電話番号-->
+                <td th:text="${o.customerPhone}"></td>
 
-                    <!--注文状態-->
-                    <td th:text="${
+                <!--注文状態-->
+                <td th:text="${
                         o.status == 'CONFIRMED' ? '注文確定（支払い成功時）' :
                         o.status == 'PREPARING'  ? '発送準備中' :
                         o.status == 'SHIPPED'  ? '発送済み' :
                         '不明'}">
-                    </td>
+                </td>
 
-                    <!--購入日時（登録日時）-->
-                    <td th:text="${o.createdAt}"></td>
-                    <td>
-                        <a th:href="@{@{'/admin/order/' + ${o.id}}}">詳しく見る</a>
-                    </td>
-                </tr>
+                <!--購入日時（登録日時）-->
+                <td th:text="${o.createdAt}"></td>
+                <td>
+                    <a th:href="@{@{'/admin/order/' + ${o.id}}}" class="btn-small">詳細</a>
+                </td>
+            </tr>
             </tbody>
         </table>
-    </div>
-    <!--フッター-->
-    <!-- ページネーション -->
-    <div th:if="${page.totalPages > 1}" class="pagination">
-        <a th:if="${showFirst}" th:href="@{/admin/orders(page=0)}">最初</a>
-        <a th:if="${page.number > 0}" th:href="@{/admin/orders(page=${page.number - 1})}">
-            前へ
-        </a>
-        <span th:each="i : ${#numbers.sequence(startPage, endPage)}">
-            <a th:if="${i != page.number}" th:href="@{/admin/orders(page=${i})}" th:text="${i + 1}"></a>
-            <strong th:if="${i == page.number}" th:text="${i + 1}"></strong>
-        </span>
-        <a th:if="${page.number < page.totalPages - 1}" th:href="@{/admin/orders(page=${page.number + 1})}">
-            次へ
-        </a>
-        <a th:if="${showLast}" th:href="@{/admin/orders(page=${page.totalPages - 1})}">
-            最後
-        </a>
-    </div>
-    <div th:replace="fragments/fragment :: footer"></div>
+
+        <!-- ページネーション -->
+        <div th:if="${page.totalPages > 1}" class="pagination">
+
+            <!-- 最初 -->
+            <a class="next_prev_button" th:if="${showFirst}"
+               th:href="@{/admin/orders(
+            page=0,
+            minAmount=${form.minAmount},
+            maxAmount=${form.maxAmount},
+            customerName=${form.customerName},
+            customerAddress=${form.customerAddress},
+            customerPhone=${form.customerPhone},
+            startDate=${form.startDate},
+            endDate=${form.endDate},
+            status=${form.status},
+            sort=${form.sort},
+            order=${form.order}
+       )}">
+                最初
+            </a>
+
+            <!-- 前へ -->
+            <a class="next_prev_button" th:if="${page.number > 0}"
+               th:href="@{/admin/orders(
+            page=${page.number - 1},
+            minAmount=${form.minAmount},
+            maxAmount=${form.maxAmount},
+            customerName=${form.customerName},
+            customerAddress=${form.customerAddress},
+            customerPhone=${form.customerPhone},
+            startDate=${form.startDate},
+            endDate=${form.endDate},
+            status=${form.status},
+            sort=${form.sort},
+            order=${form.order}
+            )}">
+                前へ
+            </a>
+
+                <!-- ページ番号 -->
+           <span th:each="i : ${#numbers.sequence(startPage, endPage)}">
+                <a th:if="${i != page.number}"
+                   th:href="@{/admin/orders(
+                        page=${i},
+                        minAmount=${form.minAmount},
+                        maxAmount=${form.maxAmount},
+                        customerName=${form.customerName},
+                        customerAddress=${form.customerAddress},
+                        customerPhone=${form.customerPhone},
+                        startDate=${form.startDate},
+                        endDate=${form.endDate},
+                        status=${form.status},
+                        sort=${form.sort},
+                        order=${form.order}
+                   )}"
+                   th:text="${i + 1}"></a>
+
+                <strong th:if="${i == page.number}" th:text="${i + 1}"></strong>
+           </span>
+
+            <!-- 次へ -->
+            <a class="next_prev_button" th:if="${page.number < page.totalPages - 1}"
+               th:href="@{/admin/orders(
+            page=${page.number + 1},
+            minAmount=${form.minAmount},
+            maxAmount=${form.maxAmount},
+            customerName=${form.customerName},
+            customerAddress=${form.customerAddress},
+            customerPhone=${form.customerPhone},
+            startDate=${form.startDate},
+            endDate=${form.endDate},
+            status=${form.status},
+            sort=${form.sort},
+            order=${form.order}
+            )}">
+                次へ
+            </a>
+
+            <!-- 最後 -->
+            <a th:if="${showLast}"
+               th:href="@{/admin/orders(
+            page=${page.totalPages - 1},
+            minAmount=${form.minAmount},
+            maxAmount=${form.maxAmount},
+            customerName=${form.customerName},
+            customerAddress=${form.customerAddress},
+            customerPhone=${form.customerPhone},
+            startDate=${form.startDate},
+            endDate=${form.endDate},
+            status=${form.status},
+            sort=${form.sort},
+            order=${form.order}
+            )}">
+                最後
+            </a>
+
+        </div>
+    </main>
+
+</div>
+<!--フッター-->
+
+<div th:replace="fragments/fragment :: footer"></div>
 </body>
 </html>

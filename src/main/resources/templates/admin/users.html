@@ -3,10 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <title>会員一覧</title>
+    <link th:href="@{/css/navbar.css}" rel="stylesheet">
+    <link th:href="@{/css/style.css}" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/admin.css}">
+    <link rel="stylesheet" th:href="@{/css/admin_users.css}">
 </head>
 <body>
     <!--ヘッダー-->
     <div th:replace="fragments/navbar :: navbar"></div>
+
+    <nav>
+        <ul class="navigation">
+            <li><a th:href="@{/}">ホーム</a></li>
+            <li><a th:href="@{/admin}">管理者ページ</a></li>
+            <li>ユーザー管理一覧</li>
+        </ul>
+    </nav>
+
     <div th:if="${errorMessage != null}" th:text="${errorMessage}"></div>
 
     <!--コンテンツ-->
