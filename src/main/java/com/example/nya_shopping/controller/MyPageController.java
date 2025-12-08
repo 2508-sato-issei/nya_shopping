@@ -26,7 +26,11 @@ public class MyPageController {
     @GetMapping("/user/mypage")
     public String showMyPage(Model model,
                              @AuthenticationPrincipal LoginUserDetails loginUser,
-                             @ModelAttribute MyPageOrderNarrowForm form){
+                             @ModelAttribute MyPageOrderNarrowForm form,
+                             @RequestParam(defaultValue = "0") int page){
+
+        final int LIMIT = 10; // 1ページあたりの表示件数
+        int offset = page * LIMIT;
 
         //ログインユーザー情報取得
         User user = loginUser.getUser();
@@ -34,10 +38,10 @@ public class MyPageController {
 
         if (form.getMonth() != null && form.getYear() == null) {
 
-            // 1. エラーメッセージをModelに設定
+            //エラーメッセージをModelに設定
             model.addAttribute("globalError", "月を指定する場合は、年を必ず指定してください。");
 
-            // 2. 画面再表示に必要なデータを再取得
+            //画面再表示に必要なデータを再取得
             model.addAttribute("myPageForm", form);
             model.addAttribute("user", user);
             model.addAttribute("orderYears", myPageService.findOrderYearsByUserId(userId));
@@ -46,21 +50,27 @@ public class MyPageController {
             return "user/mypage";
         }
 
+        int totalCount = myPageService.countOrderHistory(userId, form);
+
         //注文情報取得（メソッドを活用）
-        List<OrderHistoryItemDto> orderHistoryList = myPageService.findOrderHistory(userId, form);
+        List<OrderHistoryItemDto> orderHistoryList = myPageService.findOrderHistory(userId, form, offset, LIMIT);
 
         //注文年を取得
         List<Integer> orderYears = myPageService.findOrderYearsByUserId(userId);
 
-        //1.会員情報、注文履歴リスト、注文年リストをModelにセット
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", (int) Math.ceil((double) totalCount / LIMIT));
+        model.addAttribute("totalCount", totalCount);
+
+        //会員情報、注文履歴リスト、注文年リストをModelにセット
         model.addAttribute("user", user);
         model.addAttribute("orderHistoryList", orderHistoryList);
         model.addAttribute("orderYears", orderYears);
 
-        //2.絞り込みフォーム（画面再表示用）をModelにセット
+        //絞り込みフォーム（画面再表示用）をModelにセット
         model.addAttribute("myPageForm", form);
 
-        //3.注文状態の選択肢をModelにセット
+        //注文状態の選択肢をModelにセット
         List<String> orderStatusOptions = List.of("CONFIRMED", "PREPARING", "SHIPPED");
         model.addAttribute("orderStatusesList", orderStatusOptions);
 

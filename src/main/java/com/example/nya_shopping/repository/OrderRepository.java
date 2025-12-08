@@ -28,10 +28,15 @@ public interface OrderRepository {
 
     //マイページで注文履歴一覧を取得する。
     List<OrderHistoryItemDto> findOrderHistory(@Param("userId") Integer userId,
-                                               @Param("form") MyPageOrderNarrowForm form);
+                                               @Param("form") MyPageOrderNarrowForm form,
+                                               @Param("offset") int offset,
+                                               @Param("limit") int limit);
 
     //注文した年を取得
     List<Integer> findOrderYearsByUserId(@Param("userId") Integer userId);
+
+    int countOrderHistory(@Param("userId") Integer userId,
+                          @Param("form") MyPageOrderNarrowForm form);
 
 
 

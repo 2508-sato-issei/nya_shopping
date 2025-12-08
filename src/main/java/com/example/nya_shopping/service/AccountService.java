@@ -1,5 +1,6 @@
 package com.example.nya_shopping.service;
 
+import com.example.nya_shopping.controller.form.UserEditForm;
 import com.example.nya_shopping.controller.form.UserRegisterForm;
 import com.example.nya_shopping.repository.UserRepository;
 import com.example.nya_shopping.repository.entity.User;
@@ -44,6 +45,41 @@ public class AccountService {
         user.setIsStopped(false);
 
         userRepository.save(user);
+    }
+
+    //メールアドレス重複確認メソッド
+    public boolean isEmailDuplicateExcludingUser(String email, Integer userId){
+        //既存のユーザーをメールアドレスで検索
+        Optional<User> existUser= userRepository.findByEmail(email);
+        //存在して、かつそのIDが更新対象のIDと異なれば、重複と判定
+        //Optional取得➡ID取得➡userIdと一致するか確認
+        return existUser.isPresent() && !existUser.get().getId().equals(userId);
+    }
+
+
+    public User updateUser(UserEditForm form){
+        //既存のユーザー情報をIDで取得
+        Optional<User> optionalUser = userRepository.findById(form.getUserId());
+        User user = optionalUser.get();
+
+        //Entityにフォームの値を詰める
+        user.setEmail(form.getEmail());
+        user.setName(form.getName());
+        user.setPostalCode(form.getPostalCode());
+        user.setAddress(form.getAddress());
+        user.setPhone(form.getPhone());
+        user.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
+
+        //パスワードが入力されていれば更新（ハッシュ化してセット）
+        if (form.getPassword() != null && !form.getPassword().isEmpty()) {
+            String encodePassword = passwordEncoder.encode(form.getPassword());
+            user.setPassword(encodePassword);
+        }
+
+        //データベースに更新を反映。
+        userRepository.updateUser(user);
+
+        return user;
     }
 
 }

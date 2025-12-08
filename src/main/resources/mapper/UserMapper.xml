@@ -164,5 +164,42 @@
         WHERE id = #{id}
     </update>
 
+    <select id="findById" resultType="com.example.nya_shopping.repository.entity.User" parameterType="int">
+        SELECT
+        id,
+        email,
+        password,
+        name,
+        postal_code,
+        address,
+        phone,
+        role,
+        is_stopped,
+        created_at,
+        updated_at
+        FROM users
+        WHERE id = #{id}
+    </select>
+
+    <update id="updateUser" parameterType="com.example.nya_shopping.repository.entity.User">
+        UPDATE users
+        SET
+        email = #{email},
+
+        password =
+        <if test="password != null and password != ''">
+            #{password},
+        </if>
+        <if test="password == null or password == ''">
+            password = password,  </if>
+
+        name = #{name},
+        postal_code = #{postalCode},
+        address = #{address},
+        phone = #{phone},
+        updated_at = #{updatedAt}
+
+        WHERE id = #{id}
+    </update>
 
 </mapper>
