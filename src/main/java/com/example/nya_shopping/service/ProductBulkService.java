@@ -13,6 +13,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -145,6 +146,7 @@ public class ProductBulkService {
         row.setImageUrl(cols[5]);
         row.setDescription(cols[6]);
         row.setIsActive(Boolean.valueOf(cols[7]));
+        row.setCreatedAt(LocalDateTime.parse(cols[8]));
 
         return row;
     }
@@ -163,7 +165,8 @@ public class ProductBulkService {
                         row.getStock(),
                         row.getImageUrl(),
                         row.getDescription(),
-                        row.getIsActive()
+                        row.getIsActive(),
+                        row.getCreatedAt()
                 );
 
             } else {
@@ -176,7 +179,8 @@ public class ProductBulkService {
                         row.getStock(),
                         row.getImageUrl(),
                         row.getDescription(),
-                        row.getIsActive()
+                        row.getIsActive(),
+                        row.getCreatedAt()
                 );
             }
         }

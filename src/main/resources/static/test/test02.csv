@@ -1,6 +1,6 @@
 商品ID,商品名,価格,カテゴリー,在庫数,画像ファイル名,商品説明,公開/非公開,登録日
-1,プリンター 07,70000,OA_EQUIPMENT,700,printer.jpg,プリンター,true,2025-12-02T15:05:32
-2,ノートPC 07,70000,PC_AND_PERIPHERALS,700,pc.jpg,ノートPC,true,2025-12-02T15:06:33
-3,デスク 07,70000,OFFICE_FURNITURE,700,desk.jpg,デスク,true,2025-12-02T15:08
-4,ボールペン 07,700,STATIONERY_AND_SUPPLIES,700,stationary.jpg,ボールペン,true,2025-12-02T15:09:25
-5,手帳 07,7000,OFFICE_SUPPLIES,700,goods.jpg,手帳,true,2025-12-02T15:13:32
+26,プリンター 07,70000,OA_EQUIPMENT,700,printer.jpg,プリンター,true,2025-12-07T15:05:32
+27,ノートPC 07,70000,PC_AND_PERIPHERALS,700,pc.jpg,ノートPC,true,2025-12-07T15:06:33
+28,デスク 07,70000,OFFICE_FURNITURE,700,desk.jpg,デスク,true,2025-12-07T15:08
+29,ボールペン 07,700,STATIONERY_AND_SUPPLIES,700,stationary.jpg,ボールペン,true,2025-12-07T15:09:25
+30,手帳 07,7000,OFFICE_SUPPLIES,700,goods.jpg,手帳,true,2025-12-07T15:13:32

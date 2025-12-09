@@ -30,7 +30,10 @@
         <p th:text="${errorMessage}"></p>
     </div>
 
-    <div th:if="${#lists.isEmpty(items)}">カートには商品がありません。</div>
+    <div class="cart-btn-n" th:if="${#lists.isEmpty(items)}">
+        <p>カートには商品がありません</p>
+        <a class="continue-n" th:href="@{/search}">買い物を続ける</a>
+    </div>
 
     <div th:if="${not #lists.isEmpty(items)}">
         <table>
@@ -74,11 +77,12 @@
             </tr>
         </table>
     </div>
-    <div th:if="${not #lists.isEmpty(items)}">
+    <div class="btn-area" th:if="${not #lists.isEmpty(items)}">
         <form th:action="@{/order/purchase}" method="get" id="purchaseForm">
             <input type="hidden" name="quantityMap" id="quantityMapInput">
             <button type="submit">購入する</button>
         </form>
+        <a class="continue" th:href="@{/search}">買い物を続ける</a>
     </div>
 </div>
 <script>
