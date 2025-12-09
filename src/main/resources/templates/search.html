@@ -44,8 +44,8 @@
             <!-- ソート条件-->
             <select name="sort">
                 <option value="">標準（更新日順）</option>
-                <option value="new"  th:selected="${searchForm.sort} == 'new'">登録日が新しい順</option>
-                <option value="low"  th:selected="${searchForm.sort} == 'low'">価格が安い順</option>
+                <option value="new" th:selected="${searchForm.sort} == 'new'">登録日が新しい順</option>
+                <option value="low" th:selected="${searchForm.sort} == 'low'">価格が安い順</option>
                 <option value="high" th:selected="${searchForm.sort} == 'high'">価格が高い順</option>
             </select>
             <button type="submit">検索</button>
@@ -54,7 +54,7 @@
 
     <!-- 結果が空のとき -->
     <div th:if="${#lists.isEmpty(results)}">
-        検索条件に一致する店舗は見つかりませんでした。
+        検索条件に一致する商品は見つかりませんでした。
     </div>
 
     <!-- 商品一覧 -->
@@ -93,21 +93,66 @@
 
     <!-- ページネーション -->
     <div th:if="${page.totalPages > 1}" class="pagination">
-        <a th:if="${showFirst}" th:href="@{/search(page=0)}">最初</a>
-        <a th:if="${page.number > 0}" th:href="@{/search(page=${page.number - 1})}">
-            前へ
-        </a>
+        <a class="pages"
+           th:if="${showFirst}"
+           th:href="@{/search(
+           category=${searchForm.category},
+           keyword=${searchForm.keyword},
+           maxPrice=${searchForm.maxPrice},
+           minPrice=${searchForm.minPrice},
+           stock=${searchForm.stock},
+           sort=${searchForm.sort},
+           page=0)}">最初</a>
+
+        <a class="pages"
+           th:if="${page.number > 0}"
+           th:href="@{/search(
+           category=${searchForm.category},
+           keyword=${searchForm.keyword},
+           maxPrice=${searchForm.maxPrice},
+           minPrice=${searchForm.minPrice},
+           stock=${searchForm.stock},
+           sort=${searchForm.sort},
+           page=${page.number - 1})}">前へ</a>
+
         <span th:each="i : ${#numbers.sequence(startPage, endPage)}">
-            <a th:if="${i != page.number}" th:href="@{/search(page=${i})}" th:text="${i + 1}"></a>
-            <strong th:if="${i == page.number}" th:text="${i + 1}"></strong>
+            <a class="pages"
+               th:if="${i != page.number}"
+               th:href="@{/search(
+               category=${searchForm.category},
+               keyword=${searchForm.keyword},
+               maxPrice=${searchForm.maxPrice},
+               minPrice=${searchForm.minPrice},
+               stock=${searchForm.stock},
+               sort=${searchForm.sort},
+               page=${i})}"
+               th:text="${i + 1}"></a>
+            <strong class="active-page" th:if="${i == page.number}" th:text="${i + 1}"></strong>
         </span>
-        <a th:if="${page.number < page.totalPages - 1}" th:href="@{/search(page=${page.number + 1})}">
-            次へ
-        </a>
-        <a th:if="${showLast}" th:href="@{/search(page=${page.totalPages - 1})}">
-            最後
-        </a>
+
+        <a class="pages"
+           th:if="${page.number < page.totalPages - 1}"
+           th:href="@{/search(
+           category=${searchForm.category},
+           keyword=${searchForm.keyword},
+           maxPrice=${searchForm.maxPrice},
+           minPrice=${searchForm.minPrice},
+           stock=${searchForm.stock},
+           sort=${searchForm.sort},
+           page=${page.number + 1})}">次へ</a>
+
+        <a class="pages"
+           th:if="${showLast}"
+           th:href="@{/search(
+           category=${searchForm.category},
+           keyword=${searchForm.keyword},
+           maxPrice=${searchForm.maxPrice},
+           minPrice=${searchForm.minPrice},
+           stock=${searchForm.stock},
+           sort=${searchForm.sort},
+           page=${page.totalPages - 1})}">最後</a>
     </div>
+
 </div>
 </body>
 </html>

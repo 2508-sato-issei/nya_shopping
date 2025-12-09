@@ -74,9 +74,9 @@
             AND phone LIKE CONCAT('%', #{form.phone}, '%')
         </if>
 
-        <!-- 電話番号 -->
+        <!-- 停止状態 -->
         <if test="form.isStopped != null">
-            AND isStopped = #{form.isStopped}
+            AND is_stopped = #{form.isStopped}
         </if>
 
         <if test="form.startTimeStamp != null">
@@ -97,7 +97,7 @@
                 ORDER BY name
             </when>
             <when test="form.sort == 'address'">
-                ORDER BY adress
+                ORDER BY address
             </when>
             <when test="form.sort == 'created'">
                 ORDER BY created_at
@@ -146,7 +146,7 @@
 
         <!-- 電話番号 -->
         <if test="form.isStopped != null">
-            AND isStopped = #{form.isStopped}
+            AND is_stopped = #{form.isStopped}
         </if>
 
         <if test="form.startTimeStamp != null">

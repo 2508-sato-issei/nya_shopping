@@ -51,7 +51,7 @@
 
         <!-- 価格 -->
         <label>価格</label>
-        <input type="number" th:field="*{price}">
+        <input type="number" th:field="*{price}" min="0">
 
         <!-- カテゴリ -->
         <label>カテゴリ</label>
@@ -65,7 +65,7 @@
 
         <!-- 在庫数 -->
         <label>在庫数</label>
-        <input type="number" th:field="*{stock}">
+        <input type="number" th:field="*{stock}" min="0">
 
         <!-- 画像 -->
         <label>現在の画像</label>

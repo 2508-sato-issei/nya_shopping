@@ -75,9 +75,13 @@ td a:hover {
     text-decoration: underline;
 }
 
+.btn-area {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
 #purchaseForm button {
-    display: block;
-    margin: 30px auto;
     padding: 12px 40px;
     background: #d9843b;
     color: #fff;
@@ -91,6 +95,42 @@ td a:hover {
 
 #purchaseForm button:hover {
     background: #bf742f;
+}
+
+.continue-n {
+    display: block;
+    width: 130px;
+    margin-top: 30px;
+    text-align: center;
+    text-decoration: none;
+    padding: 12px 40px;
+    background: #666666c9;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-size: 18px;
+    cursor: pointer;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
+}
+
+.continue {
+    text-decoration: none;
+    padding: 12px 40px;
+    background: #666666c9;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-size: 18px;
+    cursor: pointer;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
+}
+
+.cart-btn-n a:hover {
+    background: #666666;
+}
+
+.btn-area a:hover {
+    background: #666666;
 }
 
 td, th {

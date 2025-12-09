@@ -114,7 +114,7 @@
                         <option value="price">価格</option>
                         <option value="category">カテゴリ</option>
                         <option value="stock">在庫数</option>
-                        <option value="created_at">登録日時</option>
+                        <option value="created_at">登録日</option>
                     </select>
 
                     <select th:field="*{sortOrder}">
@@ -207,9 +207,9 @@
                page=${page.number - 1},
                size=${size})}">前へ</a>
 
-            <span class="pages"
-                  th:each="i : ${#numbers.sequence(startPage, endPage)}">
-                <a th:if="${i != page.number}"
+            <span th:each="i : ${#numbers.sequence(startPage, endPage)}">
+                <a class="pages"
+                   th:if="${i != page.number}"
                    th:href="@{/admin/products(
                    name=${cond.name},
                    priceMin=${cond.priceMin},
@@ -257,9 +257,7 @@
                sortKey=${cond.sortKey},
                sortOrder=${cond.sortOrder},
                page=${page.totalPages - 1},
-               size=${size})}">
-                最後
-            </a>
+               size=${size})}">最後</a>
         </div>
 
     </main>

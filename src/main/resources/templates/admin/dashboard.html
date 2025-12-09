@@ -32,30 +32,51 @@
 
     <main class="container">
 
-        <!-- ========================
-             注文サマリー
-        ========================= -->
-        <section class="summary-box">
-            <h2>注文件数サマリー</h2>
+        <div class="dashboard">
+            <div class="summary">
+                <!-- ========================
+                     注文サマリー
+                ========================= -->
+                <section class="summary-box">
+                    <h2>📒 注文件数サマリー 📒</h2>
 
-            <ul>
-                <li>今日の注文件数：<span th:text="${summary.todayOrders}"></span></li>
-                <li>先月の注文件数：<span th:text="${summary.lastMonthOrders}"></span></li>
-                <li>今月の注文件数：<span th:text="${summary.thisMonthOrders}"></span></li>
-            </ul>
-        </section>
+                    <ul>
+                        <li>今日の注文件数：<span th:text="${summary.todayOrders}"></span></li>
+                        <li>先月の注文件数：<span th:text="${summary.lastMonthOrders}"></span></li>
+                        <li>今月の注文件数：<span th:text="${summary.thisMonthOrders}"></span></li>
+                    </ul>
+                </section>
 
-        <!-- ========================
-             注文ステータス別
-        ========================= -->
-        <section class="summary-box">
-            <h2>ステータス別 注文件数</h2>
-            <ul>
-                <li>注文確定：<span th:text="${summary.confirmed}"></span></li>
-                <li>発送準備中：<span th:text="${summary.preparing}"></span></li>
-                <li>発送済み：<span th:text="${summary.shipped}"></span></li>
-            </ul>
-        </section>
+                <!-- ========================
+                     注文ステータス別
+                ========================= -->
+                <section class="summary-box">
+                    <h2>📦 ステータス別 注文件数 📦</h2>
+                    <ul>
+                        <li>注文確定：<span th:text="${summary.confirmed}"></span></li>
+                        <li>発送準備中：<span th:text="${summary.preparing}"></span></li>
+                        <li>発送済み：<span th:text="${summary.shipped}"></span></li>
+                    </ul>
+                </section>
+            </div>
+
+            <div class="popular">
+                <h2>✨ 人気カテゴリ ✨</h2>
+                <div class="home-popular-list">
+                    <div class="home-popular-item" th:each="cat : ${popularCategories}">
+                        <a th:href="@{/search(category=${cat.name()})}"
+                           th:text="${cat.label}"></a>
+                    </div>
+                </div>
+                <h2>🎢 人気キーワード 🎢</h2>
+                <div class="home-popular-list">
+                    <div class="home-popular-item" th:each="kw : ${popularKeywords}">
+                        <a th:href="@{/search(keyword=${kw})}" th:text="${kw}"></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </main>
 </div>
 

@@ -12,9 +12,9 @@
     <!-- INSERT -->
     <insert id="insertProduct">
         INSERT INTO products
-        (name, price, category, stock, image_url, description, is_active)
+        (name, price, category, stock, image_url, description, is_active, created_at)
         VALUES
-        (#{name}, #{price}, #{category}, #{stock}, #{imageUrl}, #{description}, #{isActive})
+        (#{name}, #{price}, #{category}, #{stock}, #{imageUrl}, #{description}, #{isActive}, #{createdAt})
     </insert>
 
     <!-- UPDATE -->
@@ -27,7 +27,8 @@
         stock = #{stock},
         image_url = #{imageUrl},
         description = #{description},
-        is_active = #{isActive}
+        is_active = #{isActive},
+        created_at = #{createdAt}
         WHERE id = #{id}
     </update>
 
