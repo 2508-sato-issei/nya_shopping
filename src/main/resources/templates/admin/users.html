@@ -96,10 +96,10 @@
                 <td>メールアドレス</td>
                 <td>氏名</td>
                 <td>住所</td>
-                <td>購入者住所</td>
-                <td>購入者電話番号</td>
-                <td>注文状態</td>
-                <td>購入日時</td>
+                <td>電話番号</td>
+                <td>権限</td>
+                <td>状態</td>
+                <td>登録日時</td>
             </tr>
             </thead>
             <tbody th:each="u: ${userList}">
@@ -116,6 +116,9 @@
                 <!--住所-->
                 <td th:text="${u.address}"></td>
 
+                <!--電話番号-->
+                <td th:text="${u.phone}"></td>
+
                 <!--ユーザーの権限-->
                 <td th:text="${u.role}"></td>
 
@@ -127,7 +130,7 @@
                         <input type="hidden" name="id" th:value="${u.id}">
                         <input type="hidden" name="isStopped" th:value="${!u.isStopped}">
                         <th:block th:if="${loginUser.id != u.id}">
-                            <button type="submit">切り替え</button>
+                            <button type="submit" onclick="return confirm('本当に切り替えますか？');">切り替え</button>
                         </th:block>
                     </form>
                 </td>
@@ -141,20 +144,65 @@
 
         <!-- ページネーション -->
         <div th:if="${page.totalPages > 1}" class="pagination">
-            <a th:if="${showFirst}" th:href="@{/admin/users(page=0)}">最初</a>
-            <a th:if="${page.number > 0}" th:href="@{/admin/users(page=${page.number - 1})}">
-                前へ
-            </a>
+            <a th:if="${showFirst}" th:href="@{/admin/users(
+                                                page=0,
+                                                email=${form.email},
+                                                name=${form.name},
+                                                address=${form.address},
+                                                phone=${form.phone},
+                                                isStopped=${form.isStopped},
+                                                startDate=${form.startDate},
+                                                endDate=${form.endDate},
+                                                sort=${form.sort},
+                                                order=${form.order}
+                                                )}">最初</a>
+            <a th:if="${page.number > 0}" th:href="@{/admin/users(page=${page.number - 1},
+                                                email=${form.email},
+                                                name=${form.name},
+                                                address=${form.address},
+                                                phone=${form.phone},
+                                                isStopped=${form.isStopped},
+                                                startDate=${form.startDate},
+                                                endDate=${form.endDate},
+                                                sort=${form.sort},
+                                                order=${form.order}
+                                                )}">前へ</a>
             <span th:each="i : ${#numbers.sequence(startPage, endPage)}">
-            <a th:if="${i != page.number}" th:href="@{/admin/users(page=${i})}" th:text="${i + 1}"></a>
+            <a th:if="${i != page.number}" th:href="@{/admin/users(page=${i},
+                                                email=${form.email},
+                                                name=${form.name},
+                                                address=${form.address},
+                                                phone=${form.phone},
+                                                isStopped=${form.isStopped},
+                                                startDate=${form.startDate},
+                                                endDate=${form.endDate},
+                                                sort=${form.sort},
+                                                order=${form.order}
+                                                )}" th:text="${i + 1}"></a>
             <strong th:if="${i == page.number}" th:text="${i + 1}"></strong>
         </span>
-            <a th:if="${page.number < page.totalPages - 1}" th:href="@{/admin/users(page=${page.number + 1})}">
-                次へ
-            </a>
-            <a th:if="${showLast}" th:href="@{/admin/users(page=${page.totalPages - 1})}">
-                最後
-            </a>
+            <a th:if="${page.number < page.totalPages - 1}" th:href="@{/admin/users(page=${page.number + 1},
+                                                email=${form.email},
+                                                name=${form.name},
+                                                address=${form.address},
+                                                phone=${form.phone},
+                                                isStopped=${form.isStopped},
+                                                startDate=${form.startDate},
+                                                endDate=${form.endDate},
+                                                sort=${form.sort},
+                                                order=${form.order}
+                                                )}">次へ</a>
+            <a th:if="${showLast}" th:href="@{/admin/users(page=${page.totalPages - 1},
+                                                email=${form.email},
+                                                name=${form.name},
+                                                address=${form.address},
+                                                phone=${form.phone},
+                                                isStopped=${form.isStopped},
+                                                startDate=${form.startDate},
+                                                endDate=${form.endDate},
+                                                sort=${form.sort},
+                                                order=${form.order}
+                                                )}">最後</a>
         </div>
     </div>
 </body>
