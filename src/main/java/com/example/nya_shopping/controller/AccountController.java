@@ -43,10 +43,30 @@ public class AccountController {
                                Model model,
                                RedirectAttributes redirectAttributes){
 
-        //パスワードと確認用が一致しているのか確認一致しない場合（E0017）
-        if(userRegisterForm.getPassword() != null && userRegisterForm.getConfirmPassword() != null &&
-                !userRegisterForm.getPassword().equals(userRegisterForm.getConfirmPassword())){
-            result.rejectValue("password", "E0017", ErrorMessage.E0017);
+        boolean isPasswordEntered = userRegisterForm.getPassword() != null && !userRegisterForm.getPassword().isEmpty();
+        boolean isConfirmEntered = userRegisterForm.getConfirmPassword() != null && !userRegisterForm.getConfirmPassword().isEmpty();
+
+        // ①片方だけ入力されている場合
+        if (isPasswordEntered && !isConfirmEntered) {
+            result.rejectValue("confirmPassword", "E0017", ErrorMessage.E0017);
+        }
+        if (!isPasswordEntered && isConfirmEntered) {
+            result.rejectValue("confirmPassword", "E0017", ErrorMessage.E0017);
+        }
+
+        // ②両方入力されている → 一致チェック
+        if (isPasswordEntered && isConfirmEntered) {
+
+            if (!userRegisterForm.getPassword().equals(userRegisterForm.getConfirmPassword())) {
+                // 不一致の場合は形式チェックを行わない
+                result.rejectValue("confirmPassword", "E0017", ErrorMessage.E0017);
+
+            } else {
+                // 一致 → 形式チェック
+                if (!userRegisterForm.getPassword().matches("(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,32}")) {
+                    result.rejectValue("password", "E0011", ErrorMessage.E0011);
+                }
+            }
         }
 
         //メールアドレス重複チェック
@@ -77,8 +97,8 @@ public class AccountController {
         //IDチェック(空・数字以外)
         if (id == null || id.isEmpty() || !id.matches("^\\d+$")) {
             // IDがnull、空文字列、または数字以外の場合
-            redirectAttributes.addFlashAttribute("globalError", ErrorMessage.E0018);
-            return "redirect:/user/mypage";
+            redirectAttributes.addFlashAttribute("errorMessage", ErrorMessage.E0018);
+            return "redirect:/";
         }
 
         //Integerに変換
@@ -89,8 +109,8 @@ public class AccountController {
 
         //自分以外のIDチェック
         if (!targetId.equals(currentUserId)) {
-            redirectAttributes.addFlashAttribute("globalError", ErrorMessage.E0018);
-            return "redirect:/user/mypage";
+            redirectAttributes.addFlashAttribute("errorMessage", ErrorMessage.E0018);
+            return "redirect:/";
         }
 
         //ログインしているユーザー情報取得
@@ -117,6 +137,14 @@ public class AccountController {
         return form;
     }
 
+    @GetMapping("/user/mypage/edit/")
+    public String redirect(@AuthenticationPrincipal LoginUserDetails loginUser,
+                           RedirectAttributes redirectAttributes) {
+
+        redirectAttributes.addFlashAttribute("errorMessage", ErrorMessage.E0018);
+        return "redirect:/";
+    }
+
     //ユーザー編集処理
     @PostMapping("/user/mypage/edit")
     public String editUser(@ModelAttribute @Validated UserEditForm userEditForm,
@@ -125,18 +153,35 @@ public class AccountController {
                            RedirectAttributes redirectAttributes) {
 
 
-        boolean isConfirmPasswordEntered = (userEditForm.getConfirmPassword() != null && !userEditForm.getConfirmPassword().isEmpty());
-        boolean isPasswordEntered = (userEditForm.getPassword() != null && !userEditForm.getPassword().isEmpty());
+        boolean isPasswordEntered =
+                userEditForm.getPassword() != null && !userEditForm.getPassword().isEmpty();
 
-        if (isConfirmPasswordEntered && !isPasswordEntered) {
-            // パスワードが入力されていない場合、メインのパスワードフィールドを必須エラーとする
-            result.rejectValue("password", "E0005", null, ErrorMessage.E0005);
+        boolean isConfirmEntered =
+                userEditForm.getConfirmPassword() != null && !userEditForm.getConfirmPassword().isEmpty();
+
+
+// ①片方だけ入力されている → 不一致エラー（E0017）
+        if (isPasswordEntered && !isConfirmEntered) {
+            result.rejectValue("confirmPassword", "E0017", ErrorMessage.E0017);
         }
 
-        if (isPasswordEntered) {
+        if (!isPasswordEntered && isConfirmEntered) {
+            result.rejectValue("confirmPassword", "E0017", ErrorMessage.E0017);
+        }
+
+
+
+        if (isPasswordEntered && isConfirmEntered) {
+
             if (!userEditForm.getPassword().equals(userEditForm.getConfirmPassword())) {
-                // エラーを confirmPassword フィールドに紐付け
-                result.rejectValue("confirmPassword", "E0017", null, ErrorMessage.E0017);
+                // 不一致 → 形式チェックはしない
+                result.rejectValue("confirmPassword", "E0017", ErrorMessage.E0017);
+
+            } else {
+                // 一致 → 形式チェック
+                if (!userEditForm.getPassword().matches("(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,32}")) {
+                    result.rejectValue("password", "E0011", ErrorMessage.E0011);
+                }
             }
         }
 

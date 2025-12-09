@@ -181,6 +181,16 @@
         LEFT JOIN order_details OD ON O.id = OD.order_id
 
         WHERE O.user_id = #{userId}
+
+        <if test="form.status != null and form.status != ''">
+            AND O.status = #{form.status}
+        </if>
+        <if test="form.startDate != null and form.endDate != null">
+            AND O.created_at >= #{form.startDate}
+            <![CDATA[
+        AND O.created_at < DATE_ADD(#{form.endDate}, INTERVAL 1 DAY)
+        ]]>
+        </if>
     </select>
 
 </mapper>
