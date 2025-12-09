@@ -7,8 +7,19 @@
 <body>
     <!--ヘッダー-->
     <div th:replace="fragments/navbar :: navbar"></div>
+
+    <nav>
+        <ul class="navigation">
+            <li><a th:href="@{/}">ホーム</a></li>
+            <li><a th:href="@{/admin}">管理者ページ</a></li>
+            <li><a th:href="@{/admin/orders}">注文管理一覧</a></li>
+            <li>注文詳細</li>
+        </ul>
+    </nav>
+
     <div th:if="${errorMessage != null}" th:text="${errorMessage}"></div>
 
+    <h1>注文詳細</h1>
     <!--何を買ったかを詳しく明記-->
     <div>
         <div th:each="o : ${orderDetailDtoList}">
