@@ -83,12 +83,12 @@
                 <!-- ソート条件 -->
                 <div class="form-group-inline">
                     <select name="sort" th:field="*{sort}">
-                        <option value="id">ID</option>
-                        <option value="userId">ユーザーID</option>
+                        <option value="id">注文ID</option>
+                        <option value="userId">注文者ID</option>
                         <option value="amount">合計金額</option>
-                        <option value="name">名前</option>
-                        <option value="address">住所</option>
-                        <option value="created">登録日</option>
+                        <option value="name">購入者氏名</option>
+                        <option value="address">購入者住所</option>
+                        <option value="created">登録日時</option>
                     </select>
                 </div>
 
@@ -118,7 +118,7 @@
                 <td>購入者住所</td>
                 <td>購入者電話番号</td>
                 <td>注文状態</td>
-                <td>購入日時</td>
+                <td>登録日時</td>
                 <td>操作</td>
             </tr>
             </thead>
