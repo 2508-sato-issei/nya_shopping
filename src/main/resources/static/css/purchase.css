@@ -19,8 +19,7 @@
 
 .purchase-title {
     font-size: 20px;
-    margin-bottom: 15px;
-    color: #4a3d35;
+    margin: 40px 0 10px;
     font-weight: bold;
 }
 
@@ -68,7 +67,7 @@
 
 .purchase-form {
     width: 50%;
-    margin: 0 auto;
+    margin: 0 auto 30px;
     background: #fff;
     padding: 20px 25px;
     border-radius: 10px;
@@ -82,7 +81,6 @@
 .form-block label {
     display: block;
     margin-bottom: 6px;
-    color: #4a3d35;
     font-weight: bold;
 }
 
