@@ -9,17 +9,17 @@ import java.time.LocalDate;
 @Getter
 @Setter
 public class UserNarrowForm {
-    public String email;
-    public String name;
-    public String address;
-    public String phone;
-    public Boolean isStopped;
-    public LocalDate startDate;
-    public LocalDate endDate;
-    public Timestamp startTimeStamp;
-    public Timestamp endTimeStamp;
+    private String email;
+    private String name;
+    private String address;
+    private String phone;
+    private Boolean isStopped;
+    private LocalDate startDate;
+    private LocalDate endDate;
+    private Timestamp startTimeStamp;
+    private Timestamp endTimeStamp;
 
     //sort
-    public String sort;
-    public String order;
+    private String sort;
+    private String order;
 }
