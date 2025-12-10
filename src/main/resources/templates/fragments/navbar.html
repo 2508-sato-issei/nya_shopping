@@ -30,7 +30,7 @@
 
             <!-- 管理者のみ -->
             <li th:if="${#authorization.expression('hasRole(''ADMIN'')')}">
-                <a th:href="@{/admin}">⚙️ 管理者</a>
+                <a th:href="@{/admin}">⚙️ 管理者ページ</a>
             </li>
 
             <!-- ログアウトボタン -->

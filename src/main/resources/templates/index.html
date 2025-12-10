@@ -37,26 +37,35 @@
             <button type="submit">検索</button>
         </form>
     </div>
-    <h2>✨ 人気カテゴリ ✨</h2>
-    <div class="home-popular-list">
-        <div class="home-popular-item" th:each="cat : ${popularCategories}">
-            <a th:href="@{/search(category=${cat.name()})}"
-               th:text="${cat.label}"></a>
+
+    <div class="content">
+        <h2>✨ 人気カテゴリ ✨</h2>
+        <div class="home-popular-list">
+            <div class="home-popular-item" th:each="cat : ${popularCategories}">
+                <a th:href="@{/search(category=${cat.name()})}"
+                   th:text="${cat.label}"></a>
+            </div>
         </div>
     </div>
-    <h2>🎢 人気キーワード 🎢</h2>
-    <div class="home-popular-list">
-        <div class="home-popular-item" th:each="kw : ${popularKeywords}">
-            <a th:href="@{/search(keyword=${kw})}" th:text="${kw}"></a>
+
+    <div class="content">
+        <h2>🎢 人気キーワード 🎢</h2>
+        <div class="home-popular-list">
+            <div class="home-popular-item" th:each="kw : ${popularKeywords}">
+                <a th:href="@{/search(keyword=${kw})}" th:text="${kw}"></a>
+            </div>
         </div>
     </div>
-    <h2>🆕 新着アイテム 🆕</h2>
-    <div class="home-new-list">
-        <a class="home-new-item" th:each="item : ${newItems}"
-           th:href="@{/product/{id}(id=${item.id})}">
-            <img th:src="@{'/storage/' + ${item.imageUrl}}" alt="商品画像">
-            <p th:text="${item.name}"></p>
-        </a>
+
+    <div class="content">
+        <h2>🆕 新着アイテム 🆕</h2>
+        <div class="home-new-list">
+            <a class="home-new-item" th:each="item : ${newItems}"
+               th:href="@{/product/{id}(id=${item.id})}">
+                <img th:src="@{'/storage/' + ${item.imageUrl}}" alt="商品画像">
+                <p th:text="${item.name}"></p>
+            </a>
+        </div>
     </div>
 </div>
 </body>
