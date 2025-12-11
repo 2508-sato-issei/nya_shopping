@@ -3,149 +3,165 @@
     <head>
         <meta charset="UTF-8">
         <title>マイページ</title>
+        <link th:href="@{/css/style.css}" rel="stylesheet">
+        <link th:href="@{/css/navbar.css}" rel="stylesheet">
+        <link th:href="@{/css/mypage.css}" rel="stylesheet">
     </head>
     <body>
-        <h1>マイペ―ジ</h1>
-        <!--メニュー（ホーム画面・会員情報変更画面へ遷移できる）-->
-        <div>
-            <a th:href="@{/}">ホームへ戻る</a>
-            <a th:href="@{/user/mypage/edit/{id}(id=${user.id})}">会員情報変更</a>
-        </div>
-        <!--会員情報-->
-        <h2>会員情報</h2>
-        <div th:object="${user}">
-            <!--メールアドレス-->
-            <label>メールアドレス:</label>
-            <span th:text="*{email}"></span>
-            <!--氏名-->
-            <label>氏名:</label>
-            <span th:text="*{name}"></span>
-            <!--郵便番号-->
-            <label>郵便番号:</label>
-            <span th:text="*{postalCode}"></span>
-            <!--住所-->
-            <label>住所:</label>
-            <span th:text="*{address}"></span>
-            <!--電話番号-->
-            <label>電話番号:</label>
-            <span th:text="*{phone}"></span>
-            <!--登録日時-->
-            <label>登録日:</label>
-            <span th:text="*{#dates.format(createdAt, 'yyyy/MM/dd HH:mm')}"></span>
-        </div>
 
-        <div th:if="${globalMessage}" style="color: green; border: 1px solid green; padding: 10px; margin-bottom: 20px;">
+    <div th:replace="fragments/navbar :: navbar"></div>
+    <nav>
+        <ul class="navigation">
+            <li><a th:href="@{/}">ホーム</a></li>
+            <li>マイページ</li>
+        </ul>
+    </nav>
+
+    <div class="contents">
+        <h1>マイページ</h1>
+        <div class="mypage-actions">
+            <a th:href="@{/user/mypage/edit/{id}(id=${user.id})}" class="action-button edit-button">会員情報変更</a>
+        </div>
+        </header>
+        <!--会員情報-->
+        <div th:if="${globalMessage}" class="global-message success">
             <p th:text="${globalMessage}"></p>
         </div>
 
+        <section class="user-info-section">
+            <h2>会員情報</h2>
+            <div class="user-info-details" th:object="${user}">
+                <div class="info-group">
+                    <label>メールアドレス:</label>
+                    <span th:text="*{email}"></span>
+                </div>
+                <div class="info-group">
+                    <label>氏名:</label>
+                    <span th:text="*{name}"></span>
+                </div>
+                <div class="info-group">
+                    <label>郵便番号:</label>
+                    <span th:text="*{postalCode}"></span>
+                </div>
+                <div class="info-group">
+                    <label>住所:</label>
+                    <span th:text="*{address}"></span>
+                </div>
+                <div class="info-group">
+                    <label>電話番号:</label>
+                    <span th:text="*{phone}"></span>
+                </div>
+                <div class="info-group">
+                    <label>登録日:</label>
+                    <span th:text="*{#dates.format(createdAt, 'yyyy/MM/dd HH:mm')}"></span>
+                </div>
+            </div>
+        </section>
+
         <!--注文履歴一覧-->
-        <h2 th:text="'注文履歴' + (${#lists.isEmpty(orderHistoryList)} ? '' : ' (' + ${#lists.size(orderHistoryList)} + '件)')"></h2>
+        <section class="order-history-section">
+            <h2 th:text="'注文履歴' + (${#lists.isEmpty(orderHistoryList)} ? '' : ' (' + ${#lists.size(orderHistoryList)} + '件)')"></h2>
 
-        <div th:object="${myPageForm}">
-        </div>
-
-        <div th:object="${myPageForm}">
-            <p th:if="${globalError == null} and *{startDate} != null and *{endDate} != null"
-               style="font-size: 0.9em; margin-top: -10px; color: #555;">
-                現在、
-                <span th:text="*{#temporals.format(startDate, 'yyyy年MM月')}"></span>
-                から
-                <span th:text="*{#temporals.format(endDate, 'yyyy年MM月')}"></span>
-                までの注文を表示しています。
-            </p>
-
-            <p th:if="${globalError == null} and *{startDate} == null and *{endDate} == null"
-               style="font-size: 0.9em; margin-top: -10px; color: #555;">
-                現在、全期間の注文を表示しています。
-            </p>
-        </div>
-        <div th:if="${globalError}" style="color: red;">
-            <p th:text="${globalError}"></p>
-        </div>
+            <div class="history-filter-info" th:object="${myPageForm}">
+                <p th:if="${globalError == null} and (*{startDate} != null or *{endDate} != null)">
+                    現在、
+                    <span th:if="*{startDate} != null" th:text="*{#temporals.format(startDate, 'yyyy年MM月')}"></span>
+                    <span th:if="*{startDate} != null and *{endDate} != null">から</span>
+                    <span th:if="*{endDate} != null" th:text="*{#temporals.format(endDate, 'yyyy年MM月')}"></span>
+                    <span th:unless="*{startDate} == null and *{endDate} == null">までの</span>注文を表示しています。
+                </p>
+                <p th:if="${globalError == null} and *{startDate} == null and *{endDate} == null">
+                    現在、全期間の注文を表示しています。
+                </p>
+            </div>
+            <div th:if="${globalError}" class="global-message error">
+                <p th:text="${globalError}"></p>
+            </div>
 
 
-        <form th:action="@{/user/mypage}" th:object="${myPageForm}" method="get">
-        <!--注文検索-->
-            <!--発送状態検索-->
-            <label>発送状態：</label>
-            <select th:field="*{status}">
-                <option value="">全て</option>
-                <option value="CONFIRMED" th:text="'注文確定（支払い成功）'"></option>
-                <option value="PREPARING" th:text="発送準備中"></option>
-                <option value="SHIPPED" th:text="発送済み"></option>
-            </select>
-            <!--注文年検索欄-->
-            <label>年：</label>
-            <select th:field="*{year}">
-                <option value=""></option>
-                <option th:each="y : ${orderYears}" th:value="${y}" th:text="${y}"></option>
-            </select>
-            <!--注文月検索欄-->
-            <label>月：</label>
-            <select th:field="*{month}">
-                <option value=""></option>
-                <option th:each="m : ${#numbers.sequence(1,12)}"
-                        th:value="${m}"
-                        th:text="${m}">
-                </option>
-            </select>
-            <!--絞り込みボタン-->
-            <button type="submit">絞り込み</button>
-        </form>
+            <form th:action="@{/user/mypage}" th:object="${myPageForm}" method="get" class="history-filter-form">
+                <div class="filter-group">
+                    <label>発送状態：</label>
+                    <select th:field="*{status}">
+                        <option value="">全て</option>
+                        <option value="CONFIRMED" th:text="'注文確定（支払い成功）'"></option>
+                        <option value="PREPARING" th:text="発送準備中"></option>
+                        <option value="SHIPPED" th:text="発送済み"></option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>年：</label>
+                    <select th:field="*{year}">
+                        <option value=""></option>
+                        <option th:each="y : ${orderYears}" th:value="${y}" th:text="${y}"></option>
+                    </select>
+                    <label>月：</label>
+                    <select th:field="*{month}">
+                        <option value=""></option>
+                        <option th:each="m : ${#numbers.sequence(1,12)}"
+                                th:value="${m}"
+                                th:text="${m}">
+                        </option>
+                    </select>
+                </div>
+                <button type="submit" class="filter-submit-button">絞り込み</button>
+                <a th:href="@{/user/mypage}" class="filter-reset-button">クリア</a>
+            </form>
 
-        <!--何もないときにメッセージを出す-->
-        <div th:if="${#lists.isEmpty(orderHistoryList)}">
-            注文履歴はありません。
-        </div>
+            <div th:if="${#lists.isEmpty(orderHistoryList)}" class="no-history-message">
+                注文履歴はありません。
+            </div>
 
 
-        <table th:unless="${#lists.isEmpty(orderHistoryList)}">
-            <thead>
+            <table th:unless="${#lists.isEmpty(orderHistoryList)}" class="order-history-table">
+                <thead>
                 <tr>
                     <th>注文日</th>
                     <th>合計金額</th>
                     <th>購入点数</th>
                     <th>発送状態</th>
                 </tr>
-            </thead>
-            <tbody>
+                </thead>
+                <tbody>
                 <tr th:each="order : ${orderHistoryList}">
                     <td th:text="${#dates.format(order.createdAt, 'yyyy/MM/dd')}"></td>
                     <td th:text="'¥' + ${#numbers.formatInteger(order.totalAmount, 1, 'COMMA')}"></td>
                     <td th:text="${order.totalItems}"></td>
                     <td>
                         <span th:switch="${order.status}">
-                                <span th:case="'CONFIRMED'">注文確定（支払い成功）</span>
+                                <span th:case="'CONFIRMED'">注文確定</span>
                                 <span th:case="'PREPARING'">発送準備中</span>
-                                <span th:case="'SHIPPED'">発送済み</span>
+                                <span th:case="'SHIPPED'" >発送済み</span>
                                 <span th:case="*">その他</span>
                         </span>
                     </td>
-            </tbody>
-        </table>
+                </tr>
+                </tbody>
+            </table>
 
-        <div th:if="${totalPages > 1}" style="text-align: center; margin-top: 20px;">
-            <th:block th:with="baseURL=@{/user/mypage(status=${myPageForm.status}, year=${myPageForm.year}, month=${myPageForm.month})}">
+            <div th:if="${totalPages > 1}" class="pagination-controls">
+                <th:block th:with="baseURL=@{/user/mypage(status=${myPageForm.status}, year=${myPageForm.year}, month=${myPageForm.month})}">
 
                 <span th:if="${currentPage > 0}">
-                    <a th:href="@{${baseURL}(page=${currentPage - 1})}">« 前へ</a>
+                    <a th:href="@{${baseURL}(page=${currentPage - 1})}" class="page-link prev-link">« 前へ</a>
                 </span>
-                <span th:unless="${currentPage > 0}" style="color: #aaa;">« 前へ</span>
+                    <span th:unless="${currentPage > 0}" class="page-link disabled-link">« 前へ</span>
 
-                <th:block th:each="i : ${#numbers.sequence(0, totalPages - 1)}">
-                    <span th:if="${i == currentPage}" style="font-weight: bold; margin: 0 5px;">
-                        [[${i + 1}]] </span>
-                    <span th:unless="${i == currentPage}" style="margin: 0 5px;">
-                        <a th:href="@{${baseURL}(page=${i})}" th:text="${i + 1}">1</a>
+                    <th:block th:each="i : ${#numbers.sequence(0, totalPages - 1)}">
+                        <span th:if="${i == currentPage}" class="page-number active-page-number" th:text="${i + 1}"></span>
+                        <span th:unless="${i == currentPage}">
+                        <a th:href="@{${baseURL}(page=${i})}" th:text="${i + 1}" class="page-link page-number"></a>
                     </span>
-                </th:block>
+                    </th:block>
 
-                <span th:if="${currentPage < totalPages - 1}">
-                    <a th:href="@{${baseURL}(page=${currentPage + 1})}">次へ »</a>
+                    <span th:if="${currentPage < totalPages - 1}">
+                    <a th:href="@{${baseURL}(page=${currentPage + 1})}" class="page-link next-link">次へ »</a>
                 </span>
-                <span th:unless="${currentPage < totalPages - 1}" style="color: #aaa;">次へ »</span>
+                    <span th:unless="${currentPage < totalPages - 1}" class="page-link disabled-link">次へ »</span>
 
-            </th:block>
-        </div>
+                </th:block>
+            </div>
+        </section>
+    </div>
     </body>
 </html>
