@@ -10,22 +10,9 @@
 <body>
 
 <div th:fragment="footer" th:remove="tag">
-    <footer>
-        <div class="container text-center">
-            <ul class="nav justify-content-center">
-                <li class="nav-item">
-                    <a class="nav-link" th:href="@{/}">ホーム</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" th:href="@{/user/mypage}" th:if="${#authorization.expression('isAuthenticated()')}">マイページ</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" th:href="@{/admin}" th:if="${#authorization.expression('hasRole(''ADMIN'')')}">管理者</a>
-                </li>
-            </ul>
-        </div>
-        <p>&copy; NYA All rights reserved.</p>
-    </footer>
+<!--    <footer class="footer">-->
+<!--        <p class="footer-content">Copyright &copy; 2025 - NYA co., ltd. All rights reserved.</p>-->
+<!--    </footer>-->
 </div>
 </body>
 </html>

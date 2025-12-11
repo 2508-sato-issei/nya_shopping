@@ -23,7 +23,9 @@
 
 <div class="contents">
 
-    <h1>商品一括登録</h1>
+    <div class="product-csv-header">
+        <h1>商品一括登録</h1>
+    </div>
 
     <!-- エラー表示 -->
     <div th:if="${errors != null}" class="error-box">
@@ -38,6 +40,8 @@
         <button type="submit" class="btn-submit">アップロード</button>
     </form>
 </div>
+
+<div th:replace="fragments/fragment :: footer"></div>
 
 </body>
 </html>
