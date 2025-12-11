@@ -74,18 +74,21 @@
             <div class="form-block">
                 <label>住所</label>
                 <div class="error" th:if="${#fields.hasErrors('customerAddress')}" th:errors="*{customerAddress}"></div>
-                <input type="text" th:field="*{customerAddress}" placeholder="例）東京都渋谷区…">
+                <input type="text" th:field="*{customerAddress}" placeholder="例）東京都〇〇区…">
             </div>
 
             <div class="form-block">
                 <label>電話番号</label>
                 <div class="error" th:if="${#fields.hasErrors('customerPhone')}" th:errors="*{customerPhone}"></div>
-                <input type="text" th:field="*{customerPhone}" placeholder="例）09012345678">
+                <input type="text" th:field="*{customerPhone}" placeholder="例）0X000XX00XX">
             </div>
 
             <button type="submit" class="purchase-btn">決済情報入力へ進む</button>
         </form>
     </div>
 </div>
+
+<div th:replace="fragments/fragment :: footer"></div>
+
 </body>
 </html>

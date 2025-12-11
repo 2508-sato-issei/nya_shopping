@@ -15,8 +15,14 @@
     </li>
     <li>検索結果</li>
 </ul>
+
 <div th:if="${errorMessage != null}" th:text="${errorMessage}"></div>
 <div class="contents">
+
+    <div class="search-header">
+        <h1>検索結果</h1>
+    </div>
+
     <div class="home-search-area">
         <form th:action="@{/search}" method="get">
 
@@ -59,7 +65,6 @@
 
     <!-- 商品一覧 -->
     <div th:if="${not #lists.isEmpty(results)}">
-        <h2>検索結果</h2>
 
         <div class="product-list">
             <a class="product-card"
@@ -152,7 +157,9 @@
            sort=${searchForm.sort},
            page=${page.totalPages - 1})}">最後</a>
     </div>
-
 </div>
+
+<div th:replace="fragments/fragment :: footer"></div>
+
 </body>
 </html>

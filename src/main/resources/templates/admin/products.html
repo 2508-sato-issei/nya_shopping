@@ -26,7 +26,8 @@
         <nav>
             <a th:href="@{/admin/product/new}" class="btn-primary">商品登録</a>
             <a th:href="@{/admin/products/import/csv}" class="btn-primary">商品一括登録</a>
-            <a th:href="@{/admin/products/export/csv(
+            <a class="btn-primary export-csv"
+               th:href="@{/admin/products/export/csv(
                     name=${cond.name},priceMin=${cond.priceMin},
                     priceMax=${cond.priceMax},
                     category=${cond.category},
@@ -36,8 +37,7 @@
                     dateTo=${cond.dateTo},
                     sortKey=${cond.sortKey},
                     sortOrder=${cond.sortOrder}
-                )}"
-               class="btn-primary">商品一覧出力</a>
+                )}">商品一覧出力</a>
         </nav>
     </header>
 
@@ -262,6 +262,24 @@
 
     </main>
 </div>
+
+<div th:replace="fragments/fragment :: footer"></div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const confirmLinks = document.querySelectorAll('.export-csv');
+
+        confirmLinks.forEach(link => {
+            link.addEventListener('click', function(event) {
+                const result = confirm('商品一覧をCSV出力しますか？');
+
+                if (result === false) {
+                    event.preventDefault();
+                }
+            });
+        });
+    });
+</script>
 
 </body>
 </html>
