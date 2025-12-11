@@ -61,28 +61,50 @@
 
     <!--購入者や注文の情報の記載-->
     <div style="margin-top: 50px;" class="customer-details">
-        <!--<div th:text="${order.totalAmount}"></div>-->
-        <div th:text="${order.customerName}"></div>
-        <div th:text="${order.customerPostalCode}"></div>
-        <div th:text="${order.customerAddress}"></div>
-        <div th:text="${order.customerPhone}"></div>
-        <div th:text="${
-            order.status == 'CONFIRMED' ? '注文確定' :
-            order.status == 'PREPARING'  ? '発送準備中' :
-            order.status == 'SHIPPED'  ? '発送済み' :
-            '不明'}">
+        <h2>購入者情報</h2>
+
+        <!--購入者名-->
+        <div class="flex">
+            <div class="purchase-left"><span class="bold">購入者名</span></div>
+            <div class="purchase-right" th:text="${order.customerName}"></div>
         </div>
-        <form method="post" th:action="@{/admin/order/status}" th:object="${orderStatusForm}">
-            <input type="hidden" th:value="${order.id}" th:field="*{id}">
-            <select th:field="*{status}">
-                <option value="CONFIRMED">注文確定</option>
-                <option value="PREPARING">発送準備中</option>
-                <option value="SHIPPED">発送済み</option>
-            </select>
-            <input type="submit" value="ステータスを変更する">
-        </form>
+
+        <!--住所-->
+        <div class="flex">
+            <div class="purchase-left"><span class="bold">購入者住所</span></div>
+            <div class="purchase-right">
+                <span th:text="${order.customerPostalCode}"></span><br>
+                <span th:text="${order.customerAddress}"></span>
+            </div>
+        </div>
+
+        <!--電話番号-->
+        <div class="flex">
+            <div class="purchase-left"><span class="bold">購入者電話番号</span></div>
+            <div class="purchase-right" th:text="${order.customerPhone}"></div>
+        </div>
+
+        <!--電話番号-->
+        <div class="flex">
+            <div class="purchase-left"><span class="bold">注文ステータス</span></div>
+            <div class="purchase-right">
+                <div th:text="${
+                order.status == 'CONFIRMED' ? '注文確定' :
+                order.status == 'PREPARING'  ? '発送準備中' :
+                order.status == 'SHIPPED'  ? '発送済み' :
+                '不明'}" class="order-status-text"></div>
+                <form method="post" th:action="@{/admin/order/status}" th:object="${orderStatusForm}">
+                    <input type="hidden" th:value="${order.id}" th:field="*{id}">
+                    <select th:field="*{status}" class="order-status-select">
+                        <option value="CONFIRMED">注文確定</option>
+                        <option value="PREPARING">発送準備中</option>
+                        <option value="SHIPPED">発送済み</option>
+                    </select><br>
+                    <button type="submit" class="btn">変更</button>
+                </form>
+            </div>
+        </div>
     </div>
 </div>
-<div th:replace="fragments/fragment :: footer"></div>
 </body>
 </html>

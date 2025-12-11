@@ -66,6 +66,57 @@
 }
 .total {
     font-size: 20px;
-    color: red;
+    color: #c40000;
     font-weight: bold;
+    text-align: right;
+}
+
+.flex {
+    display: flex;
+    gap: 10px;
+    line-height: 1;
+    margin-bottom: 20px;
+}
+.flex:nth-last-child(1) {
+    margin-bottom: 0;
+}
+
+.purchase-left {
+    width: 30%;
+}
+
+.purchase-right {
+    width: 70%;
+    line-height: 1.4;
+}
+
+.customer-details {
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+}
+
+.customer-details h2 {
+    font-size: 20px;
+    line-height: 1;
+    margin: 0;
+    margin-bottom: 10px;
+}
+
+.btn {
+    padding: 8px 14px;
+    background: #d9843b;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.order-status-text {
+    margin-bottom: 10px;
+}
+
+.order-status-select {
+    margin-bottom: 10px;
 }

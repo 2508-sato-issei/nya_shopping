@@ -111,19 +111,19 @@
         <table class="product-table">
             <thead>
             <tr>
-                <td>購入者ID</td>
-                <td>合計金額</td>
-                <td>購入者氏名</td>
-                <td>購入者郵便番号</td>
-                <td>購入者住所</td>
-                <td>購入者電話番号</td>
-                <td>注文状態</td>
-                <td>登録日時</td>
-                <td>操作</td>
+                <th>購入者ID</th>
+                <th>合計金額</th>
+                <th>購入者氏名</th>
+                <th>購入者郵便番号</th>
+                <th>購入者住所</th>
+                <th>購入者電話番号</th>
+                <th>注文状態</th>
+                <th>登録日時</th>
+                <th>操作</th>
             </tr>
             </thead>
-            <tbody th:each="o: ${order}">
-            <tr>
+            <tbody>
+            <tr th:each="o: ${order}">
                 <!--注文者のID-->
                 <td th:text="${o.userId}"></td>
 
@@ -163,7 +163,7 @@
         <div th:if="${page.totalPages > 1}" class="pagination">
 
             <!-- 最初 -->
-            <a class="next_prev_button" th:if="${showFirst}"
+            <a class="pages" th:if="${showFirst}"
                th:href="@{/admin/orders(
             page=0,
             minAmount=${form.minAmount},
@@ -181,7 +181,7 @@
             </a>
 
             <!-- 前へ -->
-            <a class="next_prev_button" th:if="${page.number > 0}"
+            <a class="pages" th:if="${page.number > 0}"
                th:href="@{/admin/orders(
             page=${page.number - 1},
             minAmount=${form.minAmount},
@@ -200,7 +200,7 @@
 
                 <!-- ページ番号 -->
            <span th:each="i : ${#numbers.sequence(startPage, endPage)}">
-                <a th:if="${i != page.number}"
+                <a class="pages" th:if="${i != page.number}"
                    th:href="@{/admin/orders(
                         page=${i},
                         minAmount=${form.minAmount},
@@ -216,11 +216,11 @@
                    )}"
                    th:text="${i + 1}"></a>
 
-                <strong th:if="${i == page.number}" th:text="${i + 1}"></strong>
+                <strong class="active-page" th:if="${i == page.number}" th:text="${i + 1}"></strong>
            </span>
 
             <!-- 次へ -->
-            <a class="next_prev_button" th:if="${page.number < page.totalPages - 1}"
+            <a class="pages" th:if="${page.number < page.totalPages - 1}"
                th:href="@{/admin/orders(
             page=${page.number + 1},
             minAmount=${form.minAmount},
@@ -238,7 +238,7 @@
             </a>
 
             <!-- 最後 -->
-            <a th:if="${showLast}"
+            <a class="pages" th:if="${showLast}"
                th:href="@{/admin/orders(
             page=${page.totalPages - 1},
             minAmount=${form.minAmount},
@@ -259,8 +259,5 @@
     </main>
 
 </div>
-<!--フッター-->
-
-<div th:replace="fragments/fragment :: footer"></div>
 </body>
 </html>
