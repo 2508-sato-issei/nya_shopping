@@ -1,3 +1,18 @@
+.product-form-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #ddd;
+}
+
+.product-form-header h1 {
+    font-size: 28px;
+    font-weight: bold;
+    margin: 0;
+}
+
 /* =============================
    商品登録・編集フォーム
 ============================= */

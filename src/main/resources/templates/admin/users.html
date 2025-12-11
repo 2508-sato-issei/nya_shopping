@@ -9,142 +9,142 @@
     <link rel="stylesheet" th:href="@{/css/admin_users.css}">
 </head>
 <body>
-    <!--ヘッダー-->
-    <div th:replace="fragments/navbar :: navbar"></div>
+<!--ヘッダー-->
+<div th:replace="fragments/navbar :: navbar"></div>
 
-    <nav>
-        <ul class="navigation">
-            <li><a th:href="@{/}">ホーム</a></li>
-            <li><a th:href="@{/admin}">管理者ページ</a></li>
-            <li>ユーザー管理一覧</li>
-        </ul>
-    </nav>
+<nav>
+    <ul class="navigation">
+        <li><a th:href="@{/}">ホーム</a></li>
+        <li><a th:href="@{/admin}">管理者ページ</a></li>
+        <li>ユーザー管理一覧</li>
+    </ul>
+</nav>
 
-    <div th:if="${errorMessage != null}" th:text="${errorMessage}"></div>
+<div th:if="${errorMessage != null}" th:text="${errorMessage}"></div>
 
-    <!--コンテンツ-->
-    <div>
-        <!--検索、ソート-->
-        <form th:action="@{/admin/users}" method="get" th:object="${form}">
+<!--コンテンツ-->
+<div>
+    <!--検索、ソート-->
+    <form th:action="@{/admin/users}" method="get" th:object="${form}">
+        <div>
+            <!--検索-->
             <div>
-                <!--検索-->
+                <!--合計金額-->
                 <div>
-                    <!--合計金額-->
-                    <div>
-                        <label>メールアドレス</label>
-                        <input type="text" th:field="*{email}" min="0">
-                    </div>
-                    <!--氏名-->
-                    <div>
-                        <label>氏名</label>
-                        <input type="text" th:field="*{name}">
-                    </div>
-                    <!--住所-->
-                    <div>
-                        <label>住所</label>
-                        <input type="text" th:field="*{address}">
-                    </div>
-
-                    <!--電話番号-->
-                    <div>
-                        <label>電話番号</label>
-                        <input type="text" th:field="*{phone}">
-                    </div>
-
-                    <!--ユーザー状態-->
-                    <div>
-                        <label>ユーザー状態</label>
-                        <select name="isStopped" th:field="*{isStopped}">
-                            <option value="">すべて</option>
-                            <option value="true">停止</option>
-                            <option value="false">稼働</option>
-                        </select>
-                    </div>
-
-                    <!--登録日時-->
-                    <div>
-                        <label>登録日時</label>
-                        <input type="date" th:field="*{startDate}">～<input type="date" th:field="*{endDate}">
-                    </div>
+                    <label>メールアドレス</label>
+                    <input type="text" th:field="*{email}" min="0">
                 </div>
-
-                <!--ソート-->
+                <!--氏名-->
                 <div>
-                    <!-- ソート条件 -->
-                    <select name="sort" th:field="*{sort}">
-                        <option value="id">ID</option>
-                        <option value="name">名前</option>
-                        <option value="address">住所</option>
-                        <option value="created">登録日</option>
-                    </select>
-
-                    <!-- 昇順/降順 -->
-                    <select name="order" th:field="*{order}">
-                        <option value="ASC">昇順</option>
-                        <option value="DESC">降順</option>
-                    </select>
+                    <label>氏名</label>
+                    <input type="text" th:field="*{name}">
                 </div>
-                <input type="submit" value="検索する">
-            </div>
-        </form>
-
-        <!--注文一覧-->
-        <table>
-            <thead>
-            <tr>
-                <td>ID</td>
-                <td>メールアドレス</td>
-                <td>氏名</td>
-                <td>住所</td>
-                <td>電話番号</td>
-                <td>権限</td>
-                <td>状態</td>
-                <td>登録日時</td>
-            </tr>
-            </thead>
-            <tbody th:each="u: ${userList}">
-            <tr>
-                <!--ユーザーのID-->
-                <td th:text="${u.id}"></td>
-
-                <!--メールアドレス-->
-                <td th:text="${u.email}"></td>
-
-                <!--名前-->
-                <td th:text="${u.name}"></td>
-
                 <!--住所-->
-                <td th:text="${u.address}"></td>
+                <div>
+                    <label>住所</label>
+                    <input type="text" th:field="*{address}">
+                </div>
 
                 <!--電話番号-->
-                <td th:text="${u.phone}"></td>
+                <div>
+                    <label>電話番号</label>
+                    <input type="text" th:field="*{phone}">
+                </div>
 
-                <!--ユーザーの権限-->
-                <td th:text="${u.role}"></td>
-
-                <!--ユーザーのアクティブ状態-->
-                <td>
-                    <span th:text="${u.isStopped} ? '停止中' : '稼働中'"></span>
-
-                    <form method="post" th:action="@{/admin/user/status}">
-                        <input type="hidden" name="id" th:value="${u.id}">
-                        <input type="hidden" name="isStopped" th:value="${!u.isStopped}">
-                        <th:block th:if="${loginUser.id != u.id}">
-                            <button type="submit" onclick="return confirm('本当に切り替えますか？');">切り替え</button>
-                        </th:block>
-                    </form>
-                </td>
+                <!--ユーザー状態-->
+                <div>
+                    <label>ユーザー状態</label>
+                    <select name="isStopped" th:field="*{isStopped}">
+                        <option value="">すべて</option>
+                        <option value="true">停止</option>
+                        <option value="false">稼働</option>
+                    </select>
+                </div>
 
                 <!--登録日時-->
-                <td th:text="${u.createdAt}">
-                </td>
-            </tr>
-            </tbody>
-        </table>
+                <div>
+                    <label>登録日時</label>
+                    <input type="date" th:field="*{startDate}">～<input type="date" th:field="*{endDate}">
+                </div>
+            </div>
 
-        <!-- ページネーション -->
-        <div th:if="${page.totalPages > 1}" class="pagination">
-            <a th:if="${showFirst}" th:href="@{/admin/users(
+            <!--ソート-->
+            <div>
+                <!-- ソート条件 -->
+                <select name="sort" th:field="*{sort}">
+                    <option value="id">ID</option>
+                    <option value="name">名前</option>
+                    <option value="address">住所</option>
+                    <option value="created">登録日</option>
+                </select>
+
+                <!-- 昇順/降順 -->
+                <select name="order" th:field="*{order}">
+                    <option value="ASC">昇順</option>
+                    <option value="DESC">降順</option>
+                </select>
+            </div>
+            <input type="submit" value="検索する">
+        </div>
+    </form>
+
+    <!--注文一覧-->
+    <table>
+        <thead>
+        <tr>
+            <td>ID</td>
+            <td>メールアドレス</td>
+            <td>氏名</td>
+            <td>住所</td>
+            <td>電話番号</td>
+            <td>権限</td>
+            <td>状態</td>
+            <td>登録日時</td>
+        </tr>
+        </thead>
+        <tbody th:each="u: ${userList}">
+        <tr>
+            <!--ユーザーのID-->
+            <td th:text="${u.id}"></td>
+
+            <!--メールアドレス-->
+            <td th:text="${u.email}"></td>
+
+            <!--名前-->
+            <td th:text="${u.name}"></td>
+
+            <!--住所-->
+            <td th:text="${u.address}"></td>
+
+            <!--電話番号-->
+            <td th:text="${u.phone}"></td>
+
+            <!--ユーザーの権限-->
+            <td th:text="${u.role}"></td>
+
+            <!--ユーザーのアクティブ状態-->
+            <td>
+                <span th:text="${u.isStopped} ? '停止中' : '稼働中'"></span>
+
+                <form method="post" th:action="@{/admin/user/status}">
+                    <input type="hidden" name="id" th:value="${u.id}">
+                    <input type="hidden" name="isStopped" th:value="${!u.isStopped}">
+                    <th:block th:if="${loginUser.id != u.id}">
+                        <button type="submit" onclick="return confirm('本当に切り替えますか？');">切り替え</button>
+                    </th:block>
+                </form>
+            </td>
+
+            <!--登録日時-->
+            <td th:text="${u.createdAt}">
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <!-- ページネーション -->
+    <div th:if="${page.totalPages > 1}" class="pagination">
+        <a th:if="${showFirst}" th:href="@{/admin/users(
                                                 page=0,
                                                 email=${form.email},
                                                 name=${form.name},
@@ -156,7 +156,7 @@
                                                 sort=${form.sort},
                                                 order=${form.order}
                                                 )}">最初</a>
-            <a th:if="${page.number > 0}" th:href="@{/admin/users(page=${page.number - 1},
+        <a th:if="${page.number > 0}" th:href="@{/admin/users(page=${page.number - 1},
                                                 email=${form.email},
                                                 name=${form.name},
                                                 address=${form.address},
@@ -167,7 +167,7 @@
                                                 sort=${form.sort},
                                                 order=${form.order}
                                                 )}">前へ</a>
-            <span th:each="i : ${#numbers.sequence(startPage, endPage)}">
+        <span th:each="i : ${#numbers.sequence(startPage, endPage)}">
             <a th:if="${i != page.number}" th:href="@{/admin/users(page=${i},
                                                 email=${form.email},
                                                 name=${form.name},
@@ -181,7 +181,7 @@
                                                 )}" th:text="${i + 1}"></a>
             <strong th:if="${i == page.number}" th:text="${i + 1}"></strong>
         </span>
-            <a th:if="${page.number < page.totalPages - 1}" th:href="@{/admin/users(page=${page.number + 1},
+        <a th:if="${page.number < page.totalPages - 1}" th:href="@{/admin/users(page=${page.number + 1},
                                                 email=${form.email},
                                                 name=${form.name},
                                                 address=${form.address},
@@ -192,7 +192,7 @@
                                                 sort=${form.sort},
                                                 order=${form.order}
                                                 )}">次へ</a>
-            <a th:if="${showLast}" th:href="@{/admin/users(page=${page.totalPages - 1},
+        <a th:if="${showLast}" th:href="@{/admin/users(page=${page.totalPages - 1},
                                                 email=${form.email},
                                                 name=${form.name},
                                                 address=${form.address},
@@ -203,7 +203,10 @@
                                                 sort=${form.sort},
                                                 order=${form.order}
                                                 )}">最後</a>
-        </div>
     </div>
+</div>
+
+<div th:replace="fragments/fragment :: footer"></div>
+
 </body>
 </html>

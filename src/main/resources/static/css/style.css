@@ -36,3 +36,14 @@
 }
 .header {
 }
+
+.footer {
+    border-top: 3px solid #2e221c;
+    width: 100%;
+}
+
+.footer-content {
+    display: flex;
+    justify-content: center;
+    font-size: small;
+}

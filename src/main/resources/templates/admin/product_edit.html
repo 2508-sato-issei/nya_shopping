@@ -25,7 +25,9 @@
 
 <div class="contents">
 
-    <h1>商品編集</h1>
+    <div class="product-form-header">
+        <h1>商品編集</h1>
+    </div>
 
     <!-- エラー表示 -->
     <div th:if="${errors}" class="error-box">
@@ -47,7 +49,7 @@
 
         <!-- 商品名 -->
         <label>商品名</label>
-        <input type="text" th:field="*{name}">
+        <input type="text" th:field="*{name}" placeholder="100文字以内">
 
         <!-- 価格 -->
         <label>価格</label>
@@ -79,7 +81,7 @@
 
         <!-- 説明 -->
         <label>商品説明</label>
-        <textarea th:field="*{description}" rows="5"></textarea>
+        <textarea th:field="*{description}" rows="5" placeholder="1000文字以内"></textarea>
 
         <!-- 公開状態 -->
         <label>公開/非公開</label>
@@ -101,6 +103,8 @@
     </form>
 
 </div>
+
+<div th:replace="fragments/fragment :: footer"></div>
 
 </body>
 </html>

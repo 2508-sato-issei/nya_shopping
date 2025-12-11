@@ -85,6 +85,9 @@
         <a class="continue" th:href="@{/search}">買い物を続ける</a>
     </div>
 </div>
+
+<div th:replace="fragments/fragment :: footer"></div>
+
 <script>
     const csrfToken = document.querySelector('meta[name="_csrf"]').content;
     const csrfHeader = document.querySelector('meta[name="_csrf_header"]').content;
