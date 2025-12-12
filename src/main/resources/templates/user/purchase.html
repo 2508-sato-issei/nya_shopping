@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.w3.org/1999/xhtml" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>購入者情報入力画面</title>
+    <link th:href="@{/css/navbar.css}" rel="stylesheet">
+    <link th:href="@{/css/style.css}" rel="stylesheet">
+    <link th:href="@{/css/purchase.css}" rel="stylesheet">
+</head>
+<body>
+<div th:replace="fragments/navbar :: navbar"></div>
+<ul class="navigation">
+    <li><a th:href="@{/}">ホーム</a></li>
+    <li><a th:href="@{/cart}">カート</a></li>
+    <li>購入者情報入力</li>
+</ul>
+<div class="contents">
+    <!-- 左：購入商品一覧 -->
+    <div class="purchase-left">
+
+        <h2 class="purchase-title">購入商品</h2>
+
+        <table class="purchase-table">
+            <thead>
+            <tr>
+                <th>商品画像</th>
+                <th>商品名</th>
+                <th>価格</th>
+                <th>数量</th>
+                <th>小計</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <tr th:each="item : ${items}">
+                <td>
+                    <img th:src="@{'/uploads/products/' + ${item.product.imageUrl}}"
+                         alt="商品画像" class="purchase-thumb">
+                </td>
+                <td th:text="${item.product.name}"></td>
+                <td th:text="${item.product.price}"></td>
+                <td th:text="${item.quantity}"></td>
+                <td th:text="${item.product.price * item.quantity} + '円'"></td>
+            </tr>
+            </tbody>
+        </table>
+
+        <div class="total-box">
+            合計金額：<span th:text="${totalAmount}"></span> 円
+        </div>
+
+    </div>
+
+    <!-- 右：入力フォーム -->
+    <div class="purchase-right">
+
+        <h2 class="purchase-title">購入者情報入力</h2>
+
+        <form th:action="@{/order/purchase/confirm}"
+              method="post" th:object="${purchaseForm}" class="purchase-form">
+
+            <div class="form-block">
+                <label>氏名</label>
+                <div class="error" th:if="${#fields.hasErrors('customerName')}" th:errors="*{customerName}"></div>
+                <input type="text" th:field="*{customerName}" placeholder="例）ALH 太郎">
+            </div>
+
+            <div class="form-block">
+                <label>郵便番号</label>
+                <div class="error" th:if="${#fields.hasErrors('customerPostalCode')}" th:errors="*{customerPostalCode}"></div>
+                <input type="text" th:field="*{customerPostalCode}" placeholder="例）1234567">
+            </div>
+
+            <div class="form-block">
+                <label>住所</label>
+                <div class="error" th:if="${#fields.hasErrors('customerAddress')}" th:errors="*{customerAddress}"></div>
+                <input type="text" th:field="*{customerAddress}" placeholder="例）東京都〇〇区…">
+            </div>
+
+            <div class="form-block">
+                <label>電話番号</label>
+                <div class="error" th:if="${#fields.hasErrors('customerPhone')}" th:errors="*{customerPhone}"></div>
+                <input type="text" th:field="*{customerPhone}" placeholder="例）0X000XX00XX">
+            </div>
+
+            <button type="submit" class="purchase-btn">決済情報入力へ進む</button>
+        </form>
+    </div>
+</div>
+
+<div th:replace="fragments/fragment :: footer"></div>
+
+</body>
+</html>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.nya_shopping.repository.AdminDashboardRepository">
+
+    <!-- 今日の注文件数 -->
+    <select id="countToday" resultType="int">
+        SELECT COUNT(*)
+        FROM orders
+        WHERE DATE(created_at) = CURDATE()
+    </select>
+
+    <!-- 先月 -->
+    <select id="countLastMonth" resultType="int">
+        SELECT COUNT(*)
+        FROM orders
+        WHERE created_at &gt;= DATE_FORMAT(DATE_SUB(CURDATE(), INTERVAL 1 MONTH), '%Y-%m-01')
+        AND created_at &lt; DATE_FORMAT(CURDATE(), '%Y-%m-01')
+    </select>
+
+    <!-- 今月 -->
+    <select id="countThisMonth" resultType="int">
+        SELECT COUNT(*)
+        FROM orders
+        WHERE created_at &gt;= DATE_FORMAT(CURDATE(), '%Y-%m-01')
+        AND created_at &lt; DATE_ADD(DATE_FORMAT(CURDATE(), '%Y-%m-01'), INTERVAL 1 MONTH)
+    </select>
+
+    <!-- ステータス別 -->
+    <select id="countByStatus" parameterType="string" resultType="int">
+        SELECT COUNT(*)
+        FROM orders
+        WHERE status = #{status}
+    </select>
+
+</mapper>

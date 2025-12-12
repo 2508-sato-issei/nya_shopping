@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.w3.org/1999/xhtml" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>商品一括登録画面</title>
+    <link th:href="@{/css/style.css}" rel="stylesheet">
+    <link th:href="@{/css/navbar.css}" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/admin.css}">
+    <link rel="stylesheet" th:href="@{/css/admin_products_csv.css}">
+</head>
+<body>
+
+<div th:replace="fragments/navbar :: navbar"></div>
+
+<nav>
+    <ul class="navigation">
+        <li><a th:href="@{/}">ホーム</a></li>
+        <li><a th:href="@{/admin}">管理者ページ</a></li>
+        <li><a th:href="@{/admin/products}">商品管理一覧</a></li>
+        <li>商品一括登録</li>
+    </ul>
+</nav>
+
+<div class="contents">
+
+    <div class="product-csv-header">
+        <h1>商品一括登録</h1>
+    </div>
+
+    <!-- エラー表示 -->
+    <div th:if="${errors != null}" class="error-box">
+        <ul>
+            <li th:each="err : ${errors}" th:text="${err}"></li>
+        </ul>
+    </div>
+
+    <form th:action="@{/admin/products/import/csv}" method="post" enctype="multipart/form-data" class="csv-form">
+        <label>商品一覧（CSV）</label>
+        <input type="file" name="file" accept=".csv">
+        <button type="submit" class="btn-submit">アップロード</button>
+    </form>
+</div>
+
+<div th:replace="fragments/fragment :: footer"></div>
+
+</body>
+</html>

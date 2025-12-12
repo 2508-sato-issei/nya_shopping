@@ -1,0 +1,124 @@
+.products-contents {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+
+.products-contents-flex {
+    padding-top: 20px;
+    border-top: 1px solid #ccc;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+.products-contents {
+    /*
+    padding: 15px;
+    background-color: #fff;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    */
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 20px;
+    width: 100%;
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+.image-contents {
+    width: calc((100% - 20px) * 0.2);
+}
+.image {
+    position: relative;
+    width: 100%;
+    padding-top: 100%;
+    overflow: hidden;
+}
+.image img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.detail-contents {
+    width: calc((100% - 20px) * 0.8);
+}
+.text {
+    line-height: 1;
+    display: block;
+}
+.bold {
+    font-weight: bold;
+}
+
+.total-price {
+    margin-top: 20px;
+    line-height: 1;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    font-size: 14px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #ccc;
+}
+.total {
+    font-size: 20px;
+    color: #c40000;
+    font-weight: bold;
+    text-align: right;
+}
+
+.flex {
+    display: flex;
+    gap: 10px;
+    line-height: 1;
+    margin-bottom: 20px;
+}
+.flex:nth-last-child(1) {
+    margin-bottom: 0;
+}
+
+.purchase-left {
+    width: 30%;
+}
+
+.purchase-right {
+    width: 70%;
+    line-height: 1.4;
+}
+
+.customer-details {
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+}
+
+h2 {
+    font-size: 22px;
+    font-weight: bold;
+    color: #444;
+    margin: 40px 0 15px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid #eee;
+}
+
+.btn {
+    padding: 8px 14px;
+    background: #d9843b;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.order-status-text {
+    margin-bottom: 10px;
+}
+
+.order-status-select {
+    margin-bottom: 10px;
+}

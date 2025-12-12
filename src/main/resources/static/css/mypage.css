@@ -1,0 +1,322 @@
+/*全体レイアウト*/
+
+.contents {
+    padding-top: 30px;
+}
+
+h1 {
+    font-size: 28px;
+    font-weight: bold;
+    margin: 0;
+}
+
+h2 {
+    font-size: 22px;
+    font-weight: bold;
+    color: #444;
+    margin: 40px 0 15px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid #eee;
+}
+
+/*ヘッダーとアクションボタン*/
+.mypage-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #ddd;
+}
+
+.mypage-actions {
+    margin-top: 10px;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.action-button {
+    /* btn-primary (商品管理画面) のスタイルを流用 */
+    padding: 8px 14px;
+    border: 1px solid #666;
+    border-radius: 6px;
+    background: white;
+    color: #333;
+    text-decoration: none;
+    font-size: 14px;
+    transition: 0.2s;
+    white-space: nowrap;
+}
+
+.action-button:hover {
+    background: #f2f2f2;
+}
+
+.edit-button {
+    /* active-button の背景色を流用 */
+    background-color: #ff9900;
+    color: white;
+    border: none;
+    font-weight: bold;
+}
+
+.edit-button:hover {
+    background-color: #d9843b;
+}
+
+/*会員情報セクション*/
+.user-info-section {
+    margin-bottom: 40px;
+}
+
+.user-info-details {
+    /* summary-box のデザインを流用 */
+    background: #fff;
+    border-radius: 10px;
+    padding: 20px 25px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.info-group {
+    display: flex;
+    padding: 8px 0;
+    border-bottom: 1px dashed #eee;
+    font-size: 15px;
+}
+
+.info-group:last-child {
+    border-bottom: none;
+}
+
+.info-group label {
+    font-weight: bold;
+    width: 120px; /* ラベル幅を固定 */
+    color: #666;
+}
+
+/*メッセージとエラー表示*/
+.global-message {
+    padding: 12px 15px;
+    margin-bottom: 18px;
+    border-radius: 6px;
+    text-align: left;
+    font-size: 15px;
+}
+
+.global-message.success {
+    background: #e6f7ff;
+    color: #1890ff;
+    border: 1px solid #91d5ff;
+}
+
+.global-message.error {
+    background: #ffecea;
+    color: #c03d2f;
+    border: 1px solid #f5b5ac;
+}
+
+/*注文履歴 絞り込みフォーム*/
+.history-filter-form {
+    /* search-form (商品管理画面) のスタイルを流用 */
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 15px 20px;
+    background: #fafafa;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+}
+
+.filter-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.history-filter-form label {
+    font-weight: 600;
+    font-size: 14px;
+    color: #555;
+}
+
+.history-filter-form select {
+    padding: 6px 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    min-width: 100px;
+}
+
+.filter-submit-button {
+    /* btn-search (商品管理画面) のスタイルを流用 */
+    padding: 8px 14px;
+    background: #d9843b;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.2s;
+}
+
+.filter-submit-button:hover {
+    background: #bf742f;
+}
+
+.filter-reset-button {
+    /* btn-clear (商品管理画面) のスタイルを流用 */
+    font-size: 14px;
+    padding: 6px 10px;
+    background: white;
+    color: #333;
+    border: 1px solid #666;
+    border-radius: 6px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: 0.2s;
+}
+
+.filter-reset-button:hover {
+    background: #f2f2f2;
+}
+
+/*注文履歴テーブル*/
+.order-history-table {
+    /* product-table (商品管理画面) のスタイルを流用 */
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    font-size: 14px;
+    margin-bottom: 40px;
+}
+
+.order-history-table th {
+    padding: 12px 10px;
+    font-weight: bold;
+    color: #5a4b43;
+    background: #f7f7f7;
+    border-bottom: 2px solid #ddd;
+    text-align: left;
+}
+
+.order-history-table td {
+    padding: 10px 12px;
+    border-bottom: 1px solid #eee;
+}
+
+.order-history-table tbody tr:nth-child(odd) {
+    background: #fafafa;
+}
+
+.order-history-table tbody tr:hover {
+    background: #e7f1ff;
+}
+
+.status-badge {
+    padding: 4px 8px;
+    border-radius: 4px;
+    color: white;
+    font-size: 12px;
+    display: inline-block;
+}
+
+
+
+.detail-link {
+    /* btn-small (商品管理画面) のスタイルを流用 */
+    padding: 6px 10px;
+    background: #d9843b;
+    color: #fff;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 13px;
+    transition: 0.2s;
+}
+
+.detail-link:hover {
+    background: #bf742f;
+}
+
+/* ページネーション*/
+.pagination {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    margin: 30px auto 40px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin: 30px auto 40px;
+}
+
+/* 共通ベーススタイル: リンク(a.pages), アクティブ(strong.active-page), 無効(span.disabled-page) */
+.pages,
+.active-page {
+    /* ★高さを揃えるための基本設定 */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 40px;
+    height: 36px;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 15px;
+    text-decoration: none;
+    box-sizing: border-box;
+    border: 1px solid; /* すべての要素に枠線を設定し高さを統一 */
+    transition: 0.2s;
+    font-weight: normal;
+}
+
+/* 1. .pages (非アクティブなリンク) */
+.pages {
+    color: #d9843b; /* 文字色はオレンジ */
+    border-color: #d9843b; /* 枠線はオレンジ */
+    background: white;
+}
+
+.pages:hover {
+    background: #d9843b;
+    color: #fff;
+}
+
+/* 2. .active-page (アクティブなページ番号 - strongタグ) */
+.active-page {
+    background: #d9843b;
+    color: #fff;
+    border-color: #d9843b; /* 枠線も背景と同じ色にして高さを維持 */
+    font-weight: bold;
+    pointer-events: none;
+}
+
+/* 3. .disabled-page (無効なページ要素 - spanタグ) */
+.disabled-page {
+    /* 画像のグレーアウトされたボタンのデザインに合わせる */
+    color: #999; /* 文字はグレー */
+    border-color: #e0e0e0; /* 薄いグレーの枠線 */
+    background: #f8f8f8; /* 薄いグレーの背景 */
+    pointer-events: none;
+}
+
+
+
+.no-history-message {
+    text-align: center;
+    padding: 30px;
+    margin: 20px 0 40px;
+    border: 1px dashed #ccc;
+    background: #f9f9f9;
+    border-radius: 8px;
+    color: #777;
+}
+
+.history-filter-info {
+    margin-bottom: 10px;
+    font-size: 14px;
+    color: #777;
+}

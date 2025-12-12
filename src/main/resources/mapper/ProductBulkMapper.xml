@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.nya_shopping.repository.ProductBulkRepository">
+
+    <!-- 存在確認 -->
+    <select id="exists" resultType="int">
+        SELECT COUNT(*) FROM products WHERE id = #{id}
+    </select>
+
+    <!-- INSERT -->
+    <insert id="insertProduct">
+        INSERT INTO products
+        (name, price, category, stock, image_url, description, is_active, created_at)
+        VALUES
+        (#{name}, #{price}, #{category}, #{stock}, #{imageUrl}, #{description}, #{isActive}, #{createdAt})
+    </insert>
+
+    <!-- UPDATE -->
+    <update id="updateProduct">
+        UPDATE products
+        SET
+        name = #{name},
+        price = #{price},
+        category = #{category},
+        stock = #{stock},
+        image_url = #{imageUrl},
+        description = #{description},
+        is_active = #{isActive},
+        created_at = #{createdAt}
+        WHERE id = #{id}
+    </update>
+
+</mapper>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.nya_shopping.repository.OrderDetailRepository">
+    <insert id="insert" parameterType="com.example.nya_shopping.repository.entity.OrderDetail"
+            useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO order_details
+        (order_id, product_id, product_name, product_price, quantity, subtotal)
+        VALUES
+        (#{orderId}, #{productId}, #{productName}, #{productPrice}, #{quantity}, #{subtotal});
+    </insert>
+
+    <select id="findOrderDetailList" resultType="com.example.nya_shopping.dto.OrderDetailDto">
+        SELECT
+        o.id,
+        o.order_id,
+        o.product_id,
+        o.product_name,
+        o.product_price,
+        o.quantity,
+        o.subtotal,
+        p.image_url
+        FROM order_details o
+        INNER JOIN products p
+        ON o.product_id = p.id
+        WHERE order_id = #{id}
+    </select>
+
+</mapper>

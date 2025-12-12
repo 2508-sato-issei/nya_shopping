@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.w3.org/1999/xhtml" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>注文詳細</title>
+    <link th:href="@{/css/navbar.css}" rel="stylesheet">
+    <link th:href="@{/css/style.css}" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/admin.css}">
+    <link rel="stylesheet" th:href="@{/css/admin_order.css}">
+</head>
+<body>
+<!--ヘッダー-->
+<div th:replace="fragments/navbar :: navbar"></div>
+
+<nav>
+    <ul class="navigation">
+        <li><a th:href="@{/}">ホーム</a></li>
+        <li><a th:href="@{/admin}">管理者ページ</a></li>
+        <li><a th:href="@{/admin/orders}">注文管理一覧</a></li>
+        <li>注文詳細</li>
+    </ul>
+</nav>
+
+<div th:if="${errorMessage != null}" th:text="${errorMessage}"></div>
+<div class="contents">
+    <h1>注文詳細</h1>
+    <!--何を買ったかを詳しく明記-->
+    <div class="products-contents-flex">
+        <div th:each="o : ${orderDetailDtoList}" class="products-contents">
+
+            <!--商品画像-->
+            <div class="image-contents">
+                <div class="image">
+                    <img th:src="@{'/storage/' + ${o.imageUrl}}" th:alt="${o.productName}"/>
+                </div>
+            </div>
+
+            <div class="detail-contents">
+                <!--商品名-->
+                <p class="text"><span class="bold">商品名：</span><span th:text="${o.productName}"></span></p>
+
+                <!--商品の個数-->
+                <p class="text"><span class="bold">個数：</span><span th:text="${o.quantity}"></span></p>
+
+                <!--商品1個当たりの金額-->
+                <p class="text"><span class="bold">金額：</span><span th:text="${o.productPrice}"></span></p>
+                <!--<span>金額：</span><div th:text="${o.productPrice}"></div>-->
+
+                <!--商品の総額-->
+                <p class="text"><span class="bold">総額：</span><span th:text="${o.subtotal}"></span></p>
+                <!--<span>総額：</span><div th:text="${o.subtotal}"></div>-->
+            </div>
+        </div>
+    </div>
+
+    <div class="total-price">
+        <div>合計</div>
+        <div th:text="${order.totalAmount}" class="total"></div>
+    </div>
+
+    <h2>購入者情報</h2>
+    <!--購入者や注文の情報の記載-->
+    <div style="margin-top: 20px; margin-bottom: 40px;" class="customer-details">
+        <!--購入者名-->
+        <div class="flex">
+            <div class="purchase-left"><span class="bold">購入者名</span></div>
+            <div class="purchase-right" th:text="${order.customerName}"></div>
+        </div>
+
+        <!--住所-->
+        <div class="flex">
+            <div class="purchase-left"><span class="bold">購入者住所</span></div>
+            <div class="purchase-right">
+                <span th:text="${order.customerPostalCode}"></span><br>
+                <span th:text="${order.customerAddress}"></span>
+            </div>
+        </div>
+
+        <!--電話番号-->
+        <div class="flex">
+            <div class="purchase-left"><span class="bold">購入者電話番号</span></div>
+            <div class="purchase-right" th:text="${order.customerPhone}"></div>
+        </div>
+
+        <!--電話番号-->
+        <div class="flex">
+            <div class="purchase-left"><span class="bold">注文ステータス</span></div>
+            <div class="purchase-right">
+                <div th:text="${
+                order.status == 'CONFIRMED' ? '注文確定' :
+                order.status == 'PREPARING'  ? '発送準備中' :
+                order.status == 'SHIPPED'  ? '発送済み' :
+                '不明'}" class="order-status-text"></div>
+                <form method="post" th:action="@{/admin/order/status}" th:object="${orderStatusForm}">
+                    <input type="hidden" th:value="${order.id}" th:field="*{id}">
+                    <select th:field="*{status}" class="order-status-select">
+                        <option value="CONFIRMED">注文確定</option>
+                        <option value="PREPARING">発送準備中</option>
+                        <option value="SHIPPED">発送済み</option>
+                    </select>
+                    <button type="submit" class="btn">変更</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

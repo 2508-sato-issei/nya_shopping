@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.w3.org/1999/xhtml" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>ホーム画面</title>
+    <link th:href="@{/css/navbar.css}" rel="stylesheet">
+    <link th:href="@{/css/style.css}" rel="stylesheet">
+    <link th:href="@{/css/home.css}" rel="stylesheet">
+</head>
+<body>
+<div th:replace="fragments/navbar :: navbar"></div>
+<div th:if="${errorMessage != null}" th:text="${errorMessage}" class="error-item"></div>
+<div class="contents">
+    <div class="home-search-area">
+        <form th:action="@{/search}" method="get">
+
+            <select name="category" th:value="${searchForm.category}">
+                <option value="">カテゴリーを選択</option>
+                <option th:each="cat : ${categories}"
+                        th:value="${cat.name()}"
+                        th:text="${cat.label}">
+                </option>
+            </select>
+
+            <!-- キーワード -->
+            <input type="text" name="keyword" placeholder="キーワード" th:value="${searchForm.keyword}">
+
+            <!-- 価格（下限） -->
+            <input type="number" name="minPrice" placeholder="最小価格" th:value="${searchForm.minPrice}">
+
+            <!-- 価格（上限） -->
+            <input type="number" name="maxPrice" placeholder="最大価格" th:value="${searchForm.maxPrice}">
+
+            <!-- 在庫数 -->
+            <input type="number" name="stock" placeholder="在庫以上" th:value="${searchForm.stock}">
+
+            <button type="submit">検索</button>
+        </form>
+    </div>
+
+    <div class="content">
+        <h2>✨ 人気カテゴリ ✨</h2>
+        <div class="home-popular-list">
+            <div class="home-popular-item" th:each="cat : ${popularCategories}">
+                <a th:href="@{/search(category=${cat.name()})}"
+                   th:text="${cat.label}"></a>
+            </div>
+        </div>
+    </div>
+
+    <div class="content">
+        <h2>🎢 人気キーワード 🎢</h2>
+        <div class="home-popular-list">
+            <div class="home-popular-item" th:each="kw : ${popularKeywords}">
+                <a th:href="@{/search(keyword=${kw})}" th:text="${kw}"></a>
+            </div>
+        </div>
+    </div>
+
+    <div class="content">
+        <h2>🆕 新着アイテム 🆕</h2>
+        <div class="home-new-list">
+            <a class="home-new-item" th:each="item : ${newItems}"
+               th:href="@{/product/{id}(id=${item.id})}">
+                <img th:src="@{'/storage/' + ${item.imageUrl}}" alt="商品画像">
+                <p th:text="${item.name}"></p>
+            </a>
+        </div>
+    </div>
+</div>
+
+<div th:replace="fragments/fragment :: footer"></div>
+
+</body>
+</html>

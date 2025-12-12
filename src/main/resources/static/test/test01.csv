@@ -1,0 +1,6 @@
+商品ID,商品名,価格,カテゴリー,在庫数,画像ファイル名,商品説明,公開/非公開,登録日
+,プリンター 06,60000,OA_EQUIPMENT,600,printer.jpg,プリンター,true,2025-12-06T15:05:32
+,ノートPC 06,60000,PC_AND_PERIPHERALS,600,pc.jpg,ノートPC,true,2025-12-06T15:06:33
+,デスク 06,60000,OFFICE_FURNITURE,600,desk.jpg,デスク,true,2025-12-06T15:08
+,ボールペン 06,600,STATIONERY_AND_SUPPLIES,600,stationary.jpg,ボールペン,true,2025-12-06T15:09:25
+,手帳 06,6000,OFFICE_SUPPLIES,600,goods.jpg,手帳,true,2025-12-06T15:13:32

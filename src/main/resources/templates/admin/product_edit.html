@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="ja"
+      xmlns:th="http://www.w3.org/1999/xhtml"
+      xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>商品編集画面</title>
+    <link th:href="@{/css/style.css}" rel="stylesheet">
+    <link th:href="@{/css/navbar.css}" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/admin.css}">
+    <link rel="stylesheet" th:href="@{/css/admin_product_form.css}">
+</head>
+<body>
+
+<div th:replace="fragments/navbar :: navbar"></div>
+
+<nav>
+    <ul class="navigation">
+        <li><a th:href="@{/}">ホーム</a></li>
+        <li><a th:href="@{/admin}">管理者ページ</a></li>
+        <li><a th:href="@{/admin/products}">商品管理一覧</a></li>
+        <li>商品編集</li>
+    </ul>
+</nav>
+
+<div class="contents">
+
+    <div class="product-form-header">
+        <h1>商品編集</h1>
+    </div>
+
+    <!-- エラー表示 -->
+    <div th:if="${errors}" class="error-box">
+        <ul>
+            <li th:each="err : ${errors}" th:text="${err}"></li>
+        </ul>
+    </div>
+
+    <form th:action="@{/admin/product/edit}"
+          method="post"
+          th:object="${form}"
+          enctype="multipart/form-data"
+          class="product-form">
+
+        <!-- ID（非編集） -->
+        <input type="hidden" th:field="*{id}">
+        <label>ID</label>
+        <div class="readonly-field" th:text="*{id}"></div>
+
+        <!-- 商品名 -->
+        <label>商品名</label>
+        <input type="text" th:field="*{name}" placeholder="100文字以内">
+
+        <!-- 価格 -->
+        <label>価格</label>
+        <input type="number" th:field="*{price}" min="0">
+
+        <!-- カテゴリ -->
+        <label>カテゴリ</label>
+        <select th:field="*{category}">
+            <option value="">選択してください</option>
+            <option th:each="c : ${categories}"
+                    th:value="${c.name}"
+                    th:text="${c.label}">
+            </option>
+        </select>
+
+        <!-- 在庫数 -->
+        <label>在庫数</label>
+        <input type="number" th:field="*{stock}" min="0">
+
+        <!-- 画像 -->
+        <label>現在の画像</label>
+        <div class="image-preview" th:if="${form.imageUrl}">
+            <img th:src="@{'/uploads/products/' + ${form.imageUrl}}" alt="商品画像">
+        </div>
+
+        <input type="hidden" th:field="*{imageUrl}">
+        <label>新しい画像（変更する場合のみ）</label>
+        <input type="file" th:field="*{imageFile}" accept="image/*">
+
+        <!-- 説明 -->
+        <label>商品説明</label>
+        <textarea th:field="*{description}" rows="5" placeholder="100文字以内"></textarea>
+
+        <!-- 公開状態 -->
+        <label>公開/非公開</label>
+        <select th:field="*{isActive}">
+            <option value="">選択してください</option>
+            <option value="true">公開</option>
+            <option value="false">非公開</option>
+        </select>
+
+        <button type="submit" class="btn-submit">更新</button>
+    </form>
+
+    <!-- 削除ボタン -->
+    <form th:action="@{/admin/product/delete}" method="post"
+          onsubmit="return confirm('本当に削除しますか？');"
+          class="product-form" style="margin-top: 20px;">
+        <input type="hidden" th:value="${form.id}" name="id">
+        <button type="submit" class="btn-danger">削除</button>
+    </form>
+
+</div>
+
+<div th:replace="fragments/fragment :: footer"></div>
+
+</body>
+</html>

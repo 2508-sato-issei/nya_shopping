@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.w3.org/1999/xhtml" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${product.name} + 'の商品詳細'">商品詳細画面</title>
+    <link th:href="@{/css/navbar.css}" rel="stylesheet">
+    <link th:href="@{/css/style.css}" rel="stylesheet">
+    <link th:href="@{/css/detail.css}" rel="stylesheet">
+</head>
+<body>
+<div th:replace="fragments/navbar :: navbar"></div>
+<ul class="navigation">
+    <li><a th:href="@{/}">ホーム</a></li>
+    <li><a th:href="@{/search}">検索結果</a></li>
+    <li th:text="${product.name}"></li>
+</ul>
+<div class="detail-wrapper">
+
+    <!-- 左側：画像 -->
+    <div class="detail-image">
+        <img th:src="@{'/uploads/products/' + ${product.imageUrl}}" alt="商品画像">
+    </div>
+
+    <!-- 右側：商品情報 -->
+    <div class="detail-info">
+        <h1 th:text="${product.name}"></h1>
+
+        <p><strong>カテゴリー：</strong><span th:text="${product.category.label}"></span></p>
+        <p><strong>在庫：</strong><span th:text="${product.stock}"></span> 点</p>
+        <p><strong>説明：</strong></p>
+        <p th:text="${product.description}"></p>
+
+        <div class="buy-block">
+            <div class="qty-area">
+                <button type="button" class="qty-down">－</button>
+                <input type="number" id="detailQty" name="quantity" value="1" min="1">
+                <button type="button" class="qty-up">＋</button>
+            </div>
+
+            <div class="detail-price">
+                価格：<span th:text="${product.price}"></span> 円
+            </div>
+
+            <form th:action="@{/cart/add}" method="post">
+                <input type="hidden" name="id" th:value="${product.id}">
+                <input type="hidden" id="qtyHidden" name="quantity" value="1">
+                <button type="submit" class="add-cart-btn">カートに入れる</button>
+            </form>
+        </div>
+
+    </div>
+</div>
+
+<div th:replace="fragments/fragment :: footer"></div>
+
+<script>
+    const qtyInput = document.getElementById("detailQty");
+    const qtyHidden = document.getElementById("qtyHidden");
+
+    document.querySelector(".qty-down").addEventListener("click", () => {
+        let v = parseInt(qtyInput.value);
+        if (v > 1) v--;
+        qtyInput.value = v;
+        qtyHidden.value = v;
+    });
+
+    document.querySelector(".qty-up").addEventListener("click", () => {
+        let v = parseInt(qtyInput.value);
+        v++;
+        qtyInput.value = v;
+        qtyHidden.value = v;
+    });
+
+    qtyInput.addEventListener("change", () => {
+        let v = parseInt(qtyInput.value);
+        if (v < 1) v = 1;
+        qtyInput.value = v;
+        qtyHidden.value = v;
+    });
+</script>
+
+</body>
+</html>
