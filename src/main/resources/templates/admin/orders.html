@@ -125,7 +125,8 @@
             <tbody>
             <tr th:each="o: ${order}">
                 <!--注文者のID-->
-                <td th:text="${o.userId}"></td>
+                <td th:if="${o.userId != null} " th:text="${o.userId}"></td>
+                <td th:if="${o.userId == null} " >ゲスト</td>
 
                 <!--合計金額-->
                 <td th:text="${o.totalAmount}"></td>
