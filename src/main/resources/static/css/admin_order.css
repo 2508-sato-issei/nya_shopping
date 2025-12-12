@@ -97,11 +97,13 @@
     background-color: #fff;
 }
 
-.customer-details h2 {
-    font-size: 20px;
-    line-height: 1;
-    margin: 0;
-    margin-bottom: 10px;
+h2 {
+    font-size: 22px;
+    font-weight: bold;
+    color: #444;
+    margin: 40px 0 15px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid #eee;
 }
 
 .btn {
