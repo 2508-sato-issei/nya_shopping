@@ -65,9 +65,7 @@ h2 {
     background-color: #d9843b;
 }
 
-/* ================================
-   会員情報セクション
-================================ */
+/*会員情報セクション*/
 .user-info-section {
     margin-bottom: 40px;
 }
@@ -97,9 +95,7 @@ h2 {
     color: #666;
 }
 
-/* ================================
-   メッセージとエラー表示
-================================ */
+/*メッセージとエラー表示*/
 .global-message {
     padding: 12px 15px;
     margin-bottom: 18px;
@@ -109,22 +105,18 @@ h2 {
 }
 
 .global-message.success {
-    /* error-item の成功バージョン */
     background: #e6f7ff;
     color: #1890ff;
     border: 1px solid #91d5ff;
 }
 
 .global-message.error {
-    /* error-item (共通CSS) の流用 */
     background: #ffecea;
     color: #c03d2f;
     border: 1px solid #f5b5ac;
 }
 
-/* ================================
-   注文履歴 絞り込みフォーム
-================================ */
+/*注文履歴 絞り込みフォーム*/
 .history-filter-form {
     /* search-form (商品管理画面) のスタイルを流用 */
     display: flex;
@@ -189,9 +181,7 @@ h2 {
     background: #f2f2f2;
 }
 
-/* ================================
-   注文履歴テーブル
-================================ */
+/*注文履歴テーブル*/
 .order-history-table {
     /* product-table (商品管理画面) のスタイルを流用 */
     width: 100%;
@@ -227,7 +217,6 @@ h2 {
     background: #e7f1ff;
 }
 
-/* 発送状態バッジ */
 .status-badge {
     padding: 4px 8px;
     border-radius: 4px;
@@ -253,54 +242,67 @@ h2 {
     background: #bf742f;
 }
 
-/* ================================
-   ページネーション
-================================ */
-.pagination-controls {
-    /* pagination (商品管理画面) のスタイルを流用 */
+/* ページネーション*/
+.pagination {
     display: flex;
-    justify-content: center;
-    gap: 8px;
+    gap: 6px;
+    align-items: center;
     margin: 30px auto 40px;
+    flex-wrap: wrap;
+    justify-content: center;
 }
 
-.page-link,
-.active-page-number {
-    padding: 8px 14px;
-    border: 1px solid #d9843b;
+/* 共通ベーススタイル: リンク(a.pages), アクティブ(strong.active-page), 無効(span.disabled-page) */
+.pages,
+.active-page {
+    /* ★高さを揃えるための基本設定 */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 40px;
+    height: 36px;
+    padding: 6px 12px;
     border-radius: 6px;
-    font-size: 14px;
+    font-size: 15px;
     text-decoration: none;
+    box-sizing: border-box;
+    border: 1px solid; /* すべての要素に枠線を設定し高さを統一 */
     transition: 0.2s;
+    font-weight: normal;
 }
 
-.page-link {
-    color: #d9843b;
+/* 1. .pages (非アクティブなリンク) */
+.pages {
+    color: #d9843b; /* 文字色はオレンジ */
+    border-color: #d9843b; /* 枠線はオレンジ */
     background: white;
 }
 
-.page-link:hover {
+.pages:hover {
     background: #d9843b;
     color: #fff;
 }
 
-.active-page-number {
+/* 2. .active-page (アクティブなページ番号 - strongタグ) */
+.active-page {
     background: #d9843b;
     color: #fff;
+    border-color: #d9843b; /* 枠線も背景と同じ色にして高さを維持 */
     font-weight: bold;
-    pointer-events: none; /* クリックできないように */
-}
-
-.disabled-link {
-    color: #aaa;
-    border-color: #ddd;
-    background: #f5f5f5;
     pointer-events: none;
 }
 
-/* ================================
-   その他
-================================ */
+/* 3. .disabled-page (無効なページ要素 - spanタグ) */
+.disabled-page {
+    /* 画像のグレーアウトされたボタンのデザインに合わせる */
+    color: #999; /* 文字はグレー */
+    border-color: #e0e0e0; /* 薄いグレーの枠線 */
+    background: #f8f8f8; /* 薄いグレーの背景 */
+    pointer-events: none;
+}
+
+
+
 .no-history-message {
     text-align: center;
     padding: 30px;
