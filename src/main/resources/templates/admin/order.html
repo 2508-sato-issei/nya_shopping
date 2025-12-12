@@ -58,11 +58,9 @@
         <div th:text="${order.totalAmount}" class="total"></div>
     </div>
 
-
+    <h2>購入者情報</h2>
     <!--購入者や注文の情報の記載-->
-    <div style="margin-top: 50px;" class="customer-details">
-        <h2>購入者情報</h2>
-
+    <div style="margin-top: 20px; margin-bottom: 40px;" class="customer-details">
         <!--購入者名-->
         <div class="flex">
             <div class="purchase-left"><span class="bold">購入者名</span></div>
@@ -99,7 +97,7 @@
                         <option value="CONFIRMED">注文確定</option>
                         <option value="PREPARING">発送準備中</option>
                         <option value="SHIPPED">発送済み</option>
-                    </select><br>
+                    </select>
                     <button type="submit" class="btn">変更</button>
                 </form>
             </div>
