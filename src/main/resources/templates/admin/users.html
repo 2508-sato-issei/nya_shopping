@@ -146,7 +146,7 @@
                 </td>
 
                 <!--登録日時-->
-                <td th:text="${u.createdAt}">
+                <td th:text="${#dates.format(u.createdAt, 'yyyy/MM/dd HH:MM:ss')}">
                 </td>
             </tr>
             </tbody>

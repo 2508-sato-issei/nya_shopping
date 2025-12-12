@@ -164,7 +164,7 @@
                     th:text="${p.isActive ? '公開' : '非公開'}"></td>
 
                 <td class="td-center"
-                    th:text="${#temporals.format(p.createdAt, 'yyyy/MM/dd')}"></td>
+                    th:text="${#temporals.format(p.createdAt, 'yyyy/MM/dd HH:MM:ss')}"></td>
 
                 <td class="td-center">
                     <a th:href="@{'/admin/product/edit/' + ${p.id}}" class="btn-small">編集</a>

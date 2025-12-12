@@ -308,7 +308,7 @@ h2 {
 .no-history-message {
     text-align: center;
     padding: 30px;
-    margin-top: 20px;
+    margin: 20px 0 40px;
     border: 1px dashed #ccc;
     background: #f9f9f9;
     border-radius: 8px;

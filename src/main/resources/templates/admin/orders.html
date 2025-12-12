@@ -151,7 +151,7 @@
                 </td>
 
                 <!--購入日時（登録日時）-->
-                <td th:text="${o.createdAt}"></td>
+                <td th:text="${#dates.format(o.createdAt, 'yyyy/MM/dd HH:MM:ss')}"></td>
                 <td>
                     <a th:href="@{@{'/admin/order/' + ${o.id}}}" class="btn-small">詳細</a>
                 </td>
