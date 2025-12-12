@@ -193,6 +193,7 @@ h2 {
     overflow: hidden;
     box-shadow: 0 2px 6px rgba(0,0,0,0.1);
     font-size: 14px;
+    margin-bottom: 40px;
 }
 
 .order-history-table th {
@@ -250,6 +251,7 @@ h2 {
     margin: 30px auto 40px;
     flex-wrap: wrap;
     justify-content: center;
+    margin: 30px auto 40px;
 }
 
 /* 共通ベーススタイル: リンク(a.pages), アクティブ(strong.active-page), 無効(span.disabled-page) */
